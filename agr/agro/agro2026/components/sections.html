@@ -1,0 +1,543 @@
+<!-- ================================================================
+     Agrosence - Shared Content Sections
+     Loaded dynamically by navbar.js on dashboard pages.
+     Contains self-contained styles + HTML for the 4 sections.
+================================================================ -->
+
+<style data-sections="true">
+    /* ===== Scoped Section Styles ===== */
+    #shared-sections-container {
+        position: relative;
+        z-index: 1;
+    }
+
+    #shared-sections-container .section-title {
+        text-align: center;
+        font-size: clamp(2.2rem, 5vw, 3.5rem);
+        margin-bottom: 60px;
+        color: #0b361a;
+        position: relative;
+        font-family: 'Inter', sans-serif;
+        font-weight: 700;
+    }
+
+    #shared-sections-container .section-title::after {
+        content: '';
+        position: absolute;
+        bottom: -10px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 80px;
+        height: 3px;
+        background: linear-gradient(90deg, #fff, #24a713, #0c3a1b, #0c3a1b, #24a713, #fff);
+        border-radius: 2px;
+    }
+
+    /* ── Services / Showcase ── */
+    #shared-sections-container .showcase {
+        padding: 100px 20px;
+        position: relative;
+        background: #ffffff;
+    }
+
+    #shared-sections-container .hexagon-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 30px;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    #shared-sections-container .hexagon {
+        width: 200px;
+        height: 260px;
+        position: relative;
+        margin: 15px;
+        transition: all 0.4s ease;
+    }
+
+    #shared-sections-container .hexagon:hover {
+        transform: scale(1.08);
+    }
+
+    #shared-sections-container .hexagon-inner {
+        width: 100%;
+        height: 100%;
+        position: relative;
+        transform: rotate(30deg);
+        border-radius: 22px;
+        padding: 40px 20px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        overflow: hidden;
+        transition: all 0.4s ease;
+    }
+
+    #shared-sections-container .hexagon:hover .hexagon-inner {
+        transform: rotate(0deg);
+        border-radius: 15px;
+    }
+
+    #shared-sections-container .hexagon:nth-child(odd) .hexagon-inner {
+        background: linear-gradient(to top, rgba(21, 128, 61, 0.9), rgba(139, 94, 60, 0.9));
+        border: 1px solid rgba(21, 128, 61, 0.5);
+    }
+
+    #shared-sections-container .hexagon:nth-child(even) .hexagon-inner {
+        background: linear-gradient(to top, rgba(139, 94, 60, 0.9), rgba(21, 128, 61, 0.9));
+        border: 1px solid rgba(139, 94, 60, 0.5);
+    }
+
+    #shared-sections-container .hexagon-icon {
+        font-size: 2.5rem;
+        margin-bottom: 15px;
+        transform: rotate(-30deg);
+        filter: drop-shadow(0 0 10px currentColor);
+        transition: all 0.4s ease;
+    }
+
+    #shared-sections-container .hexagon:hover .hexagon-icon {
+        transform: rotate(0deg);
+    }
+
+    #shared-sections-container .hexagon h4 {
+        font-size: 1.1rem;
+        color: #ffffff;
+        transform: rotate(-30deg);
+        margin-bottom: 10px;
+        font-weight: bold;
+        text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+        transition: all 0.4s ease;
+    }
+
+    #shared-sections-container .hexagon:hover h4 {
+        transform: rotate(0deg);
+    }
+
+    /* ── Publications / Timeline ── */
+    #shared-sections-container .timeline {
+        padding: 100px 20px;
+        position: relative;
+        background: linear-gradient(180deg, #f0fdf4 0%, #ffffff 100%);
+    }
+
+    #shared-sections-container .timeline-container {
+        max-width: 1000px;
+        margin: 0 auto;
+        position: relative;
+        padding: 0 20px;
+    }
+
+    #shared-sections-container .timeline-line {
+        position: absolute;
+        left: 50%;
+        top: 0;
+        bottom: 0;
+        width: 3px;
+        background: linear-gradient(180deg, #ffffff, rgba(21, 128, 61, 0.6), #ffffff);
+        transform: translateX(-50%);
+        border-radius: 2px;
+    }
+
+    #shared-sections-container .timeline-item {
+        display: flex;
+        justify-content: flex-end;
+        padding-right: 55px;
+        position: relative;
+        margin-bottom: 50px;
+    }
+
+    #shared-sections-container .timeline-item:nth-child(even) {
+        justify-content: flex-start;
+        padding-left: 55px;
+        padding-right: 0;
+    }
+
+    #shared-sections-container .timeline-content {
+        max-width: 420px;
+        padding: 35px 30px;
+        position: relative;
+        transition: all 0.4s ease;
+        background: #0b361a;
+        backdrop-filter: blur(25px);
+        border: 1px solid rgba(130, 233, 164, 0.15);
+        border-radius: 20px;
+        box-shadow: 0 10px 35px rgba(0, 0, 0, 0.25);
+        transform: perspective(1000px) rotateY(-5deg);
+    }
+
+    #shared-sections-container .timeline-item:nth-child(even) .timeline-content {
+        transform: perspective(1000px) rotateY(5deg);
+    }
+
+    #shared-sections-container .timeline-content:hover {
+        transform: perspective(1000px) rotateY(0deg) translateZ(15px);
+        box-shadow: 0 20px 50px rgba(130, 233, 164, 0.2);
+        border-color: rgba(130, 233, 164, 0.3);
+    }
+
+    #shared-sections-container .timeline-dot {
+        position: absolute;
+        left: 50%;
+        top: 50px;
+        transform: translateX(-50%);
+        width: 20px;
+        height: 20px;
+        background: linear-gradient(135deg, rgb(22, 78, 36), #81f3ba);
+        border-radius: 50%;
+        box-shadow: 0 0 20px rgba(15, 136, 21, 0.6);
+        z-index: 1;
+        border: 3px solid rgba(9, 146, 9, 0.2);
+    }
+
+    #shared-sections-container .timeline-year {
+        font-size: 1.5rem;
+        color: #81f3ba;
+        margin-bottom: 15px;
+        font-weight: bold;
+    }
+
+    #shared-sections-container .timeline-content h4 {
+        font-size: 1.3rem;
+        color: #ffffff;
+        margin-bottom: 15px;
+        font-weight: 600;
+    }
+
+    #shared-sections-container .timeline-content p {
+        color: #d1d1d1;
+        line-height: 1.7;
+        font-size: 0.95rem;
+    }
+
+    /* ── À propos / Features ── */
+    #shared-sections-container .features {
+        padding: 100px 20px;
+        position: relative;
+        background: #ffffff;
+        overflow: hidden;
+    }
+
+    #shared-sections-container .features-container {
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 0 20px;
+    }
+
+    #shared-sections-container .diagonal-grid {
+        display: flex;
+        flex-direction: column;
+        gap: 50px;
+    }
+
+    #shared-sections-container .feature-row {
+        display: flex;
+        align-items: center;
+        gap: 60px;
+    }
+
+    #shared-sections-container .feature-content {
+        flex: 1;
+        padding: 40px;
+        transform: skew(-5deg);
+        transition: all 0.4s ease;
+        background: rgba(10, 31, 14, 0.7);
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(130, 233, 164, 0.1);
+        border-radius: 20px;
+        box-shadow: 0 4px 30px rgba(0, 0, 0, 0.4);
+    }
+
+    #shared-sections-container .feature-content:hover {
+        transform: skew(-5deg) translateY(-8px);
+        box-shadow: 0 25px 50px rgba(17, 102, 62, 0.2);
+    }
+
+    #shared-sections-container .feature-content h3 {
+        font-size: 2rem;
+        margin-bottom: 15px;
+        color: #ffffff;
+    }
+
+    #shared-sections-container .feature-content p {
+        font-size: 1rem;
+        color: #cccccc;
+        line-height: 1.8;
+    }
+
+    #shared-sections-container .feature-visual {
+        flex: 1;
+        height: 500px;
+        border-radius: 20px;
+        overflow: hidden;
+        background: rgba(10, 31, 14, 0.7);
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(130, 233, 164, 0.1);
+        box-shadow: 0 4px 30px rgba(0, 0, 0, 0.4);
+        background-image: url('/images/qui.jpeg');
+        background-size: cover;
+        background-position: center;
+        transition: all 0.4s ease;
+    }
+
+    #shared-sections-container .feature-visual:hover {
+        transform: scale(1.03);
+    }
+
+    /* ── Footer / Nous ── */
+    #shared-sections-container footer {
+        text-align: center;
+        padding: 50px 20px 35px;
+        border-top: 1px solid rgba(130, 233, 164, 0.2);
+        background: #0b361a;
+        color: #e0e0e0;
+    }
+
+    #shared-sections-container .footer-content {
+        max-width: 1000px;
+        margin: 0 auto;
+    }
+
+    #shared-sections-container .footer-content h3 {
+        color: #81f3ba;
+        font-size: 1.3rem;
+        margin-bottom: 8px;
+    }
+
+    #shared-sections-container .footer-content span {
+        color: #ccc;
+        font-size: 0.95rem;
+    }
+
+    #shared-sections-container .footer-content>p {
+        color: #aaa;
+        margin: 10px 0 20px;
+        font-size: 0.9rem;
+    }
+
+    #shared-sections-container .footer-links {
+        display: flex;
+        justify-content: center;
+        gap: 25px;
+        margin-bottom: 20px;
+        flex-wrap: wrap;
+    }
+
+    #shared-sections-container .footer-links a {
+        color: #cccccc;
+        text-decoration: none;
+        font-size: 0.9rem;
+        transition: all 0.3s ease;
+        padding: 6px 0;
+        position: relative;
+    }
+
+    #shared-sections-container .footer-links a:hover {
+        color: #81f3ba;
+    }
+
+    #shared-sections-container .footer-links a::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 0;
+        height: 1px;
+        background: linear-gradient(90deg, #81f3ba, #0f3f1b);
+        transition: width 0.3s ease;
+    }
+
+    #shared-sections-container .footer-links a:hover::after {
+        width: 100%;
+    }
+
+    /* ── Responsive ── */
+    @media (max-width: 1024px) {
+        #shared-sections-container .feature-row {
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        #shared-sections-container .feature-visual {
+            height: 250px;
+            width: 100%;
+        }
+
+        #shared-sections-container .timeline-line {
+            left: 25px;
+        }
+
+        #shared-sections-container .timeline-item,
+        #shared-sections-container .timeline-item:nth-child(even) {
+            justify-content: flex-start;
+            padding-left: 70px;
+            padding-right: 0;
+        }
+
+        #shared-sections-container .timeline-dot {
+            left: 25px;
+        }
+
+        #shared-sections-container .timeline-content {
+            max-width: 100%;
+        }
+    }
+
+    @media (max-width: 768px) {
+        #shared-sections-container .hexagon {
+            width: 150px;
+            height: 200px;
+        }
+
+        #shared-sections-container .feature-content {
+            transform: none;
+            padding: 25px;
+        }
+
+        #shared-sections-container .feature-content:hover {
+            transform: translateY(-5px);
+        }
+    }
+</style>
+
+<!-- Section: Services -->
+<section class="showcase" id="showcase">
+    <h2 class="section-title">Découvrez les services agricoles en un seul endroit</h2>
+    <div class="hexagon-container">
+        <div class="hexagon">
+            <div class="hexagon-inner">
+                <div class="hexagon-icon">🛒</div>
+                <h4>Achat et vente de produit</h4>
+            </div>
+        </div>
+        <div class="hexagon">
+            <div class="hexagon-inner">
+                <div class="hexagon-icon">🏞️</div>
+                <h4>Achat et vente de terrains</h4>
+            </div>
+        </div>
+        <div class="hexagon">
+            <div class="hexagon-inner">
+                <div class="hexagon-icon">🚚</div>
+                <h4>Livraison</h4>
+            </div>
+        </div>
+        <div class="hexagon">
+            <div class="hexagon-inner">
+                <div class="hexagon-icon">🌱</div>
+                <h4>Problems</h4>
+            </div>
+        </div>
+        <div class="hexagon">
+            <div class="hexagon-inner">
+                <div class="hexagon-icon">💬</div>
+                <h4>La comunications</h4>
+            </div>
+        </div>
+        <div class="hexagon">
+            <div class="hexagon-inner">
+                <div class="hexagon-icon">🐄</div>
+                <h4>Marcher aux bestains</h4>
+            </div>
+        </div>
+        <div class="hexagon">
+            <div class="hexagon-inner">
+                <div class="hexagon-icon">🌾</div>
+                <h4>Gestion et stocks de cultures</h4>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Section: Publications -->
+<section class="timeline" id="timeline">
+    <h2 class="section-title">Publicités d'entreprises agricole</h2>
+    <div class="timeline-container">
+        <div class="timeline-line"></div>
+        <div class="timeline-item">
+            <div class="timeline-content">
+                <div class="timeline-year">🌿 Agrimatco</div>
+                <h4>Fournisseur Agricole</h4>
+                <p>Distribue semences, engrais, pesticides et équipements agricoles.</p>
+            </div>
+            <div class="timeline-dot"></div>
+        </div>
+        <div class="timeline-item">
+            <div class="timeline-content">
+                <div class="timeline-year">🌱 Profert</div>
+                <h4>Producteur d'Engrais et Semences</h4>
+                <p>Produit et distribue engrais, pesticides et semences en Algérie.</p>
+            </div>
+            <div class="timeline-dot"></div>
+        </div>
+        <div class="timeline-item">
+            <div class="timeline-content">
+                <div class="timeline-year">🚜 CPH Agriculture</div>
+                <h4>Matériel &amp; Irrigation</h4>
+                <p>Fournit systèmes d'irrigation, semences et équipements agricoles.</p>
+            </div>
+            <div class="timeline-dot"></div>
+        </div>
+        <div class="timeline-item">
+            <div class="timeline-content">
+                <div class="timeline-year">🌾 ECO FERTI</div>
+                <h4>Fournisseur d'Intrants Agricoles</h4>
+                <p>Distribue et produit engrais, biostimulants, pesticides, semences et équipements agricoles.</p>
+            </div>
+            <div class="timeline-dot"></div>
+        </div>
+    </div>
+</section>
+
+<!-- Section: À propos -->
+<section class="features" id="features">
+    <div class="features-container">
+        <h2 class="section-title">À propos de notre entreprise</h2>
+        <div class="diagonal-grid">
+            <div class="feature-row">
+                <div class="feature-content">
+                    <h3>💡L'avenir de l'agriculture intelligente commence avec nous.</h3>
+                    <p>Notre idée est née de notre passion pour l'agriculture et de notre volonté d'intégrer la
+                        technologie à ce secteur vital. Les agriculteurs font face à de nombreux défis, tels que la
+                        communication
+                        avec les ingénieurs agronomes et l'accès au matériel et au bétail. Pour répondre à ces besoins,
+                        nous avons créé
+                        une plateforme numérique complète qui facilite cette communication et propose des services
+                        variés, comme
+                        l'achat de terres et de fournitures agricoles.
+
+                        Nous utilisons des technologies d'intelligence artificielle pour analyser les sols et
+                        fournir des prévisions de rendement précises. Notre objectif est d'être votre partenaire de
+                        confiance, en vous offrant
+                        le soutien technique et les compétences nécessaires pour surmonter les défis agricoles et
+                        améliorer votre
+                        productivité.
+                    </p>
+                </div>
+                <div class="feature-visual"></div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Section: Nous (Footer) -->
+<footer id="footer">
+    <div class="footer-content">
+        <h3>Address</h3>
+        <span>Relizane, DZ</span>
+        <p>(+213)671771832<br>Agrosense2026@gmail.com</p>
+        <div class="footer-links">
+            <a href="#features">Définition</a>
+            <a href="#showcase">Service</a>
+            <a href="#timeline">Publication</a>
+            <a href="#features">à propos</a>
+            <a href="#footer">Nous</a>
+        </div>
+        <p>&copy; 2026 Site web de Agrosense</p>
+    </div>
+</footer>

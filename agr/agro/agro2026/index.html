@@ -1,0 +1,787 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agrosence</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <link href="style.css" rel="stylesheet">
+    <!--
+
+TemplateMo 597 Neural Glass
+
+https://templatemo.com/tm-597-neural-glass
+
+-->
+    <style>
+        /* Fix the dropdown styling to not be affected by navbar pills */
+        #userDropdownMenu a {
+            background: transparent !important;
+            border: none !important;
+            box-shadow: none !important;
+            border-radius: 12px !important;
+            color: rgba(255, 255, 255, 0.85) !important;
+            padding: 12px 16px !important;
+            display: block !important;
+            text-align: left !important;
+            margin-bottom: 4px;
+            font-weight: 500 !important;
+            transition: all 0.25s ease !important;
+        }
+
+        #userDropdownMenu a:hover {
+            background: rgba(130, 233, 164, 0.12) !important;
+            color: #81f3ba !important;
+            transform: translateX(4px);
+        }
+
+        #userDropdownMenu a::after {
+            display: none !important;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Epic Neural Background -->
+    <div class="neural-background"></div>
+
+    <!-- Floating Geometric Shapes -->
+    <div class="geometric-shapes">
+        <div class="shape"></div>
+        <div class="shape"></div>
+        <div class="shape"></div>
+        <div class="shape"></div>
+    </div>
+
+    <!-- Neural Network Lines -->
+    <div class="neural-lines">
+        <div class="neural-line"></div>
+        <div class="neural-line"></div>
+        <div class="neural-line"></div>
+    </div>
+
+    <!-- ===== GLOBAL NAVBAR ===== -->
+    <div id="navbar-container"></div>
+
+
+    <!-- Section 1: définition -->
+    <section class="hero" id="home">
+        <div class="hero-content">
+            <div class="hero-subtitle" data-i18n="Bienvenue dans Le monde intelligent de l'agriculture">Bienvenue dans Le monde intelligent de l'agriculture</div>
+
+            <!-- HERO SLIDER -->
+            <div class="hero-slider-outer">
+                <button class="slider-arrow slider-arrow-left" id="prevSlide" aria-label="Précédent">&lt;</button>
+
+                <div class="hero-slider-wrapper">
+                    <div class="hero-slider" id="heroSlider">
+                        <!-- Slide 1 -->
+                        <div class="slide active">
+                            <div class="slide-content">
+                                <h3 data-i18n="Prédiction du rendement">Prédiction du rendement</h3>
+                                <p data-i18n="Analysez les paramètres du sol tels que la
+                                    température, l’humidité, le pH et les nutriments afin de prédire le type de culture,
+                                    l’engrais adapté et le rendement attendu grâce à l’intelligence artificielle.">Analysez les paramètres du sol tels que la
+                                    température, l’humidité, le pH et les nutriments afin de prédire le type de culture,
+                                    l’engrais adapté et le rendement attendu grâce à l’intelligence artificielle.</p>
+                            </div>
+                            <div class="slide-image">
+                                <img src="images/prediction.png" alt="Prédiction Yield">
+                            </div>
+                        </div>
+                        <!-- Slide 2 -->
+                        <div class="slide">
+                            <div class="slide-content">
+                                <h3 data-i18n="Analyse Statistique">Analyse Statistique</h3>
+                                <p data-i18n="Visualisez les statistiques des commandes et découvrez les catégories de produits les
+                                    plus demandées afin d’améliorer vos décisions agricoles.">Visualisez les statistiques des commandes et découvrez les catégories de produits les
+                                    plus demandées afin d’améliorer vos décisions agricoles.</p>
+                            </div>
+                            <div class="slide-image">
+                                <img src="images/statistiques.png" alt="Analyse Statistique">
+                            </div>
+                        </div>
+                        <!-- Slide 3 -->
+                        <div class="slide">
+                            <div class="slide-content">
+                                <h3 data-i18n="Gestion des commandes">Gestion des commandes</h3>
+                                <p data-i18n="Passez vos commandes facilement, suivez leur validation par les experts et recevez
+                                    vos produits en toute simplicité avec un système de relance intégré.">Passez vos commandes facilement, suivez leur validation par les experts et recevez
+                                    vos produits en toute simplicité avec un système de relance intégré.</p>
+                            </div>
+                            <div class="slide-image">
+                                <img src="images/commandes.png" alt="Gestion des commandes">
+                            </div>
+                        </div>
+                        <!-- Slide 4 -->
+                        <div class="slide">
+                            <div class="slide-content">
+                                <h3 data-i18n="Boutiques des experts">Boutiques des experts</h3>
+                                <p data-i18n="Consultez les boutiques des experts, explorez les produits disponibles et choisissez
+                                    les meilleures offres adaptées à vos besoins agricoles.">Consultez les boutiques des experts, explorez les produits disponibles et choisissez
+                                    les meilleures offres adaptées à vos besoins agricoles.</p>
+                            </div>
+                            <div class="slide-image">
+                                <img src="images/boutiques.png" alt="Boutiques des experts">
+                            </div>
+                        </div>
+                        <!-- Slide 5 -->
+                        <div class="slide">
+                            <div class="slide-content">
+                                <h3 data-i18n="Espace de discussion">Espace de discussion</h3>
+                                <p data-i18n="Communiquez directement avec les experts pour obtenir des conseils, poser des
+                                    questions et suivre vos commandes en temps réel.">Communiquez directement avec les experts pour obtenir des conseils, poser des
+                                    questions et suivre vos commandes en temps réel.</p>
+                            </div>
+                            <div class="slide-image">
+                                <img src="images/discussion.png" alt="Espace de discussion">
+                            </div>
+                        </div>
+                        <!-- Slide 6 -->
+                        <div class="slide">
+                            <div class="slide-content">
+                                <h3 data-i18n="Terrains Agricoles">Terrains Agricoles</h3>
+                                <p data-i18n="Explorez et trouvez des terrains agricoles adaptés à vos projets ou proposez vos
+                                    parcelles pour développer votre activité.">Explorez et trouvez des terrains agricoles adaptés à vos projets ou proposez vos
+                                    parcelles pour développer votre activité.</p>
+                            </div>
+                            <div class="slide-image">
+                                <img src="images/terrains.png" alt="Terrains Agricoles">
+                            </div>
+                        </div>
+                        <!-- Slide 7 -->
+
+                    </div>
+
+                    <!-- Controls -->
+                    <div class="slider-controls">
+                        <div class="slider-dot active" data-index="0"></div>
+                        <div class="slider-dot" data-index="1"></div>
+                        <div class="slider-dot" data-index="2"></div>
+                        <div class="slider-dot" data-index="3"></div>
+                        <div class="slider-dot" data-index="4"></div>
+                        <div class="slider-dot" data-index="5"></div>
+                        <div class="slider-dot" data-index="6"></div>
+                    </div>
+                </div>
+
+                <button class="slider-arrow slider-arrow-right" id="nextSlide" aria-label="Suivant">&gt;</button>
+            </div>
+
+        </div>
+    </section>
+    <!-------------------------- Section 2: Service------------------------------------------------------------------- -->
+
+    <section class="showcase" id="showcase">
+        <h2 class="section-title" data-i18n="Découvrez les services agricoles en un seul endroit">Découvrez les services agricoles en un seul endroit</h2>
+        <div class="hexagon-container">
+            <div class="hexagon">
+                <div class="hexagon-inner">
+                    <div class="hexagon-icon">🧠</div>
+                    <h4 data-i18n="Intelligence Agronomique">Intelligence Agronomique</h4>
+                </div>
+            </div>
+            <div class="hexagon">
+                <div class="hexagon-inner">
+                    <div class="hexagon-icon"> 📊</div>
+                    <h4 data-i18n="Statistiques du Marché ">Statistiques du Marché </h4>
+                </div>
+            </div>
+            <div class="hexagon">
+                <div class="hexagon-inner">
+                    <div class="hexagon-icon">🛒</div>
+                    <h4 data-i18n="Achat et vente de produits">Achat et vente de produits</h4>
+                </div>
+            </div>
+            <div class="hexagon">
+                <div class="hexagon-inner">
+                    <div class="hexagon-icon"> 📦 </div>
+                    <h4 data-i18n="Suivi des Commandes">Suivi des Commandes </h4>
+                </div>
+            </div>
+            <div class="hexagon">
+                <div class="hexagon-inner">
+                    <div class="hexagon-icon">💬</div>
+                    <h4 data-i18n="Espace de Discussion"> Espace de Discussion</h4>
+                </div>
+            </div>
+            <div class="hexagon">
+                <div class="hexagon-inner">
+                    <div class="hexagon-icon">🏞️</div>
+                    <h4 data-i18n="Achat et vente de terrains">Achat et vente de terrains</h4>
+                </div>
+            </div>
+            <div class="hexagon">
+                <div class="hexagon-inner">
+                    <div class="hexagon-icon">🚚</div>
+                    <h4 data-i18n="Livraison">Livraison</h4>
+                </div>
+            </div>
+
+
+            <div class="hexagon">
+                <div class="hexagon-inner">
+                    <div class="hexagon-icon">🐄</div>
+                    <h4 data-i18n="Marché aux bestiaux">Marché aux bestiaux</h4>
+                </div>
+            </div>
+            <div class="hexagon">
+                <div class="hexagon-inner">
+                    <div class="hexagon-icon">🌾</div>
+                    <h4 data-i18n="Gestion et stocks de cultures">Gestion et stocks de cultures</h4>
+                </div>
+            </div> <br>
+
+
+
+
+        </div>
+    </section>
+
+    <!-------------------------- Section 3: publicite------------------------------------------------------------------- -->
+
+    <section class="timeline" id="timeline">
+        <h2 class="section-title" data-i18n="Publicités d'entreprises agricoles">Publicités d'entreprises agricoles</h2>
+        <div class="timeline-container">
+            <div class="timeline-line"></div>
+
+
+            <div class="timeline-item">
+                <div class="timeline-content glass">
+                    <a href="https://www.agrimatcolimited-algeria.dz/" target="_blank" class="timeline-year"
+                        style="text-decoration: none; cursor: pointer;" data-i18n="Agrimatco">🌿 Agrimatco</a>
+                    <h4 data-i18n="Fournisseur Agricole">Fournisseur Agricole</h4>
+                    <p data-i18n="Distribue semences, engrais, pesticides et équipements agricoles.">Distribue semences, engrais, pesticides et équipements agricoles.</p>
+                </div>
+                <div class="timeline-dot"></div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-content glass">
+                    <a href="https://profert.dz/fr/" target="_blank" class="timeline-year"
+                        style="text-decoration: none; cursor: pointer;" data-i18n="Profert">🌱 Profert</a>
+                    <h4 data-i18n="Producteur d’Engrais et Semences">Producteur d’Engrais et Semences</h4>
+                    <p data-i18n="Produit et distribue engrais, pesticides et semences en Algérie.">Produit et distribue engrais, pesticides et semences en Algérie.</p>
+                </div>
+                <div class="timeline-dot"></div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-content glass">
+                    <a href="https://www.cph-agro.com/" target="_blank" class="timeline-year"
+                        style="text-decoration: none; cursor: pointer;" data-i18n="CPH Agriculture">🚜 CPH Agriculture</a>
+                    <h4 data-i18n="Matériel & Irrigation">Matériel & Irrigation</h4>
+                    <p data-i18n="Fournit systèmes d’irrigation, semences et équipements agricoles.">Fournit systèmes d’irrigation, semences et équipements agricoles.</p>
+                </div>
+                <div class="timeline-dot"></div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-content glass">
+                    <a href="https://ecoferti.dz/" target="_blank" class="timeline-year"
+                        style="text-decoration: none; cursor: pointer;" data-i18n="ECO FERTI">🌾 ECO FERTI</a>
+                    <h4 data-i18n="">Fournisseur d’Intrants Agricoles</h4>
+                    <p data-i18n="Distribue et produit engrais, biostimulants, pesticides, semences et équipements agricoles.">Distribue et produit engrais, biostimulants, pesticides, semences et équipements agricoles.</p>
+                </div>
+                <div class="timeline-dot"></div>
+
+            </div>
+
+        </div>
+    </section>
+
+    <!--------------------------- Section 4: a propos notre entreprise ------------------------------------------------------------------------------->
+
+    <section class="features" id="features">
+        <div class="features-container">
+
+            <h2 class="section-title" data-i18n="À propos de notre entreprise">À propos de notre entreprise</h2>
+            <div class="diagonal-grid">
+                <div class="feature-row">
+                    <div class="feature-content glass">
+                        <h3 data-i18n="L'avenir de l'agriculture intelligente commence avec nous.">💡L'avenir de l'agriculture intelligente commence avec nous.</h3>
+                        <p data-i18n="Notre idée est née de notre passion pour l'agriculture et de notre volonté d'intégrer la
+                            technologie à ce
+                            secteur vital. Les agriculteurs font face à de nombreux défis, tels que la communication
+                            avec les ingénieurs
+                            agronomes et l'accès au matériel et au bétail. Pour répondre à ces besoins, nous avons créé
+                            une plateforme
+                            numérique complète qui facilite cette communication et propose des services variés, comme
+                            l'achat de terres
+                            et de fournitures agricoles.
+
+                            Nous utilisons des technologies d'intelligence artificielle pour analyser les sols et
+                            fournir des prévisions de
+                            rendement précises. Notre objectif est d'être votre partenaire de confiance, en vous offrant
+                            le soutien technique
+                            et les compétences nécessaires pour surmonter les défis agricoles et améliorer votre
+                            productivité.">Notre idée est née de notre passion pour l'agriculture et de notre volonté d'intégrer la
+                            technologie à ce
+                            secteur vital. Les agriculteurs font face à de nombreux défis, tels que la communication
+                            avec les ingénieurs
+                            agronomes et l'accès au matériel et au bétail. Pour répondre à ces besoins, nous avons créé
+                            une plateforme
+                            numérique complète qui facilite cette communication et propose des services variés, comme
+                            l'achat de terres
+                            et de fournitures agricoles.
+
+                            Nous utilisons des technologies d'intelligence artificielle pour analyser les sols et
+                            fournir des prévisions de
+                            rendement précises. Notre objectif est d'être votre partenaire de confiance, en vous offrant
+                            le soutien technique
+                            et les compétences nécessaires pour surmonter les défis agricoles et améliorer votre
+                            productivité.
+
+                        </p>
+                    </div>
+                    <div class="feature-visual glass"></div>
+                </div>
+    </section>
+
+
+
+    <!-- ===== STATS SECTION ===== -->
+    <div class="stats-section">
+        <div class="stats-header" data-animate>
+            <h2 data-i18n="Agrosence en Chiffres">Agrosence en Chiffres</h2>
+            <p data-i18n="Une communauté qui grandit chaque jour">Une communauté qui grandit chaque jour</p>
+        </div>
+
+        <div class="stats-grid">
+            <div class="stat-card" data-animate data-delay="0">
+                <div class="stat-icon">🌾</div>
+                <div class="stat-number" data-count="1200">0</div>
+                <div class="stat-label" data-i18n="Agriculteurs inscrits"> Agriculteurs inscrits </div>
+            </div>
+            <div class="stat-card" data-animate data-delay="100">
+                <div class="stat-icon">👨‍🔬</div>
+                <div class="stat-number" data-count="85">0</div>
+                <div class="stat-label" data-i18n="Experts disponibles">Experts disponibles</div>
+            </div>
+            <div class="stat-card" data-animate data-delay="200">
+                <div class="stat-icon">🏞️</div>
+                <div class="stat-number" data-count="340">0</div>
+                <div class="stat-label" data-i18n="Terrains référencés">Terrains référencés</div>
+            </div>
+            <div class="stat-card" data-animate data-delay="300">
+                <div class="stat-icon">🤝</div>
+                <div class="stat-number" data-count="5600">0</div>
+                <div class="stat-label" data-i18n="Transactions réussies">Transactions réussies</div>
+            </div>
+        </div>
+    </div>
+    <!--------------------------- Section 5: adress ------------------------------------------------------------------------------->
+
+    <footer id="footer">
+        <div class="footer-content">
+            <h3 data-i18n="Adresse">Adresse</h3>
+            <span data-i18n="Relizane, DZ">Relizane, DZ</span>
+            <p>(+213)671771832<br>Agrosense2026@gmail.com</p>
+            <div class="footer-links">
+                <a href="#features" data-i18n="Accueil">Accueil</a>
+                <a href="#showcase" data-i18n="Services">Services</a>
+                <a href="#timeline" data-i18n="Publication">Publication</a>
+                <a href="#features" data-i18n="À propos">À propos</a>
+                <a href="#" data-i18n="Contact">Contact</a>
+                <a href="login/login.html" data-i18n="Connexion">Connexion </a>
+            </div>
+            <p data-i18n="&copy; 2026 Site web de Agrosense">&copy; 2026 Site web de Agrosense</p>
+        </div>
+    </footer>
+
+
+    <!-- Auth Modal Custom CSS extracted from sign.css -->
+    <style>
+        #authModal .login-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 24px;
+            padding: 40px;
+            width: 100%;
+            position: relative;
+        }
+
+        #authModal .login-header {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+
+        #authModal .login-header h2 {
+            color: white;
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            background: linear-gradient(135deg, #ffffff 0%, #f1f5f9 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        #authModal .login-header p {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 1rem;
+        }
+
+        #authModal .form-group {
+            margin-bottom: 24px;
+            position: relative;
+        }
+
+        #authModal .input-wrapper {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+
+        #authModal .input-wrapper input,
+        #authModal .input-wrapper select {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            padding: 16px;
+            color: white;
+            font-size: 16px;
+            width: 100%;
+            outline: none;
+            transition: 0.3s;
+            box-sizing: border-box;
+        }
+
+        #authModal .input-wrapper label {
+            position: absolute;
+            left: 16px;
+            top: 16px;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 16px;
+            transition: 0.3s;
+            pointer-events: none;
+            transform-origin: left top;
+            margin: 0;
+        }
+
+        #authModal .input-wrapper input:focus,
+        #authModal .input-wrapper input:not(:placeholder-shown),
+        #authModal .input-wrapper select:focus,
+        #authModal .input-wrapper select:valid {
+            border-color: #0eb454;
+            background: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 8px 25px rgba(6, 182, 212, 0.2);
+        }
+
+        #authModal .input-wrapper input:focus+label,
+        #authModal .input-wrapper input:not(:placeholder-shown)+label,
+        #authModal .input-wrapper select:focus+label,
+        #authModal .input-wrapper select:valid+label {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        #authModal .focus-border {
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, #0f3f1b, #81f3ba, #0f3f1b);
+            transition: 0.3s;
+            transform: translateX(-50%);
+        }
+
+        #authModal .input-wrapper input:focus~.focus-border,
+        #authModal .input-wrapper select:focus~.focus-border {
+            width: 100%;
+        }
+
+        #authModal .btn {
+            background: linear-gradient(135deg, #81f3ba 0%, #2c5a36 100%);
+            border: none;
+            border-radius: 12px;
+            padding: 16px 24px;
+            color: white;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            transition: 0.3s;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(11, 194, 41, 0.4);
+            margin-bottom: 24px;
+        }
+
+        #authModal .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(99, 241, 153, 0.6);
+        }
+
+        #authModal .signup-link {
+            text-align: center;
+        }
+
+        #authModal .signup-link p {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 14px;
+            margin: 0;
+        }
+
+        #authModal .signup-link a {
+            color: #81f3ba;
+            text-decoration: none;
+            font-weight: 500;
+            transition: 0.3s;
+            cursor: pointer;
+        }
+
+        #authModal .password-wrapper input {
+            padding-right: 48px;
+        }
+
+        #authModal .password-toggle {
+            position: absolute;
+            right: 12px;
+            top: 12px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: white;
+            font-size: 18px;
+            z-index: 2;
+        }
+
+        #authModal .input-wrapper select {
+            appearance: none;
+            -webkit-appearance: none;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: left 15px center;
+            background-size: 15px;
+        }
+
+        #authModal .input-wrapper select option {
+            background: #0f3f1b;
+            color: white;
+        }
+    </style>
+
+    <!-- Auth Modal -->
+    <div id="authModal"
+        style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100vh; z-index: 9999; background: rgba(0, 0, 0, 0.5); backdrop-filter: blur(8px); align-items: center; justify-content: center; font-family: 'Inter', sans-serif;">
+
+        <div
+            style="position:relative; width: 100%; max-width: 450px; max-height: 95vh; overflow-y: auto; padding: 15px;">
+            <div class="login-card" style="width: 100%;">
+                <button onclick="document.getElementById('authModal').style.display='none'"
+                    style="position: absolute; top: 20px; right: 25px; background: none; border: none; font-size: 28px; color: white; cursor: pointer; transition: 0.2s; z-index: 50;">&times;</button>
+
+                <!-- VIEW 1: LOGIN -->
+                <div id="modalLoginView">
+                    <div class="login-header">
+                        <h2>Bonjour à nouveau</h2>
+                        <p>Connectez-vous pour accéder à votre compte et profiter des services.</p>
+                    </div>
+
+                    <form id="modalSignInForm" class="login-form">
+                        <div class="form-group">
+                            <div class="input-wrapper">
+                                <input type="email" name="email" id="login_email" required autocomplete="email"
+                                    placeholder=" ">
+                                <label for="login_email">Email</label>
+                                <span class="focus-border"></span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="input-wrapper password-wrapper">
+                                <input type="password" name="password" id="login_password" required
+                                    autocomplete="current-password" placeholder=" ">
+                                <label for="login_password">Mot de passe</label>
+                                <button type="button" class="password-toggle"
+                                    onclick="const p=document.getElementById('login_password');p.type=p.type==='password'?'text':'password';">👁</button>
+                                <span class="focus-border"></span>
+                            </div>
+                        </div>
+
+                        <button type="submit" id="modalSubmitBtn" class="login-btn btn">
+                            <span class="btn-text">Se connecter</span>
+                        </button>
+                    </form>
+
+                    <div class="signup-link">
+                        <p>Vous n'avez pas de compte? <a id="linkToRegister">Créer un compte</a></p>
+                    </div>
+                    <div id="modalErrorMsg"
+                        style="display:none; text-align:center; color:#ef4444; margin-top: 15px; font-size: 14px; font-weight: bold;">
+                    </div>
+                    <div id="modalSuccessMsg"
+                        style="display:none; text-align:center; color:#81f3ba; margin-top: 15px; font-size: 14px; font-weight: bold;">
+                        Connexion réussie! Transfert...</div>
+                </div>
+
+                <!-- VIEW 2: REGISTER -->
+                <div id="modalRegisterView" style="display:none;">
+                    <div class="login-header">
+                        <h2>BIENVENNU A TOUS</h2>
+                        <p>Commencez votre voyage dans le monde de l'agriculture intelligente.</p>
+                    </div>
+
+                    <form id="modalSignUpForm" class="login-form">
+    <input type="hidden" name="role" id="reg_role_hidden" value="agriculteur">
+
+    <div class="form-group">
+        <div class="input-wrapper">
+            <input type="text" name="nom" id="reg_nom" required autocomplete="name" placeholder=" "
+                   pattern="[A-Za-zÀ-ÿ\s]+"
+                   title="Le nom ne doit contenir que des lettres">
+            <label for="reg_nom">Nom complet</label>
+            <span class="focus-border"></span>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="input-wrapper">
+            <input type="tel" name="phone" id="reg_phone" required autocomplete="tel"
+                   pattern="[0-9]{10}"
+                   maxlength="10"
+                   oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0,10)"
+                   title="Le numéro doit contenir 10 chiffres"
+                   placeholder=" ">
+            <label for="reg_phone">Numéro de téléphone</label>
+            <span class="focus-border"></span>
+        </div>
+    </div>
+
+                        <div class="form-group">
+                            <div class="input-wrapper">
+                                <select name="localisation" id="reg_localisation" required
+                                    onchange="this.classList.add('has-value')">
+                                    <option value="" disabled selected></option>
+                                    <option value="1 - Adrar">1 - Adrar</option>
+                                    <option value="2 - Chlef">2 - Chlef</option>
+                                    <option value="3 - Laghouat">3 - Laghouat</option>
+                                    <option value="4 - Oum El Bouaghi">4 - Oum El Bouaghi</option>
+                                    <option value="5 - Batna">5 - Batna</option>
+                                    <option value="6 - Béjaïa">6 - Béjaïa</option>
+                                    <option value="7 - Biskra">7 - Biskra</option>
+                                    <option value="8 - Béchar">8 - Béchar</option>
+                                    <option value="9 - Blida">9 - Blida</option>
+                                    <option value="10 - Bouira">10 - Bouira</option>
+                                    <option value="11 - Tamanrasset">11 - Tamanrasset</option>
+                                    <option value="12 - Tébessa">12 - Tébessa</option>
+                                    <option value="13 - Tlemcen">13 - Tlemcen</option>
+                                    <option value="14 - Tiaret">14 - Tiaret</option>
+                                    <option value="15 - Tizi Ouzou">15 - Tizi Ouzou</option>
+                                    <option value="16 - Alger">16 - Alger</option>
+                                    <option value="17 - Djelfa">17 - Djelfa</option>
+                                    <option value="18 - Jijel">18 - Jijel</option>
+                                    <option value="19 - Sétif">19 - Sétif</option>
+                                    <option value="20 - Saïda">20 - Saïda</option>
+                                    <option value="21 - Skikda">21 - Skikda</option>
+                                    <option value="22 - Sidi Bel Abbès">22 - Sidi Bel Abbès</option>
+                                    <option value="23 - Annaba">23 - Annaba</option>
+                                    <option value="24 - Guelma">24 - Guelma</option>
+                                    <option value="25 - Constantine">25 - Constantine</option>
+                                    <option value="26 - Médéa">26 - Médéa</option>
+                                    <option value="27 - Mostaganem">27 - Mostaganem</option>
+                                    <option value="28 - M'Sila">28 - M'Sila</option>
+                                    <option value="29 - Mascara">29 - Mascara</option>
+                                    <option value="30 - Ouargla">30 - Ouargla</option>
+                                    <option value="31 - Oran">31 - Oran</option>
+                                    <option value="32 - El Bayadh">32 - El Bayadh</option>
+                                    <option value="33 - Illizi">33 - Illizi</option>
+                                    <option value="34 - Bordj Bou Arreridj">34 - Bordj Bou Arreridj</option>
+                                    <option value="35 - Boumerdès">35 - Boumerdès</option>
+                                    <option value="36 - El Tarf">36 - El Tarf</option>
+                                    <option value="37 - Tindouf">37 - Tindouf</option>
+                                    <option value="38 - Tissemsilt">38 - Tissemsilt</option>
+                                    <option value="39 - El Oued">39 - El Oued</option>
+                                    <option value="40 - Khenchela">40 - Khenchela</option>
+                                    <option value="41 - Souk Ahras">41 - Souk Ahras</option>
+                                    <option value="42 - Tipaza">42 - Tipaza</option>
+                                    <option value="43 - Mila">43 - Mila</option>
+                                    <option value="44 - Aïn Defla">44 - Aïn Defla</option>
+                                    <option value="45 - Naâma">45 - Naâma</option>
+                                    <option value="46 - Aïn Témouchent">46 - Aïn Témouchent</option>
+                                    <option value="47 - Ghardaïa">47 - Ghardaïa</option>
+                                    <option value="48 - Relizane">48 - Relizane</option>
+                                    <option value="49 - Timimoun">49 - Timimoun</option>
+                                    <option value="50 - Bordj Badji Mokhtar">50 - Bordj Badji Mokhtar</option>
+                                    <option value="51 - Ouled Djellal">51 - Ouled Djellal</option>
+                                    <option value="52 - Béni Abbès">52 - Béni Abbès</option>
+                                    <option value="53 - In Salah">53 - In Salah</option>
+                                    <option value="54 - In Guezzam">54 - In Guezzam</option>
+                                    <option value="55 - Touggourt">55 - Touggourt</option>
+                                    <option value="56 - Djanet">56 - Djanet</option>
+                                    <option value="57 - El M'Ghair">57 - El M'Ghair</option>
+                                    <option value="58 - El Meniaa">58 - El Meniaa</option>
+                                </select>
+                                <label for="reg_localisation">Wilaya</label>
+                                <span class="focus-border"></span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="input-wrapper">
+                                <input type="email" name="email" id="reg_email" required autocomplete="email"
+                                    placeholder=" ">
+                                <label for="reg_email">Email </label>
+                                <span class="focus-border"></span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="input-wrapper password-wrapper">
+                                <input type="password" name="password" id="reg_password" required
+                                    autocomplete="new-password" placeholder=" ">
+                                <label for="reg_password">Mot de passe</label>
+                                <button type="button" class="password-toggle"
+                                    onclick="const p=document.getElementById('reg_password');p.type=p.type==='password'?'text':'password';">👁</button>
+                                <span class="focus-border"></span>
+                            </div>
+                        </div>
+
+                        <div class="form-group" id="code_form_group" style="display: none;">
+                            <div class="input-wrapper">
+                                <input type="number" id="reg_code" name="code" autocomplete="off" placeholder=" ">
+                                <label for="reg_code">Matricule
+                                </label>
+                                <span class="focus-border"></span>
+                            </div>
+                        </div>
+
+                        <div class="form-options">
+                            <button type="submit" id="modalRegSubmitBtn" class="login-btn btn"
+                                style="margin-bottom:10px;">
+                                <span class="btn-text">S'inscrire</span>
+                            </button>
+                            <div class="signup-link" style="width:100%;">
+                                <a id="roleToggleLink">vous etes un expert ?</a>
+                            </div>
+                        </div>
+                    </form>
+
+                    <div class="signup-link" style="margin-top:20px;">
+                        <p>Vous avez un compte? <a id="linkToLogin">j'ai un compte</a></p>
+                    </div>
+                    <div id="modalRegErrorMsg"
+                        style="display:none; text-align:center; color:#ef4444; margin-top: 15px; font-size: 14px; font-weight: bold;">
+                    </div>
+                    <div id="modalRegSuccessMsg"
+                        style="display:none; text-align:center; color:#81f3ba; margin-top: 15px; font-size: 14px; font-weight: bold;">
+                        Création réussie! Transfert...</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="scripts.js"></script>
+    <!-- ===== NAVBAR LOADER ===== -->
+    <script src="/components/navbar.js"></script>
+
+</body>
+
+</html>

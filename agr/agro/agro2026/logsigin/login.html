@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+
+    <!-- Encodage -->
+    <meta charset="utf-8">
+
+    <!-- Mobile -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Couleurs et PWA -->
+    <meta name="theme-color" content="#2d5016">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="Agrosence">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="msapplication-TileColor" content="#2d5016">
+
+    <!-- Titre et description -->
+    <title>Login</title>
+    <meta name="description"
+        content="Plateforme intégrée pour les agriculteurs pour l'achat et la vente de produits agricoles, d'équipements, de terres et de services de conseil">
+    <meta name="author" content="Agrosence Team">
+    <meta name="keywords"
+        content="agriculture, agriculteurs, marché électronique, produits agricoles, équipements agricoles, terres agricoles">
+    <meta name="robots" content="index, follow">
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="Agrosence - Marché électronique des agriculteurs">
+    <meta property="og:description"
+        content="Plateforme intégrée pour les agriculteurs pour l'achat et la vente de produits agricoles, d'équipements, de terres et de services de conseil">
+    <meta property="og:url" content="https://agrosence.com">
+    <meta property="og:site_name" content="Agrosence">
+    <meta property="og:locale" content="fr_FR">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="https://agrosence.com/assets/og-image.jpg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Agrosence - Marché électronique des agriculteurs">
+    <meta name="twitter:description"
+        content="Plateforme intégrée pour les agriculteurs pour l'achat et la vente de produits agricoles, d'équipements, de terres et de services de conseil">
+    <meta name="twitter:image" content="https://agrosence.com/assets/twitter-image.jpg">
+
+    <!-- Icônes -->
+    <link rel="icon" href="/favicon.ico">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+    <link rel="manifest" href="/manifest.json">
+
+    <!-- Amélioration de la connexion -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <!-- Polices -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Almarai:wght@300;400;700;800&family=Cairo:wght@300;400;600;700;900&display=swap"
+        rel="stylesheet">
+
+    <!-- Next CSS -->
+    <link rel="stylesheet" href="/_next/static/css/4e35ecc5b8628a3a.css">
+
+    <!-- Votre fichier -->
+    <link rel="stylesheet" href="sign.css">
+
+    <!-- Schema -->
+    <script>
+        if (localStorage.getItem('theme') === 'dark' || localStorage.getItem('agro_theme') === 'dark') {
+            document.documentElement.classList.add('dark-mode');
+            document.body.classList.add('dark-mode');
+            document.documentElement.setAttribute('data-theme', 'dark');
+            document.body.setAttribute('data-theme', 'dark');
+        }
+    </script>
+</head>
+
+<body class="__className_f367f3">
+
+
+    <div class="neural-background"></div>
+
+    <!-- Formes Géométriques Flottantes -->
+    <div class="geometric-shapes">
+        <div class="shape"></div>
+        <div class="shape"></div>
+        <div class="shape"></div>
+        <div class="shape"></div>
+    </div>
+
+    <!-- Lignes de Réseau de Neurones -->
+    <div class="neural-lines">
+        <div class="neural-line"></div>
+        <div class="neural-line"></div>
+        <div class="neural-line"></div>
+    </div>
+
+
+
+
+    <div class="bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl p-8 shadow-2xl"
+        style="opacity: 1; transform: none;">
+        <div class="login-container">
+            <div class="login-card">
+                <div class="login-header">
+                    <h2>BIENVENNU A TOUS</h2>
+                    <p>Commencez votre voyage dans le monde de l'agriculture intelligente.</p>
+                </div>
+
+                <form class="login-form" id="loginForm" method="POST" action="/api/auth/register" novalidate >
+                    <input type="hidden" name="role" value="agriculteur">
+                    <div class="form-group">
+                        <div class="input-wrapper">
+                            <input type="text" id="nom" name="nom" required autocomplete="nom">
+                            <label for="nom">Nom complet </label>
+                            <span class="focus-border"></span>
+                        </div>
+                        <span class="error-message" id="nomError"></span>
+                    </div>
+
+
+                    <div class="form-group">
+                        <div class="input-wrapper">
+                            <input type="tel" id="phone" name="phone" required autocomplete="tel">
+                            <label for="phone">Numéro de Téléphone </label>
+                            <span class="focus-border"></span>
+                        </div>
+                        <span class="error-message" id="phoneError"></span>
+                    </div>
+                    <div class="form-group">
+                        <div class="input-wrapper">
+                            <input type="text" id="localisation" name="localisation" required
+                                autocomplete="localisation">
+                            <label for="localisation">Localisation </label>
+                            <span class="focus-border"></span>
+                        </div>
+                        <span class="error-message" id="localisationError"></span>
+                    </div>
+                    <div class="form-group">
+                        <div class="input-wrapper">
+                            <input type="email" id="email" name="email" required autocomplete="email">
+                            <label for="email">Email </label>
+                            <span class="focus-border"></span>
+                        </div>
+                        <span class="error-message" id="emailError"></span>
+                    </div>
+                    <div class="form-group">
+                        <div class="input-wrapper password-wrapper">
+                            <input type="password" id="password" name="password" required
+                                autocomplete="current-password">
+                            <label for="password">Mot de passe</label>
+                            <button type="button" class="password-toggle" id="passwordToggle"
+                                aria-label="Toggle password visibility">
+                                <span class="eye-icon"></span>
+                            </button>
+                            <span class="focus-border"></span>
+                        </div>
+                        <span class="error-message" id="passwordError"></span>
+                    </div>
+
+                    <div class="form-options">
+                        <label class="remember-wrapper">
+                            <button type="submit" class="login-btn btn">
+                                <span class="btn-text">S'inscrire</span>
+                                <span class="btn-loader"></span>
+                            </button>
+                            <div class="signup-link">
+                                <a href="logEXP.html">vous etes un expert ? </a>
+                            </div>
+                    </div>
+
+
+                </form>
+
+
+                <div class="signup-link">
+                    <p>Vous avez un compte? <a href="sign.html">j'ai un compte</a></p>
+                </div>
+
+                <div class="success-message" id="successMessage">
+                    <div class="success-icon">✓</div>
+                    <h3>Création réussie!</h3>
+                    <p>Transfert vers la page de connexion...</p>
+                </div>
+            </div>
+        </div>
+
+
+
+
+
+        </form>
+    </div>
+    <script src="login.js"></script>
+
+</body>
+
+</html>

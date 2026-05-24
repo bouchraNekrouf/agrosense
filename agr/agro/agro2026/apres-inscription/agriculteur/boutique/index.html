@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Les Boutiques des Experts | Agrosence</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: transparent;
+            color: #1e293b;
+        }
+        .neural-background {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -2;
+            background: radial-gradient(circle at 15% 85%, rgba(129, 243, 186, 0.05) 0%, transparent 50%),
+                radial-gradient(circle at 85% 15%, rgba(130, 233, 164, 0.08) 0%, transparent 50%),
+                linear-gradient(to bottom, #ffffff 0%, rgba(129, 243, 186, 0.25) 50%, #ffffff 100%);
+            animation: backgroundPulse 14s ease-in-out infinite;
+        }
+        @keyframes backgroundPulse {
+            0%, 100% { filter: brightness(0.9) saturate(1.4) hue-rotate(0deg); }
+            33% { filter: brightness(1.1) saturate(1.7) hue-rotate(15deg); }
+            66% { filter: brightness(1.0) saturate(1.5) hue-rotate(-10deg); }
+        }
+        .geometric-shapes { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; overflow: hidden; }
+        .shape { position: absolute; border: 1px solid rgba(0, 255, 255, 0.3); animation: floatShape 20s linear infinite; }
+        .shape:nth-child(1) { width: 100px; height: 100px; left: 10%; animation-delay: 0s; border-color: rgba(227, 236, 231, 0.4); }
+        .shape:nth-child(2) { width: 60px; height: 60px; left: 70%; animation-delay: -5s; border-radius: 50%; border-color: rgba(147, 112, 219, 0.4); }
+        .shape:nth-child(3) { width: 80px; height: 80px; left: 30%; animation-delay: -10s; transform: rotate(45deg); border-color: rgba(198, 221, 116, 0.4); }
+        .shape:nth-child(4) { width: 120px; height: 120px; left: 50%; animation-delay: -15s; clip-path: polygon(50% 0%, 0% 100%, 100% 100%); background: linear-gradient(45deg, rgba(8, 66, 30, 0.1), transparent); }
+        @keyframes floatShape { from { transform: translateY(100vh) rotate(0deg); opacity: 0; } 10%, 90% { opacity: 1; } to { transform: translateY(-100px) rotate(360deg); opacity: 0; } }
+        .neural-lines { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; }
+        .neural-line { position: absolute; background: linear-gradient(90deg, transparent, #fff, transparent); height: 3px; animation: neuralPulse 3s ease-in-out infinite; }
+        .neural-line:nth-child(1) { top: 20%; left: 0; width: 100%; background: linear-gradient(90deg, transparent, #6de49f, transparent); animation-delay: 0s; }
+        .neural-line:nth-child(2) { top: 60%; left: 0; width: 100%; background: linear-gradient(90deg, transparent, #196633, transparent); animation-delay: -1s; }
+        .neural-line:nth-child(3) { top: 40%; left: 0; width: 100%; background: linear-gradient(90deg, transparent, #24a713, transparent); animation-delay: -2s; }
+        @keyframes neuralPulse { 0%, 100% { opacity: 0.2; transform: scaleX(0.5); } 50% { opacity: 1; transform: scaleX(1); } }
+
+        .navbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 15px 40px;
+            background: #ffffff;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            position: sticky;
+            top: 70px;   /* sits below the fixed global navbar (70px) */
+            z-index: 90;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        /* Push body content below both navbars */
+        body {
+            padding-top: 0;
+        }
+
+        .navbar .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #10b981;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .navbar .logo span {
+            color: #1e293b;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 20px;
+        }
+
+        .nav-btn {
+            background: none;
+            border: none;
+            font-size: 1rem;
+            font-weight: 500;
+            color: #64748b;
+            cursor: pointer;
+            padding: 8px 16px;
+            border-radius: 8px;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .nav-btn:hover {
+            background: #f1f5f9;
+            color: #1e293b;
+        }
+
+        .nav-btn.active {
+            background: #10b981;
+            color: #ffffff;
+        }
+
+        /* Content */
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            /* 70px global navbar + 30px breathing room */
+            padding: 100px 20px 30px;
+        }
+
+        .header-title {
+            text-align: center;
+            margin-bottom: 40px;
+            font-size: 2.2rem;
+            color: #0f172a;
+        }
+
+        .experts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 25px;
+        }
+
+        .expert-card {
+            background: #ffffff;
+            border-radius: 16px;
+            padding: 25px;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+            transition: transform 0.3s, box-shadow 0.3s;
+            cursor: pointer;
+            text-decoration: none;
+            color: inherit;
+            display: block;
+            border: 1px solid #e2e8f0;
+        }
+
+        .expert-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(16, 185, 129, 0.15);
+            border-color: #10b981;
+        }
+
+        .expert-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #10b981, #047857);
+            color: white;
+            font-size: 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 15px;
+            font-weight: 700;
+        }
+
+        .expert-name {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .expert-desc {
+            font-size: 0.9rem;
+            color: #64748b;
+            margin-bottom: 15px;
+        }
+
+        .enter-btn {
+            display: inline-block;
+            background: #f1f5f9;
+            color: #10b981;
+            padding: 8px 20px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+        }
+
+        .expert-card:hover .enter-btn {
+            background: #10b981;
+            color: white;
+        }
+
+        @media (max-width: 768px) {
+            .navbar {
+                flex-direction: column;
+                gap: 15px;
+                padding: 15px;
+            }
+        }
+
+        /* ===== SHIMMER SKELETON ANIMATIONS ===== */
+        .shimmer {
+            animation: shimmerEffect 1.5s infinite linear;
+            background: linear-gradient(to right, #f1f5f9 4%, #e2e8f0 25%, #f1f5f9 36%);
+            background-size: 1000px 100%;
+        }
+        @keyframes shimmerEffect {
+            0% { background-position: -1000px 0; }
+            100% { background-position: 1000px 0; }
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        .skeleton-card {
+            background: #ffffff; border-radius: 16px; padding: 25px; text-align: center;
+            border: 1px solid #e2e8f0; display: flex; flex-direction: column; align-items: center;
+        }
+        .skeleton-avatar { width: 80px; height: 80px; border-radius: 50%; margin-bottom: 15px; }
+        .skeleton-text { height: 20px; border-radius: 6px; margin-bottom: 15px; width: 70%; }
+        .skeleton-text-sm { height: 14px; width: 40%; margin-bottom: 30px; }
+        .skeleton-btn { height: 35px; width: 80%; border-radius: 50px; }
+    </style>
+</head>
+
+<body>
+    <!-- ===== GLOBAL NAVBAR ===== -->
+    <div id="navbar-container"></div>
+    <!-- Epic Neural Background -->
+    <div class="neural-background"></div>
+
+    <!-- Floating Geometric Shapes -->
+    <div class="geometric-shapes">
+        <div class="shape"></div>
+        <div class="shape"></div>
+        <div class="shape"></div>
+        <div class="shape"></div>
+    </div>
+
+    <!-- Neural Network Lines -->
+    <div class="neural-lines">
+        <div class="neural-line"></div>
+        <div class="neural-line"></div>
+        <div class="neural-line"></div>
+    </div>
+
+    <!-- Mes Commandes shortcut (floating button with badge) -->
+    <div style="position: fixed; bottom: 30px; right: 30px; z-index: 500;">
+        <button onclick="openFarmerOrdersPanel()" style="background: #10b981; color: white; border: none; padding: 12px 20px; border-radius: 50px; cursor: pointer; font-size: 0.95rem; font-weight: 600; box-shadow: 0 4px 15px rgba(16,185,129,0.4); display: flex; align-items: center; gap: 8px; position: relative;" data-i18n="Mes Commandes">
+            <i class="fas fa-clipboard-list"></i> Mes Commandes
+            <span id="farmer-orders-badge" style="position: absolute; top: -8px; right: -8px; background: #dc2626; color: white; border-radius: 50%; font-size: 0.7rem; font-weight: bold; width: 18px; height: 18px; display: none; align-items: center; justify-content: center;">0</span>
+        </button>
+    </div>
+
+    <div class="container">
+        <h1 class="header-title" data-i18n="Découvrez les boutiques des experts">Découvrez les boutiques des experts</h1>
+
+        <div class="experts-grid" id="boutiqueGrid">
+            <!-- Generated dynamically -->
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            const grid = document.getElementById('boutiqueGrid');
+            
+            // 0. Render Professional Skeleton Shimmer UI
+            const skeletons = Array(6).fill(`
+                <div class="skeleton-card">
+                    <div class="shimmer skeleton-avatar"></div>
+                    <div class="shimmer skeleton-text"></div>
+                    <div class="shimmer skeleton-text skeleton-text-sm"></div>
+                    <div class="shimmer skeleton-btn"></div>
+                </div>
+            `).join('');
+
+            grid.innerHTML = `
+                <div style="grid-column: 1/-1; text-align: center; margin-bottom: 30px; margin-top: -10px; color: #10b981; font-weight: 600; font-size: 1.1rem; animation: pulse 2s infinite;">
+                    🛍️ Récupération du catalogue des experts...
+                </div>
+                ${skeletons}
+            `;
+
+            // 1. Fetch real experts from the backend Database
+            let dbExperts = [];
+            try {
+                const token = localStorage.getItem('token');
+                const res = await fetch('/api/user/public/experts', {
+                    headers: { 'x-auth-token': token }
+                });
+                if (res.ok) {
+                    dbExperts = await res.json();
+                }
+            } catch (err) {
+                console.error("Erreur Backend:", err);
+            }
+
+            // 2. Read local configurations if they exist
+            const savedExperts = localStorage.getItem('allExperts');
+            let localExperts = [];
+            if (savedExperts) {
+                try { localExperts = JSON.parse(savedExperts); } catch (e) { localExperts = []; }
+            }
+
+            // Fallback: If no DB experts (e.g., API issues), use local
+            let expertsToRender = dbExperts.length > 0 ? dbExperts : localExperts;
+
+            // Update current user if they are an expert
+            const currentUserName = localStorage.getItem('userName');
+            const currentUserRole = localStorage.getItem('userRole');
+            const boutiqueConfig = JSON.parse(localStorage.getItem('agriBoutiqueConfig')) || {};
+
+            if (currentUserRole === 'expert' && currentUserName) {
+                const existing = localExperts.findIndex(e => e.nom === currentUserName);
+                const updatedData = {
+                    id: existing !== -1 ? localExperts[existing].id : Date.now(),
+                    nom: currentUserName,
+                    specialite: boutiqueConfig.name || 'Boutique de ' + currentUserName,
+                    localisation: localStorage.getItem('userLocation') || 'Non spécifiée',
+                    real_specialty: boutiqueConfig.specialty || 'Général'
+                };
+                if (existing !== -1) localExperts[existing] = updatedData;
+                else localExperts.push(updatedData);
+                localStorage.setItem('allExperts', JSON.stringify(localExperts));
+            }
+
+            // Combine DB experts with local config for display
+            const finalExperts = expertsToRender.map(dbExp => {
+                const configKey = `agriBoutiqueConfig_${dbExp.nom.trim().toLowerCase().replace(/\s+/g, '_')}`;
+                const directConfig = JSON.parse(localStorage.getItem(configKey));
+                const localData = localExperts.find(l => l.nom === dbExp.nom);
+                
+                let bName = 'Boutique de ' + dbExp.nom;
+                let bSpec = 'Général';
+                
+                // Priorité 1: Base de données Atlas (nouveau système)
+                if (dbExp.boutique && dbExp.boutique.name) {
+                    bName = dbExp.boutique.name;
+                    bSpec = dbExp.boutique.specialty || 'Général';
+                } 
+                // Priorité 2: LocalStorage direct (fallback)
+                else if (directConfig) {
+                    bName = directConfig.name || bName;
+                    bSpec = directConfig.specialty || bSpec;
+                } 
+                // Priorité 3: LocalStorage (allExpertsFallback)
+                else if (localData) {
+                    bName = localData.specialite || bName;
+                    bSpec = localData.real_specialty || bSpec;
+                }
+
+                return {
+                    nom: dbExp.nom,
+                    localisation: (dbExp.boutique && dbExp.boutique.wilaya) || (localData ? localData.localisation : dbExp.localisation) || 'Non spécifiée',
+                    boutiqueName: bName,
+                    real_specialty: bSpec
+                };
+            });
+
+            if (finalExperts.length === 0) {
+                grid.innerHTML = `<div style="grid-column: 1/-1; text-align:center; padding: 40px; color: #64748b;">
+                    <i class="fas fa-store-slash" style="font-size: 3rem; margin-bottom: 15px; display:block;"></i>
+                    Aucune boutique n'est ouverte pour le moment.
+                </div>`;
+                return;
+            }
+
+            grid.innerHTML = finalExperts.map(expert => {
+                return `
+                <a href="expert-boutique.html?expert=${encodeURIComponent(expert.nom)}" class="expert-card">
+                    <div class="expert-avatar">👨‍🔬</div>
+                    <div style="display:flex; justify-content:center; align-items:center; gap:8px; margin-bottom:5px;">
+                        <span style="font-weight:600; color:#334155;">${expert.nom}</span>
+                        <span style="font-size:0.8rem; color:#64748b; background:#f1f5f9; padding:2px 8px; border-radius:12px;">📍 ${expert.localisation}</span>
+                    </div>
+                    <h3 class="expert-name" style="margin-top:10px; font-size:1.15rem;">${expert.boutiqueName}</h3>
+                    <p class="expert-desc" style="color:#10b981; font-weight:500; font-size:0.85rem;">${expert.real_specialty}</p>
+                    <div class="enter-btn" style="margin-top:10px;">Visiter la boutique</div>
+                </a>
+            `}).join('');
+        });
+
+        // ================== FARMER ORDERS TRACKING ==================
+        document.addEventListener('DOMContentLoaded', () => { 
+            setTimeout(updateFarmerOrdersBadge, 500); 
+            
+            if (window.location.search.includes('open=orders')) {
+                setTimeout(openFarmerOrdersPanel, 300);
+            }
+        });
+
+        async function updateFarmerOrdersBadge() {
+            const token = localStorage.getItem('token');
+            if (!token) return;
+            try {
+                const res = await fetch('/api/orders/farmer', { headers: { 'x-auth-token': token } });
+                if (res.ok) {
+                    const myOrders = await res.json();
+                    const badge = document.getElementById('farmer-orders-badge');
+                    if (badge && myOrders.length > 0) {
+                        badge.textContent = myOrders.length;
+                        badge.style.display = 'flex';
+                    } else if (badge) {
+                        badge.style.display = 'none';
+                    }
+                }
+            } catch (e) {
+                console.warn("Erreur badge farmer:", e);
+            }
+        }
+
+        async function openFarmerOrdersPanel() {
+            const token = localStorage.getItem('token');
+            const list = document.getElementById('farmer-orders-list');
+            list.innerHTML = 'Chargement...';
+            
+            const panel = document.getElementById('farmer-orders-panel');
+            if (panel) panel.style.right = '0';
+
+            try {
+                const res = await fetch('/api/orders/farmer', { headers: { 'x-auth-token': token } });
+                if (!res.ok) throw new Error('Failed to load');
+                let myOrders = await res.json();
+                
+                list.innerHTML = '';
+                
+                if (myOrders.length === 0) {
+                    list.innerHTML = `<div style="text-align:center; padding: 40px; color: #64748b;">Aucune commande passée.</div>`;
+                } else {
+                    myOrders.forEach(order => {
+                        const isValidee = order.status === 'Validée' || order.status === 'Validée (Rappel)';
+                        const isLivree = order.status === 'Livrée';
+                        const isRappel = order.status && order.status.includes('Rappel');
+                        
+                        // Format date
+                        const d = new Date(order.createdAt);
+                        const dateStr = !isNaN(d) ? d.toLocaleDateString('fr-FR') : order.date || '';
+
+                        // Colors
+                        let statusBg = '#fee2e2';
+                        let statusColor = '#dc2626';
+                        let statusText = order.status || 'En attente';
+
+                        if (order.status === 'Validée') {
+                            statusBg = '#dcfce7'; 
+                            statusColor = '#16a34a';
+                            statusText = '✔ Acceptée';
+                        } else if (order.status === 'Validée (Rappel)') {
+                            statusBg = '#dcfce7'; 
+                            statusColor = '#16a34a';
+                            statusText = '✔ Vue votre Rappel';
+                        } else if (isLivree) {
+                            statusBg = '#dbeafe';
+                            statusColor = '#2563eb';
+                            statusText = '✅ Livrée';
+                        }
+
+                        list.innerHTML += `
+                            <div id="farmer-order-card-${order._id}" style="background: white; padding: 15px; border-radius: 12px; border: 1px solid #e2e8f0; box-shadow: 0 2px 10px rgba(0,0,0,0.02); margin-bottom:10px;">
+                                <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                                    <strong style="color: #0f172a;">Expert: ${order.expert}</strong>
+                                    <span style="font-size: 0.8rem; color: #64748b;">${dateStr}</span>
+                                </div>
+                                <div style="font-size: 0.9rem; color: #334155; margin-bottom: 15px;">
+                                    Produits: <strong>${order.product}</strong>
+                                    <div style="font-size: 0.8rem; color: #10b981; font-weight: 700; margin-top: 4px;">Total: ${parseFloat(order.totalPrice || 0).toLocaleString()} DZD</div>
+                                </div>
+                                <div style="display: flex; flex-direction: column; gap: 10px;">
+                                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                                        <span class="badger-status" style="background: ${statusBg}; color: ${statusColor}; padding: 4px 10px; border-radius: 50px; font-size: 0.8rem; font-weight: 600;">${statusText}</span>
+                                        ${order.status === 'Validée' ? `<button onclick="relancerOrder('${order._id}')" style="background:none; border: 1px solid #cbd5e1; color: #64748b; padding: 4px 8px; border-radius: 6px; font-size: 0.75rem; cursor: pointer;"><i class="fas fa-redo"></i> Relancer</button>` : ''}
+                                    </div>
+                                    
+                                    <!-- Double Handshake Button -->
+                                    ${order.status === 'Validée' && !order.farmerReceived ? `
+                                        <button onclick="confirmReception('${order._id}', this)" style="width: 100%; background: #1e293b; color: white; border: none; padding: 8px; border-radius: 8px; font-size: 0.85rem; font-weight: 600; cursor: pointer; transition: 0.2s;">
+                                            <i class="fas fa-box-open"></i> J'ai reçu ma commande
+                                        </button>
+                                    ` : (order.farmerReceived && order.status !== 'Livrée' ? `
+                                        <div style="text-align: center; font-size: 0.75rem; color: #10b981; font-weight: 600; background: #f0fdf4; padding: 6px; border-radius: 8px; border: 1px dashed #10b981;">
+                                            ⏳ En attente de clôture par l'expert
+                                        </div>
+                                    ` : '')}
+                                </div>
+                            </div>
+                        `;
+                    });
+                }
+            } catch (e) {
+                list.innerHTML = `<div style="text-align:center; padding: 40px; color: red;">Erreur de chargement des commandes.</div>`;
+            }
+        }
+
+        async function relancerOrder(orderId) {
+            const token = localStorage.getItem('token');
+            try {
+                const res = await fetch(`/api/orders/${orderId}/status`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json', 'x-auth-token': token },
+                    body: JSON.stringify({ status: 'En attente (Rappel)' })
+                });
+                if (res.ok) {
+                    openFarmerOrdersPanel(); // Refresh
+                    alert('Rappel envoyé ! La commande est redevenue en attente.');
+                }
+            } catch(e) {
+                console.error(e);
+            }
+        }
+
+        function closeFarmerOrdersPanel() {
+            const panel = document.getElementById('farmer-orders-panel');
+            if (panel) panel.style.right = '-450px';
+        }
+
+        // Real-time update for badge
+        setInterval(updateFarmerOrdersBadge, 30000);
+
+        // Double Handshake: Farmer confirms reception
+        async function confirmReception(orderId, btn) {
+            if (!confirm("Avez-vous réellement reçu votre colis ? Cette action informera l'expert.")) return;
+            
+            const originalContent = btn.innerHTML;
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Confirmation...';
+
+            const token = localStorage.getItem('token');
+            try {
+                const res = await fetch(`/api/orders/${orderId}/receive`, {
+                    method: 'PUT',
+                    headers: { 'x-auth-token': token }
+                });
+                if (res.ok) {
+                    btn.parentElement.innerHTML = `
+                        <div style="text-align: center; font-size: 0.75rem; color: #10b981; font-weight: 600; background: #f0fdf4; padding: 6px; border-radius: 8px; border: 1px dashed #10b981;">
+                            ⏳ En attente de clôture par l'expert
+                        </div>
+                    `;
+                } else {
+                    btn.disabled = false;
+                    btn.innerHTML = originalContent;
+                }
+            } catch (e) {
+                console.error(e);
+                btn.disabled = false;
+                btn.innerHTML = originalContent;
+            }
+        }
+
+        // Socket Listeners for Real-time UX
+        window.addEventListener('load', () => {
+            const checkSocket = setInterval(() => {
+                if (window.io) {
+                    const socket = io();
+                    const user = JSON.parse(localStorage.getItem('user')) || {};
+                    const userId = user.id || user._id || localStorage.getItem('userId');
+                    if(userId) socket.emit('join', userId);
+
+                    socket.on('order_accepted', () => {
+                        console.log('Farmer Socket: Order Accepted');
+                        openFarmerOrdersPanel();
+                        updateFarmerOrdersBadge();
+                    });
+
+                    socket.on('order_completed', () => {
+                        console.log('Farmer Socket: Order Completed');
+                        openFarmerOrdersPanel();
+                        updateFarmerOrdersBadge();
+                    });
+                    
+                    clearInterval(checkSocket);
+                }
+            }, 1000);
+        });
+    </script>
+
+
+    <!-- FARMER ORDERS PANEL (HTML) -->
+    <div id="farmer-orders-panel" style="position: fixed; top: 0; right: -450px; width: 450px; height: 100vh; background: #f8fafc; box-shadow: -5px 0 25px rgba(0,0,0,0.1); z-index: 3000; transition: right 0.3s ease; display: flex; flex-direction: column;">
+        <div style="background: white; padding: 20px; border-bottom: 1px solid #e2e8f0; display: flex; justify-content: space-between; align-items: center;">
+            <h3 style="margin: 0; font-size: 1.2rem; color: #0f172a;"><i class="fas fa-clipboard-list" style="color:#10b981; margin-right:8px;"></i> Mes Commandes</h3>
+            <button onclick="closeFarmerOrdersPanel()" style="background: none; border: none; font-size: 1.5rem; color: #64748b; cursor: pointer;"><i class="fas fa-times"></i></button>
+        </div>
+        <div id="farmer-orders-list" style="padding: 20px; flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 15px;">
+        </div>
+    </div>
+    <script src="../../../components/translations.js"></script>
+<script src="../../../components/i18n.js"></script>
+
+    <!-- ===== NAVBAR LOADER ===== -->
+    <script src="/components/navbar.js"></script>
+</body>
+
+</html>

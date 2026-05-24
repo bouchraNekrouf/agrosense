@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Utilisateurs — Admin Agrosence</title>
+    <meta name="description" content="Gestion des utilisateurs de la plateforme Agrosence">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="/components/navbar.js"></script>
+    <link rel="stylesheet" href="../../style.css">
+
+    <style>
+        /* ===== PAGE LAYOUT ===== */
+        .page-wrapper {
+            max-width: 1300px;
+            margin: 0 auto;
+            padding: 10px 40px 60px;
+            font-family: 'Inter', sans-serif;
+        }
+
+        /* ===== PAGE HEADER ===== */
+        .page-header {
+            margin-bottom: 15px;
+            animation: fadeSlideUp 0.8s ease forwards;
+            opacity: 0;
+        }
+
+        @keyframes fadeSlideUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        .page-header h1 {
+            font-size: 2.2rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #1a1a2e, #166534, #15803d);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 6px;
+        }
+
+        .page-header p {
+            color: rgba(0,0,0,0.45);
+            font-size: 1rem;
+        }
+
+        /* ===== MINI STATS ===== */
+        .mini-stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            margin-bottom: 30px;
+            animation: fadeSlideUp 0.8s ease 0.1s forwards;
+            opacity: 0;
+        }
+
+        .mini-stat {
+            background: rgba(255,255,255,0.8);
+            backdrop-filter: blur(18px);
+            border: 2px solid rgba(21,128,61,0.12);
+            border-radius: 18px;
+            padding: 22px 20px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            transition: all 0.35s ease;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.03);
+        }
+
+        .mini-stat:hover {
+            transform: translateY(-4px);
+            border-color: rgba(21,128,61,0.3);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.06);
+        }
+
+        .mini-stat .icon-box {
+            width: 50px; height: 50px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            flex-shrink: 0;
+        }
+
+        .mini-stat .icon-box.green  { background: rgba(21,128,61,0.1); }
+        .mini-stat .icon-box.blue   { background: rgba(59,130,246,0.1); }
+        .mini-stat .icon-box.orange { background: rgba(245,158,11,0.1); }
+        .mini-stat .icon-box.purple { background: rgba(139,92,246,0.1); }
+
+        .mini-stat .stat-info .num {
+            font-size: 1.6rem;
+            font-weight: 800;
+            color: #1a1a2e;
+            line-height: 1.2;
+        }
+
+        .mini-stat .stat-info .lbl {
+            font-size: 0.8rem;
+            color: rgba(0,0,0,0.4);
+            font-weight: 500;
+        }
+
+        /* ===== TOOLBAR ===== */
+        .toolbar {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            animation: fadeSlideUp 0.8s ease 0.2s forwards;
+            opacity: 0;
+        }
+
+        .search-box {
+            flex: 1;
+            min-width: 220px;
+            position: relative;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 12px 18px 12px 44px;
+            border-radius: 14px;
+            border: 2px solid rgba(21,128,61,0.12);
+            background: rgba(255,255,255,0.85);
+            backdrop-filter: blur(10px);
+            font-size: 0.92rem;
+            font-family: 'Inter', sans-serif;
+            color: #1a1a2e;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .search-box input:focus {
+            border-color: rgba(21,128,61,0.4);
+            box-shadow: 0 0 0 4px rgba(21,128,61,0.08);
+        }
+
+        .search-box input::placeholder {
+            color: rgba(0,0,0,0.3);
+        }
+
+        .search-box::before {
+            content: '🔍';
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1rem;
+            pointer-events: none;
+        }
+
+        .filter-btn {
+            padding: 12px 22px;
+            border-radius: 14px;
+            border: 2px solid rgba(21,128,61,0.12);
+            background: rgba(255,255,255,0.85);
+            backdrop-filter: blur(10px);
+            font-size: 0.88rem;
+            font-weight: 600;
+            font-family: 'Inter', sans-serif;
+            color: rgba(0,0,0,0.55);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .filter-btn:hover {
+            border-color: rgba(21,128,61,0.3);
+            color: #15803d;
+            background: rgba(21,128,61,0.05);
+        }
+
+        .filter-btn.active {
+            background: linear-gradient(135deg, #15803d, #166534);
+            color: #fff;
+            border-color: transparent;
+            box-shadow: 0 4px 15px rgba(21,128,61,0.25);
+        }
+
+        /* ===== TABLE CONTAINER ===== */
+        .table-container {
+            background: rgba(255,255,255,0.82);
+            backdrop-filter: blur(20px);
+            border: 2px solid rgba(21,128,61,0.1);
+            border-radius: 22px;
+            overflow: hidden;
+            box-shadow: 0 4px 25px rgba(0,0,0,0.04);
+            animation: fadeSlideUp 0.8s ease 0.3s forwards;
+            opacity: 0;
+        }
+
+        .users-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .users-table thead {
+            background: linear-gradient(135deg, rgba(21,128,61,0.06), rgba(21,128,61,0.03));
+        }
+
+        .users-table th {
+            text-align: left;
+            padding: 16px 20px;
+            font-size: 0.78rem;
+            font-weight: 700;
+            color: rgba(0,0,0,0.4);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-bottom: 2px solid rgba(21,128,61,0.08);
+        }
+
+        .users-table td {
+            padding: 16px 20px;
+            font-size: 0.92rem;
+            color: #1a1a2e;
+            border-bottom: 1px solid rgba(0,0,0,0.04);
+            transition: background 0.2s ease;
+        }
+
+        .users-table tbody tr {
+            transition: all 0.25s ease;
+        }
+
+        .users-table tbody tr:hover {
+            background: rgba(21,128,61,0.03);
+        }
+
+        .users-table tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        /* User cell with avatar */
+        .user-cell {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .user-cell .avatar {
+            width: 38px; height: 38px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.85rem;
+            color: #fff;
+            flex-shrink: 0;
+        }
+
+        .avatar.farmer { background: linear-gradient(135deg, #15803d, #166534); }
+        .avatar.expert { background: linear-gradient(135deg, #2563eb, #1d4ed8); }
+
+        .user-cell .user-name {
+            font-weight: 600;
+            color: #1a1a2e;
+        }
+
+        /* Role badge */
+        .role-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 5px 14px;
+            border-radius: 50px;
+            font-size: 0.78rem;
+            font-weight: 600;
+        }
+
+        .role-badge.farmer {
+            background: rgba(21,128,61,0.08);
+            color: #15803d;
+            border: 1px solid rgba(21,128,61,0.2);
+        }
+
+        .role-badge.expert {
+            background: rgba(37,99,235,0.08);
+            color: #2563eb;
+            border: 1px solid rgba(37,99,235,0.2);
+        }
+
+        /* Empty state */
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+        }
+
+        .empty-state .emoji { font-size: 3rem; margin-bottom: 12px; opacity: 0.3; }
+        .empty-state p { color: rgba(0,0,0,0.35); font-size: 0.95rem; }
+
+        /* Loading spinner */
+        .loading-state {
+            text-align: center;
+            padding: 60px;
+            color: rgba(0,0,0,0.35);
+        }
+
+        .spinner {
+            width: 36px; height: 36px;
+            border: 3px solid rgba(21,128,61,0.15);
+            border-top-color: #15803d;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin: 0 auto 14px;
+        }
+
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 1024px) {
+            .mini-stats { grid-template-columns: repeat(2, 1fr); }
+        }
+
+        @media (max-width: 768px) {
+            .page-wrapper { padding: 20px 16px 40px; }
+            .page-header h1 { font-size: 1.6rem; }
+            .mini-stats { grid-template-columns: 1fr 1fr; gap: 10px; }
+            .mini-stat { padding: 16px 14px; }
+            .mini-stat .stat-info .num { font-size: 1.3rem; }
+            .toolbar { gap: 10px; }
+
+            /* Horizontal scroll for table */
+            .table-container { overflow-x: auto; }
+            .users-table { min-width: 700px; }
+        }
+
+        @media (max-width: 480px) {
+            .mini-stats { grid-template-columns: 1fr; }
+        }
+
+        /* وضع مظلم فاخر (Dark Green Neural Theme) */
+        body.dark-mode {
+            background: radial-gradient(circle at 15% 85%, rgba(129, 243, 186, 0.08) 0%, transparent 50%),
+                        radial-gradient(circle at 85% 15%, rgba(130, 233, 164, 0.15) 0%, transparent 50%),
+                        linear-gradient(to bottom, #06130b 0%, #0a1910 100%) !important;
+            color: #ffffff !important;
+        }
+        body.dark-mode .neural-background {
+            display: none !important;
+        }
+        body.dark-mode .page-header h1 {
+            background: linear-gradient(135deg, #ffffff, #81f3ba, #10b981) !important;
+            -webkit-background-clip: text !important;
+            -webkit-text-fill-color: transparent !important;
+            background-clip: text !important;
+        }
+        body.dark-mode .page-header p {
+            color: rgba(255, 255, 255, 0.7) !important;
+        }
+        body.dark-mode .mini-stat {
+            background: rgba(15, 35, 25, 0.85) !important;
+            border-color: rgba(129, 243, 186, 0.2) !important;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4) !important;
+        }
+        body.dark-mode .mini-stat:hover {
+            border-color: rgba(129, 243, 186, 0.45) !important;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5) !important;
+            transform: translateY(-4px) !important;
+        }
+        body.dark-mode .mini-stat .stat-info .num {
+            color: #ffffff !important;
+        }
+        body.dark-mode .mini-stat .stat-info .lbl {
+            color: rgba(255, 255, 255, 0.5) !important;
+        }
+        body.dark-mode .search-box input {
+            background: rgba(15, 35, 25, 0.8) !important;
+            border-color: rgba(129, 243, 186, 0.25) !important;
+            color: #ffffff !important;
+        }
+        body.dark-mode .search-box input::placeholder {
+            color: rgba(255, 255, 255, 0.4) !important;
+        }
+        body.dark-mode .filter-btn {
+            background: rgba(15, 35, 25, 0.85) !important;
+            border-color: rgba(129, 243, 186, 0.2) !important;
+            color: rgba(255, 255, 255, 0.7) !important;
+        }
+        body.dark-mode .filter-btn:hover {
+            border-color: rgba(129, 243, 186, 0.4) !important;
+            color: #81f3ba !important;
+            background: rgba(129, 243, 186, 0.08) !important;
+        }
+        body.dark-mode .filter-btn.active {
+            background: linear-gradient(135deg, #15803d, #166534) !important;
+            color: #fff !important;
+            border-color: transparent !important;
+        }
+        body.dark-mode .table-container {
+            background: rgba(15, 35, 25, 0.85) !important;
+            border-color: rgba(129, 243, 186, 0.2) !important;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4) !important;
+        }
+        body.dark-mode .users-table th {
+            background: rgba(129, 243, 186, 0.05) !important;
+            color: rgba(255, 255, 255, 0.6) !important;
+            border-bottom: 2px solid rgba(129, 243, 186, 0.15) !important;
+        }
+        body.dark-mode .users-table td {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+            color: #ffffff !important;
+        }
+        body.dark-mode .users-table tbody tr:hover {
+            background: rgba(129, 243, 186, 0.04) !important;
+        }
+        body.dark-mode .user-cell .user-name {
+            color: #ffffff !important;
+        }
+        body.dark-mode .role-badge.farmer {
+            background: rgba(129, 243, 186, 0.1) !important;
+            color: #81f3ba !important;
+            border: 1px solid rgba(129, 243, 186, 0.2) !important;
+        }
+        body.dark-mode .role-badge.expert {
+            background: rgba(96, 165, 250, 0.1) !important;
+            color: #60a5fa !important;
+            border: 1px solid rgba(96, 165, 250, 0.2) !important;
+        }
+        body.dark-mode .empty-state p,
+        body.dark-mode .loading-state {
+            color: rgba(255, 255, 255, 0.6) !important;
+        }
+        body.dark-mode .spinner {
+            border-color: rgba(129, 243, 186, 0.15) !important;
+            border-top-color: #81f3ba !important;
+        }
+    </style>
+</head>
+<body>
+    <script>
+        if (localStorage.getItem('theme') === 'dark') {
+            document.body.classList.add('dark-mode');
+        }
+    </script>
+    <div class="neural-background"></div>
+    <div class="geometric-shapes">
+        <div class="shape"></div>
+        <div class="shape"></div>
+        <div class="shape"></div>
+        <div class="shape"></div>
+    </div>
+    <div class="neural-lines">
+        <div class="neural-line"></div>
+        <div class="neural-line"></div>
+        <div class="neural-line"></div>
+    </div>
+
+    <!-- Navbar -->
+    <div id="navbar-container"></div>
+
+    <!-- ===== PAGE CONTENT ===== -->
+    <div class="page-wrapper">
+
+        <!-- Header -->
+        <div class="page-header">
+         <br><br>
+<br>
+   <h1 data-i18n="Gestion des Utilisateurs">👥 Gestion des Utilisateurs</h1>
+            <p data-i18n="Visualisez et gérez tous les membres de la plateforme Agrosence">Visualisez et gérez tous les membres de la plateforme Agrosence</p>
+        </div>
+
+        <!-- Mini Stats -->
+        <div class="mini-stats">
+            <div class="mini-stat">
+                <div class="icon-box green">👤</div>
+                <div class="stat-info">
+                    <div class="num" id="totalCount">—</div>
+                    <div class="lbl" data-i18n="Total inscrits">Total inscrits</div>
+                </div>
+            </div>
+            <div class="mini-stat">
+                <div class="icon-box green">🚜</div>
+                <div class="stat-info">
+                    <div class="num" id="farmerCount">—</div>
+                    <div class="lbl" data-i18n="Agriculteurs">Agriculteurs</div>
+                </div>
+            </div>
+            <div class="mini-stat">
+                <div class="icon-box blue">👨‍🔬</div>
+                <div class="stat-info">
+                    <div class="num" id="expertCount">—</div>
+                    <div class="lbl" data-i18n="Experts">Experts</div>
+                </div>
+            </div>
+            <div class="mini-stat">
+                <div class="icon-box purple">🏪</div>
+                <div class="stat-info">
+                    <div class="num" id="boutiqueCount">—</div>
+                    <div class="lbl" data-i18n="Ont une boutique">Ont une boutique</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Toolbar -->
+        <div class="toolbar">
+            <div class="search-box">
+                <input type="text" id="searchInput" placeholder="Rechercher par nom, email ou wilaya...">
+            </div>
+            <button class="filter-btn active" data-filter="all" onclick="setFilter('all', this)" data-i18n="Tous">Tous</button>
+            <button class="filter-btn" data-filter="agriculteur" onclick="setFilter('agriculteur', this)" data-i18n="Agriculteurs">🚜 Agriculteurs</button>
+            <button class="filter-btn" data-filter="expert" onclick="setFilter('expert', this)" data-i18n=" Experts">👨‍🔬 Experts</button>
+        </div>
+
+        <!-- Table -->
+        <div class="table-container">
+            <div class="loading-state" id="loadingState">
+                <div class="spinner"></div>
+                <p data-i18n="Chargement des utilisateurs...">Chargement des utilisateurs...</p>
+            </div>
+            <table class="users-table" id="usersTable" style="display:none;">
+                <thead>
+                    <tr>
+                        <th data-i18n="Utilisateur"> Utilisateur</th>
+                        <th data-i18n="Email">Email</th>
+                        <th data-i18n="Téléphone">Téléphone</th>
+                        <th data-i18n="Wilaya">Wilaya</th>
+                        <th data-i18n="Rôle">Rôle</th>
+                        <th data-i18n="Inscrit le">Inscrit le</th>
+                    </tr>
+                </thead>
+                <tbody id="usersBody"></tbody>
+            </table>
+            <div class="empty-state" id="emptyState" style="display:none;">
+                <div class="emoji">🔍</div>
+                <p data-i18n="Aucun utilisateur trouvé">Aucun utilisateur trouvé</p>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // ===== STATE =====
+        let allUsers = [];
+        let currentFilter = 'all';
+
+        // ===== LOAD USERS =====
+        async function loadUsers() {
+            const token = localStorage.getItem('token');
+            if (!token) {
+                document.getElementById('usersBody').innerHTML = '<tr><td colspan="6" style="text-align:center; padding:50px;">Veuillez vous reconnecter.</td></tr>';
+                return;
+            }
+
+            try {
+                const apiBase = window.location.origin;
+                // Fetch both farmers and experts
+                const [fRes, eRes] = await Promise.all([
+                    fetch(apiBase + '/api/user/all/agriculteur', { headers: { 'x-auth-token': token } }),
+                    fetch(apiBase + '/api/user/all/expert', { headers: { 'x-auth-token': token } })
+                ]);
+
+                if (fRes.status === 403 || eRes.status === 403) {
+                    throw new Error("Accès refusé. Réservé aux administrateurs.");
+                }
+
+                const farmers = await fRes.json();
+                const experts = await eRes.json();
+
+                // Tag each with role for easy filtering
+                farmers.forEach(u => u._role = 'agriculteur');
+                experts.forEach(u => u._role = 'expert');
+
+                allUsers = [...farmers, ...experts];
+
+                // Update stats
+                document.getElementById('totalCount').textContent = allUsers.length;
+                document.getElementById('farmerCount').textContent = farmers.length;
+                document.getElementById('expertCount').textContent = experts.length;
+
+                const boutiqueCount = experts.filter(u =>
+                    u.boutique && u.boutique.name && u.boutique.name.trim() !== ''
+                ).length;
+                document.getElementById('boutiqueCount').textContent = boutiqueCount;
+
+                // Render
+                renderTable(allUsers);
+
+            } catch (err) {
+                console.error('Erreur chargement utilisateurs:', err);
+                document.getElementById('loadingState').innerHTML =
+                    '<p style="color:#ef4444;">❌ Erreur de chargement</p>';
+            }
+        }
+
+        // ===== RENDER TABLE =====
+        function renderTable(users) {
+            const tbody = document.getElementById('usersBody');
+            const table = document.getElementById('usersTable');
+            const loading = document.getElementById('loadingState');
+            const empty = document.getElementById('emptyState');
+
+            loading.style.display = 'none';
+
+            if (!users || users.length === 0) {
+                table.style.display = 'none';
+                empty.style.display = 'block';
+                return;
+            }
+
+            table.style.display = 'table';
+            empty.style.display = 'none';
+
+            tbody.innerHTML = users.map(u => {
+                const initial = (u.nom || '?').charAt(0).toUpperCase();
+                const isFarmer = u._role === 'agriculteur' || u.role === 'agriculteur';
+                const avatarClass = isFarmer ? 'farmer' : 'expert';
+                const roleLabel = isFarmer ? '🚜 Agriculteur' : '👨‍🔬 Expert';
+                const badgeClass = isFarmer ? 'farmer' : 'expert';
+                const dateStr = u.date ? new Date(u.date).toLocaleDateString('fr-FR', {
+                    day: '2-digit', month: 'short', year: 'numeric'
+                }) : '—';
+
+                return `<tr>
+                    <td>
+                        <div class="user-cell">
+                            <div class="avatar ${avatarClass}">${initial}</div>
+                            <span class="user-name">${u.nom || 'Inconnu'}</span>
+                        </div>
+                    </td>
+                    <td>${u.email || '—'}</td>
+                    <td>${u.phone || '—'}</td>
+                    <td>${u.localisation || '—'}</td>
+                    <td><span class="role-badge ${badgeClass}">${roleLabel}</span></td>
+                    <td>${dateStr}</td>
+                </tr>`;
+            }).join('');
+        }
+
+        // ===== FILTER =====
+        function setFilter(filter, btn) {
+            currentFilter = filter;
+
+            // Update button styles
+            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+
+            applyFilters();
+        }
+
+        // ===== SEARCH + FILTER COMBINED =====
+        function applyFilters() {
+            const query = (document.getElementById('searchInput').value || '').toLowerCase();
+
+            let filtered = allUsers;
+
+            // Role filter
+            if (currentFilter !== 'all') {
+                filtered = filtered.filter(u =>
+                    (u._role || u.role) === currentFilter
+                );
+            }
+
+            // Search filter
+            if (query) {
+                filtered = filtered.filter(u =>
+                    (u.nom && u.nom.toLowerCase().includes(query)) ||
+                    (u.email && u.email.toLowerCase().includes(query)) ||
+                    (u.localisation && u.localisation.toLowerCase().includes(query))
+                );
+            }
+
+            renderTable(filtered);
+        }
+
+        // ===== SEARCH INPUT =====
+        document.getElementById('searchInput').addEventListener('input', applyFilters);
+
+        // ===== INIT =====
+        loadUsers();
+    </script>
+    <script src="../../components/translations.js"></script>
+<script src="../../components/i18n.js"></script>
+
+
+</body>
+</html>

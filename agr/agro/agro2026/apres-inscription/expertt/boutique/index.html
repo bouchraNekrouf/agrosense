@@ -1,0 +1,755 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestion des Produits | Agrosence Expert</title>
+    <link rel="stylesheet" href="boutique.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* ===== BOUTIQUE TOOLBAR (Sub-header) ===== */
+        .boutique-toolbar {
+            position: sticky;
+            top: 90px;
+            /* Below universal navbar */
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(15px);
+            border-bottom: 1px solid rgba(22, 101, 52, 0.1);
+            padding: 12px 50px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            z-index: 99;
+            margin-bottom: 20px;
+        }
+
+        .toolbar-brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #166534;
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+
+        .toolbar-actions {
+            display: flex;
+            gap: 12px;
+        }
+
+        .toolbar-btn {
+            padding: 8px 18px;
+            border-radius: 50px;
+            border: 1px solid rgba(22, 101, 52, 0.2);
+            background: transparent;
+            color: #166534;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .toolbar-btn:hover {
+            background: rgba(22, 101, 52, 0.05);
+            border-color: #166534;
+        }
+
+        .toolbar-btn.active {
+            background: #166534;
+            color: #fff;
+            border-color: #166534;
+            box-shadow: 0 4px 12px rgba(22, 101, 52, 0.2);
+        }
+
+        .main-content {
+            padding: 0 50px 50px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        body {
+            padding-top: 170px;
+            /* Space for fixed universal navbar */
+            background-color: transparent;
+        }
+
+        .neural-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            background: radial-gradient(circle at 15% 85%, rgba(129, 243, 186, 0.05) 0%, transparent 50%),
+                radial-gradient(circle at 85% 15%, rgba(130, 233, 164, 0.08) 0%, transparent 50%),
+                linear-gradient(to bottom, #ffffff 0%, rgba(129, 243, 186, 0.25) 50%, #ffffff 100%);
+            animation: backgroundPulse 14s ease-in-out infinite;
+        }
+
+        @keyframes backgroundPulse {
+
+            0%,
+            100% {
+                filter: brightness(0.9) saturate(1.4) hue-rotate(0deg);
+            }
+
+            33% {
+                filter: brightness(1.1) saturate(1.7) hue-rotate(15deg);
+            }
+
+            66% {
+                filter: brightness(1.0) saturate(1.5) hue-rotate(-10deg);
+            }
+        }
+
+        .geometric-shapes {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .shape {
+            position: absolute;
+            border: 1px solid rgba(0, 255, 255, 0.3);
+            animation: floatShape 20s linear infinite;
+        }
+
+        .shape:nth-child(1) {
+            width: 100px;
+            height: 100px;
+            left: 10%;
+            animation-delay: 0s;
+            border-color: rgba(227, 236, 231, 0.4);
+        }
+
+        .shape:nth-child(2) {
+            width: 60px;
+            height: 60px;
+            left: 70%;
+            animation-delay: -5s;
+            border-radius: 50%;
+            border-color: rgba(147, 112, 219, 0.4);
+        }
+
+        .shape:nth-child(3) {
+            width: 80px;
+            height: 80px;
+            left: 30%;
+            animation-delay: -10s;
+            transform: rotate(45deg);
+            border-color: rgba(198, 221, 116, 0.4);
+        }
+
+        .shape:nth-child(4) {
+            width: 120px;
+            height: 120px;
+            left: 50%;
+            animation-delay: -15s;
+            clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+            background: linear-gradient(45deg, rgba(8, 66, 30, 0.1), transparent);
+        }
+
+        @keyframes floatShape {
+            from {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+
+            10%,
+            90% {
+                opacity: 1;
+            }
+
+            to {
+                transform: translateY(-100px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        .neural-lines {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+
+        .neural-line {
+            position: absolute;
+            background: linear-gradient(90deg, transparent, #fff, transparent);
+            height: 3px;
+            animation: neuralPulse 3s ease-in-out infinite;
+        }
+
+        .neural-line:nth-child(1) {
+            top: 20%;
+            left: 0;
+            width: 100%;
+            background: linear-gradient(90deg, transparent, #6de49f, transparent);
+            animation-delay: 0s;
+        }
+
+        .neural-line:nth-child(2) {
+            top: 60%;
+            left: 0;
+            width: 100%;
+            background: linear-gradient(90deg, transparent, #196633, transparent);
+            animation-delay: -1s;
+        }
+
+        .neural-line:nth-child(3) {
+            top: 40%;
+            left: 0;
+            width: 100%;
+            background: linear-gradient(90deg, transparent, #24a713, transparent);
+            animation-delay: -2s;
+        }
+
+        @keyframes neuralPulse {
+
+            0%,
+            100% {
+                opacity: 0.2;
+                transform: scaleX(0.5);
+            }
+
+            50% {
+                opacity: 1;
+                transform: scaleX(1);
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- ===== GLOBAL NAVBAR ===== -->
+    <div id="navbar-container"></div>
+    <!-- Epic Neural Background -->
+    <div class="neural-background"></div>
+
+    <!-- Floating Geometric Shapes -->
+    <div class="geometric-shapes">
+        <div class="shape"></div>
+        <div class="shape"></div>
+        <div class="shape"></div>
+        <div class="shape"></div>
+    </div>
+
+    <!-- Neural Network Lines -->
+    <div class="neural-lines">
+        <div class="neural-line"></div>
+        <div class="neural-line"></div>
+        <div class="neural-line"></div>
+    </div>
+
+
+    <!-- ===== BOUTIQUE TOOLBAR (Sub-header) ===== -->
+    <div class="boutique-toolbar">
+        <div class="toolbar-brand">
+            <i class="fas fa-store-alt"></i>
+            <span>Mes Produits & Expertises</span>
+        </div>
+        <div class="toolbar-actions">
+            <button id="nav-expert" class="toolbar-btn active" onclick="switchView('expert')">
+                <i class="fas fa-sliders-h"></i> Configuration
+            </button>
+            <button id="nav-fellah" class="toolbar-btn" onclick="switchView('fellah')">
+                <i class="fas fa-eye"></i> Vue Boutique
+            </button>
+        </div>
+    </div>
+
+    <!-- VIEWS -->
+    <main class="main-content">
+        <!-- ================= ESPACE EXPERT ================= -->
+        <section id="expert-view" class="view active-view" style="display:block;">
+            <div class="expert-container">
+                <div class="expert-header">
+                    <h2>Configuration de Ma Boutique</h2>
+                </div>
+
+                <div class="table-container"
+                    style="margin-bottom: 40px; padding: 25px; background: #fff; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.03);">
+                    <form id="boutique-config-form" onsubmit="saveBoutiqueConfig(event)">
+                        <div class="form-group" style="margin-bottom: 15px;">
+                            <label style="display:block; margin-bottom:8px; font-weight:500;">Propriétaire</label>
+                            <input type="text" id="expert-name-display" readonly
+                                style="width:100%; padding:10px; border:1px solid #cbd5e1; border-radius:8px; background-color:#f1f5f9; color:#64748b; font-weight:600;">
+                        </div>
+                        <div class="form-group" style="margin-bottom: 15px;">
+                            <label for="boutique-name" style="display:block; margin-bottom:8px; font-weight:500;">Nom de
+                                la boutique</label>
+                            <input type="text" id="boutique-name" required placeholder="Ex: Boutique Zahra"
+                                style="width:100%; padding:10px; border:1px solid #cbd5e1; border-radius:8px;">
+                        </div>
+                        <div class="form-group" style="margin-bottom: 15px;">
+                            <label for="boutique-specialty"
+                                style="display:block; margin-bottom:8px; font-weight:500;">Spécialité (Ce que vous
+                                vendez)</label>
+                            <select id="boutique-specialty" required
+                                style="width:100%; padding:10px; border:1px solid #cbd5e1; border-radius:8px;">
+                                <option value="" disabled selected>Choisir une spécialité...</option>
+                                <option value="Spécialiste en engrais et semences maraîchères">Spécialiste en engrais et
+                                    semences maraîchères</option>
+                                <option value="Produits biologiques et traitements naturels">Produits biologiques et
+                                    traitements naturels</option>
+                                <option value="Équipements agricoles et outils spécialisés">Équipements agricoles et
+                                    outils spécialisés</option>
+                                <option value="Produits vétérinaires et aliments pour bétail">Produits vétérinaires et
+                                    aliments pour bétail</option>
+                                <option value="Matériel d'irrigation et pièces de rechange">Matériel d'irrigation et
+                                    pièces de rechange</option>
+                            </select>
+                        </div>
+                        <div class="form-group" style="margin-bottom: 20px;">
+                            <label for="boutique-desc"
+                                style="display:block; margin-bottom:8px; font-weight:500;">Description courte</label>
+                            <input type="text" id="boutique-desc"
+                                placeholder="Ex: Les meilleurs produits pour vos cultures."
+                                style="width:100%; padding:10px; border:1px solid #cbd5e1; border-radius:8px;">
+                        </div>
+                        <div class="form-group" style="margin-bottom: 20px;">
+                            <label for="boutique-wilaya" style="display:block; margin-bottom:8px; font-weight:500;">📍
+                                Wilaya </label>
+                            <select id="boutique-wilaya"
+                                style="width:100%; padding:10px; border:1px solid #cbd5e1; border-radius:8px; background:#fff; appearance:none; -webkit-appearance:none;">
+                                <option value="" disabled selected>Choisissez votre wilaya...</option>
+                                <option value="01 - Adrar" data-i18n="Adrar">01 - Adrar</option>
+<option value="02 - Chlef" data-i18n="Chlef">02 - Chlef</option>
+<option value="03 - Laghouat" data-i18n="Laghouat">03 - Laghouat</option>
+<option value="04 - Oum El Bouaghi" data-i18n="Oum el bouaghi">04 - Oum El Bouaghi</option>
+<option value="05 - Batna" data-i18n="Batna">05 - Batna</option>
+<option value="06 - Béjaïa" data-i18n="Bejaia">06 - Béjaïa</option>
+<option value="07 - Biskra" data-i18n="Biskra">07 - Biskra</option>
+<option value="08 - Béchar" data-i18n="Bechar">08 - Béchar</option>
+<option value="09 - Blida" data-i18n="Blida">09 - Blida</option>
+<option value="10 - Bouira" data-i18n="Bouira">10 - Bouira</option>
+<option value="11 - Tamanrasset" data-i18n="Tamanrasset">11 - Tamanrasset</option>
+<option value="12 - Tébessa" data-i18n="Tebessa">12 - Tébessa</option>
+<option value="13 - Tlemcen" data-i18n="Tlemcen">13 - Tlemcen</option>
+<option value="14 - Tiaret" data-i18n="Tiaret">14 - Tiaret</option>
+<option value="15 - Tizi Ouzou" data-i18n="Tizi ouzou">15 - Tizi Ouzou</option>
+<option value="16 - Alger" data-i18n="Alger">16 - Alger</option>
+<option value="17 - Djelfa" data-i18n="Djelfa">17 - Djelfa</option>
+<option value="18 - Jijel" data-i18n="Jijel">18 - Jijel</option>
+<option value="19 - Sétif" data-i18n="Setif">19 - Sétif</option>
+<option value="20 - Saïda" data-i18n="Saida">20 - Saïda</option>
+<option value="21 - Skikda" data-i18n="Skikda">21 - Skikda</option>
+<option value="22 - Sidi Bel Abbès" data-i18n="Sidi bel abbes">22 - Sidi Bel Abbès</option>
+<option value="23 - Annaba" data-i18n="Annaba">23 - Annaba</option>
+<option value="24 - Guelma" data-i18n="Guelma">24 - Guelma</option>
+<option value="25 - Constantine" data-i18n="Constantine">25 - Constantine</option>
+<option value="26 - Médéa" data-i18n="Medea">26 - Médéa</option>
+<option value="27 - Mostaganem" data-i18n="Mostaganem">27 - Mostaganem</option>
+<option value="28 - M'Sila" data-i18n="Msila">28 - M'Sila</option>
+<option value="29 - Mascara" data-i18n="Mascara">29 - Mascara</option>
+<option value="30 - Ouargla" data-i18n="Ouargla">30 - Ouargla</option>
+<option value="31 - Oran" data-i18n="Oran">31 - Oran</option>
+<option value="32 - El Bayadh" data-i18n="El bayadh">32 - El Bayadh</option>
+<option value="33 - Illizi" data-i18n="Illizi">33 - Illizi</option>
+<option value="34 - Bordj Bou Arreridj" data-i18n="Bordj bou arreridj">34 - Bordj Bou Arreridj</option>
+<option value="35 - Boumerdès" data-i18n="Boumerdes">35 - Boumerdès</option>
+<option value="36 - El Tarf" data-i18n="El tarf">36 - El Tarf</option>
+<option value="37 - Tindouf" data-i18n="Tindouf">37 - Tindouf</option>
+<option value="38 - Tissemsilt" data-i18n="Tissemsilt">38 - Tissemsilt</option>
+<option value="39 - El Oued" data-i18n="El oued">39 - El Oued</option>
+<option value="40 - Khenchela" data-i18n="Khenchela">40 - Khenchela</option>
+<option value="41 - Souk Ahras" data-i18n="Souk ahras">41 - Souk Ahras</option>
+<option value="42 - Tipaza" data-i18n="Tipaza">42 - Tipaza</option>
+<option value="43 - Mila" data-i18n="Mila">43 - Mila</option>
+<option value="44 - Aïn Defla" data-i18n="In defla">44 - Aïn Defla</option>
+<option value="45 - Naâma" data-i18n="Naama">45 - Naâma</option>
+<option value="46 - Aïn Témouchent" data-i18n="Ain temouchent">46 - Aïn Témouchent</option>
+<option value="47 - Ghardaïa" data-i18n="Ghardaia">47 - Ghardaïa</option>
+<option value="48 - Relizane" data-i18n="Relizane">48 - Relizane</option>
+<option value="49 - Timimoun" data-i18n="Timimoun">49 - Timimoun</option>
+<option value="50 - Bordj Badji Mokhtar" data-i18n="Bordj badji mokhtar">50 - Bordj Badji Mokhtar</option>
+<option value="51 - Ouled Djellal" data-i18n="Ouled djellal">51 - Ouled Djellal</option>
+<option value="52 - Béni Abbès" data-i18n="Beni abbes">52 - Béni Abbès</option>
+<option value="53 - In Salah" data-i18n="In salah">53 - In Salah</option>
+<option value="54 - In Guezzam" data-i18n="In guezzam">54 - In Guezzam</option>
+<option value="55 - Touggourt" data-i18n="Touggourt">55 - Touggourt</option>
+<option value="56 - Djanet" data-i18n="Djanet">56 - Djanet</option>
+<option value="57 - El M'Ghair" data-i18n="El mghair">57 - El M'Ghair</option>
+<option value="58 - El Meniaa" data-i18n="El meniaa">58 - El Meniaa</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn-primary"
+                            style="padding:10px 20px; border:none; border-radius:8px; background:#10b981; color:#fff; cursor:pointer;"
+                            onmouseover="this.style.background='#059669'" onmouseout="this.style.background='#10b981'">
+                            <i class="fas fa-save"></i> Enregistrer la configuration
+                        </button>
+                    </form>
+                </div>
+
+                <div class="expert-header">
+                    <h2>Gestion de Mes Produits</h2>
+                    <button class="btn-primary" onclick="openProductModal()"
+                        style="padding:10px 20px; border:none; border-radius:8px; background:#10b981; color:#fff; cursor:pointer;"
+                        onmouseover="this.style.background='#059669'" onmouseout="this.style.background='#10b981'">
+                        <i class="fas fa-plus"></i> Ajouter un produit
+                    </button>
+                </div>
+
+                <div class="table-container">
+                    <table class="products-table">
+                        <thead>
+                            <tr>
+                                <th>Photo</th>
+                                <th>Nom du produit</th>
+                                <th>Catégorie</th>
+                                <th>Prix (DA)</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="admin-products-table">
+                            <!-- Admin products will be injected here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= VUE CLIENT ================= -->
+        <section id="fellah-view" class="view" style="display:none;">
+
+            <!-- Banner Info Boutique -->
+            <div
+                style="max-width: 1200px; margin: 0 auto 20px auto; background: #fff; padding: 20px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.03); display: flex; align-items: center; justify-content: space-between;">
+                <div>
+                    <h1 id="shop-banner-title" style="margin: 0; font-size: 1.8rem; color: #0f172a;">Boutique</h1>
+                    <p style="margin: 5px 0 0 0; color: #64748b; font-size: 1rem;">Propriétaire: <span
+                            id="shop-banner-expert" style="font-weight: 600; color: #334155;"></span></p>
+                    <a href="#" onclick="openShopInfoPanel(event)"
+                        style="font-size: 0.85rem; color: #10b981; text-decoration: underline; display: inline-block; margin-top: 8px;">Voir
+                        plus d'informations</a>
+                </div>
+                <div style="font-size: 3rem;">🛍️</div>
+            </div>
+
+            <!-- Overlay for Shop Panel -->
+            <div id="shop-overlay" onclick="closeShopInfoPanel()"
+                style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.4); z-index: 998; display: none; backdrop-filter: blur(3px);">
+            </div>
+
+            <!-- Slide-out Info Panel -->
+            <div id="shop-info-panel"
+                style="position: fixed; top: 0; right: -400px; width: 400px; height: 100vh; background: #fff; box-shadow: -5px 0 25px rgba(0,0,0,0.1); z-index: 999; transition: right 0.3s ease; padding: 100px 30px 30px 30px; display: flex; flex-direction: column;">
+                <div
+                    style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; padding-bottom: 15px; border-bottom: 1px solid #e2e8f0;">
+                    <h3 style="margin: 0; font-size: 1.2rem; color: #0f172a;"><i class="fas fa-info-circle"
+                            style="color:#10b981; margin-right:8px;"></i> Infos Boutique</h3>
+                    <button onclick="closeShopInfoPanel()"
+                        style="background: none; border: none; font-size: 1.5rem; color: #64748b; cursor: pointer;"><i
+                            class="fas fa-times"></i></button>
+                </div>
+                <div style="flex: 1;">
+                    <div style="margin-bottom: 20px;">
+                        <label style="display:block; font-size: 0.85rem; color: #64748b; margin-bottom: 5px;">Nom de
+                            l'expert</label>
+                        <p id="info-panel-expert" style="margin:0; font-weight: 500; color: #1e293b;"></p>
+                    </div>
+                    <div style="margin-bottom: 20px;">
+                        <label style="display:block; font-size: 0.85rem; color: #64748b; margin-bottom: 5px;">📍 Wilaya
+                            / Localisation</label>
+                        <p id="info-panel-wilaya" style="margin:0; font-weight: 500; color: #1e293b;"></p>
+                    </div>
+                    <div style="margin-bottom: 20px;">
+                        <label style="display:block; font-size: 0.85rem; color: #64748b; margin-bottom: 5px;">Spécialité
+                            Principale</label>
+                        <p id="info-panel-specialite" style="margin:0; font-weight: 500; color: #10b981;"></p>
+                    </div>
+                    <div style="margin-bottom: 20px;">
+                        <label
+                            style="display:block; font-size: 0.85rem; color: #64748b; margin-bottom: 5px;">Description
+                            détaillée</label>
+                        <p id="info-panel-desc"
+                            style="margin:0; font-weight: 400; color: #334155; line-height: 1.5; font-size: 0.95rem;">
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="fellah-container">
+                <aside class="sidebar">
+                    <h3>Catégories</h3>
+                    <ul id="category-list" class="category-list"></ul>
+                </aside>
+
+                <div class="products-area">
+                    <div class="header-area">
+                        <h2 id="current-category-title">Toutes les catégories</h2>
+                    </div>
+
+                    <div id="products-grid" class="products-grid"></div>
+                </div>
+
+                <!-- Cart and Order Modal are hidden in expert preview mode -->
+                <div id="cart-panel" class="cart-panel hidden" style="display:none !important;">
+                    <div class="cart-header">
+                        <h3><i class="fas fa-shopping-cart"></i> Votre Panier</h3>
+                        <button class="close-btn" onclick="toggleCart()"><i class="fas fa-times"></i></button>
+                    </div>
+                    <div id="cart-items" class="cart-items"></div>
+                    <div class="cart-footer">
+                        <div class="cart-total">
+                            <span>Total:</span>
+                            <span id="cart-total-price">0.00 DA</span>
+                        </div>
+                        <button class="checkout-btn" onclick="openOrderForm()"><i class="fas fa-paper-plane"></i>
+                            Lancer la commande</button>
+                    </div>
+                </div>
+
+                <!-- Order Form Modal -->
+                <div id="order-modal" class="cart-panel hidden"
+                    style="width: 400px; right: -450px; background: white; z-index: 2000; position: fixed; height: 100vh; top: 0; box-shadow: -5px 0 15px rgba(0,0,0,0.1); padding: 20px; transition: right 0.3s; display: flex; flex-direction: column;">
+                    <div class="cart-header"
+                        style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #e2e8f0; padding-bottom: 15px; margin-bottom: 20px;">
+                        <h3 style="color: #15803d; margin: 0;"><i class="fas fa-clipboard-list"></i> Passer la Commande
+                        </h3>
+                        <button class="close-btn" onclick="closeOrderForm()"
+                            style="background: none; border: none; font-size: 1.2rem; cursor: pointer; color: #64748b;"><i
+                                class="fas fa-times"></i></button>
+                    </div>
+                    <form id="agri-order-form" onsubmit="submitOrder(event)"
+                        style="display: flex; flex-direction: column; gap: 15px; flex-grow: 1;">
+                        <div>
+                            <label style="display: block; margin-bottom: 5px; font-weight: 500;">Nom Complet</label>
+                            <input type="text" id="order-name" required placeholder="Votre nom complet"
+                                style="width: 100%; padding: 10px; border: 1px solid #cbd5e1; border-radius: 8px;">
+                        </div>
+                        <div>
+                            <label style="display: block; margin-bottom: 5px; font-weight: 500;">Numéro de
+                                Téléphone</label>
+                            <input type="tel" id="order-phone" required placeholder="Ex: 0555..."
+                                style="width: 100%; padding: 10px; border: 1px solid #cbd5e1; border-radius: 8px;">
+                        </div>
+                        <div>
+                            <label style="display: block; margin-bottom: 5px; font-weight: 500;">Wilaya</label>
+                            <select id="order-location" required
+                                style="width: 100%; padding: 10px; border: 1px solid #cbd5e1; border-radius: 8px; background: white;">
+                                <option value="" disabled selected>Sélectionnez votre wilaya</option>
+                                <option value="01 - Adrar">01 - Adrar</option>
+                                <option value="02 - Chlef">02 - Chlef</option>
+                                <option value="03 - Laghouat">03 - Laghouat</option>
+                                <option value="04 - Oum El Bouaghi">04 - Oum El Bouaghi</option>
+                                <option value="05 - Batna">05 - Batna</option>
+                                <option value="06 - Béjaïa">06 - Béjaïa</option>
+                                <option value="07 - Biskra">07 - Biskra</option>
+                                <option value="08 - Béchar">08 - Béchar</option>
+                                <option value="09 - Blida">09 - Blida</option>
+                                <option value="10 - Bouira">10 - Bouira</option>
+                                <option value="11 - Tamanrasset">11 - Tamanrasset</option>
+                                <option value="12 - Tébessa">12 - Tébessa</option>
+                                <option value="13 - Tlemcen">13 - Tlemcen</option>
+                                <option value="14 - Tiaret">14 - Tiaret</option>
+                                <option value="15 - Tizi Ouzou">15 - Tizi Ouzou</option>
+                                <option value="16 - Alger">16 - Alger</option>
+                                <option value="17 - Djelfa">17 - Djelfa</option>
+                                <option value="18 - Jijel">18 - Jijel</option>
+                                <option value="19 - Sétif">19 - Sétif</option>
+                                <option value="20 - Saïda">20 - Saïda</option>
+                                <option value="21 - Skikda">21 - Skikda</option>
+                                <option value="22 - Sidi Bel Abbès">22 - Sidi Bel Abbès</option>
+                                <option value="23 - Annaba">23 - Annaba</option>
+                                <option value="24 - Guelma">24 - Guelma</option>
+                                <option value="25 - Constantine">25 - Constantine</option>
+                                <option value="26 - Médéa">26 - Médéa</option>
+                                <option value="27 - Mostaganem">27 - Mostaganem</option>
+                                <option value="28 - M'Sila">28 - M'Sila</option>
+                                <option value="29 - Mascara">29 - Mascara</option>
+                                <option value="30 - Ouargla">30 - Ouargla</option>
+                                <option value="31 - Oran">31 - Oran</option>
+                                <option value="32 - El Bayadh">32 - El Bayadh</option>
+                                <option value="33 - Illizi">33 - Illizi</option>
+                                <option value="34 - Bordj Bou Arreridj">34 - Bordj Bou Arreridj</option>
+                                <option value="35 - Boumerdès">35 - Boumerdès</option>
+                                <option value="36 - El Tarf">36 - El Tarf</option>
+                                <option value="37 - Tindouf">37 - Tindouf</option>
+                                <option value="38 - Tissemsilt">38 - Tissemsilt</option>
+                                <option value="39 - El Oued">39 - El Oued</option>
+                                <option value="40 - Khenchela">40 - Khenchela</option>
+                                <option value="41 - Souk Ahras">41 - Souk Ahras</option>
+                                <option value="42 - Tipaza">42 - Tipaza</option>
+                                <option value="43 - Mila">43 - Mila</option>
+                                <option value="44 - Aïn Defla">44 - Aïn Defla</option>
+                                <option value="45 - Naâma">45 - Naâma</option>
+                                <option value="46 - Aïn Témouchent">46 - Aïn Témouchent</option>
+                                <option value="47 - Ghardaïa">47 - Ghardaïa</option>
+                                <option value="48 - Relizane">48 - Relizane</option>
+                                <option value="49 - Timimoun">49 - Timimoun</option>
+                                <option value="50 - Bordj Badji Mokhtar">50 - Bordj Badji Mokhtar</option>
+                                <option value="51 - Ouled Djellal">51 - Ouled Djellal</option>
+                                <option value="52 - Béni Abbès">52 - Béni Abbès</option>
+                                <option value="53 - In Salah">53 - In Salah</option>
+                                <option value="54 - In Guezzam">54 - In Guezzam</option>
+                                <option value="55 - Touggourt">55 - Touggourt</option>
+                                <option value="56 - Djanet">56 - Djanet</option>
+                                <option value="57 - El M'Ghair">57 - El M'Ghair</option>
+                                <option value="58 - El Meniaa">58 - El Meniaa</option>
+                            </select>
+                        </div>
+                        <!-- Products are taken from cart -->
+                        <div style="margin-top: auto; padding-top: 20px;">
+                            <button type="submit"
+                                style="width: 100%; background: #10b981; color: white; border: none; padding: 12px; border-radius: 8px; font-weight: 600; font-size: 1.1rem; cursor: pointer;"><i
+                                    class="fas fa-paper-plane"></i> Envoyer la commande</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Product Modal (Add/Edit) -->
+    <div id="product-modal" class="modal hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modal-title">Ajouter un produit</h3>
+                <button class="close-btn" onclick="closeProductModal()"><i class="fas fa-times"></i></button>
+            </div>
+            <form id="product-form" onsubmit="saveProduct(event)">
+                <input type="hidden" id="product-id">
+
+                <div class="form-group">
+                    <label for="product-name">Nom du produit</label>
+                    <input type="text" id="product-name" required placeholder="Ex: Engrais NPK, Semence Tomate...">
+                </div>
+
+                <div class="form-group">
+                    <label for="product-category">Catégorie</label>
+                    <select id="product-category" required>
+                        <!-- Categories injected here -->
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="product-price">Prix (DA)</label>
+                    <input type="number" id="product-price" required min="0" step="0.01" placeholder="Ex: 1500">
+                </div>
+
+                <div class="form-group">
+                    <label>Photo du produit</label>
+                    <div style="display: flex; flex-direction: column; gap: 10px;">
+                        <!-- Upload from device -->
+                        <label for="product-image-file"
+                            style="display: inline-flex; align-items: center; gap: 8px; background: #f1f5f9; border: 2px dashed #cbd5e1; border-radius: 10px; padding: 14px; cursor: pointer; font-weight: 500; color: #334155; transition: all 0.2s;"
+                            onmouseover="this.style.borderColor='#10b981'"
+                            onmouseout="this.style.borderColor='#cbd5e1'">
+                            <i class="fas fa-camera" style="font-size: 1.3rem; color: #10b981;"></i>
+                            <span>Choisir une photo (téléphone / PC)</span>
+                        </label>
+                        <input type="file" id="product-image-file" accept="image/*" style="display:none;"
+                            onchange="previewProductImage(event)">
+
+                        <!-- OR URL fallback -->
+                        <div style="display:flex; align-items:center; gap:8px; color:#94a3b8; font-size:0.85rem;">
+                            <hr style="flex:1; border:none; border-top:1px solid #e2e8f0;">
+                            <span>ou par lien</span>
+                            <hr style="flex:1; border:none; border-top:1px solid #e2e8f0;">
+                        </div>
+                        <input type="url" id="product-image" placeholder="https://exemple.com/image.jpg"
+                            style="padding:10px; border:1px solid #e2e8f0; border-radius:8px; width:100%; box-sizing:border-box;"
+                            oninput="previewProductImageUrl(this.value)">
+
+                        <!-- Preview -->
+                        <div id="product-image-preview" style="display:none; margin-top:5px;">
+                            <img id="preview-img" src="" alt="Aperçu"
+                                style="width:100%; max-height: 180px; object-fit: cover; border-radius: 10px; border: 1px solid #e2e8f0;">
+                        </div>
+                        <input type="hidden" id="product-image-data">
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn-secondary" onclick="closeProductModal()">Annuler</button>
+                    <button type="submit" class="btn-primary">Enregistrer</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="boutique.js"></script>
+    <script>
+        function openOrderForm() {
+            let cart = JSON.parse(localStorage.getItem('agriCart')) || [];
+            if (cart.length === 0) {
+                alert("Votre panier est vide. Veuillez ajouter des produits avant de commander.");
+                return;
+            }
+            if (!document.getElementById('cart-panel').classList.contains('hidden')) {
+                toggleCart(); // Close cart if it's open
+            }
+            const modal = document.getElementById('order-modal');
+            modal.style.right = '0px';
+            modal.classList.remove('hidden');
+        }
+
+        function closeOrderForm() {
+            const modal = document.getElementById('order-modal');
+            modal.style.right = '-450px';
+            setTimeout(() => modal.classList.add('hidden'), 300);
+        }
+
+
+        function submitOrder(event) {
+            event.preventDefault();
+            const name = document.getElementById('order-name').value;
+            const phone = document.getElementById('order-phone').value;
+            const location = document.getElementById('order-location').value;
+
+            let cart = JSON.parse(localStorage.getItem('agriCart')) || [];
+            if (cart.length === 0) return;
+
+            // Create product string from cart
+            const productStr = cart.map(item => `${item.quantity}x ${item.name}`).join(', ');
+
+            // Get current expert's name (normally from auth, here simple fallback)
+            const userName = localStorage.getItem('userName') || 'Zahra';
+            const currentExpert = userName.includes('Zahra') ? 'Zahra' : userName;
+
+            const newOrder = {
+                id: Date.now(),
+                expert: currentExpert,
+                farmerName: name,
+                farmerPhone: phone,
+                location: location,
+                product: productStr,
+                date: new Date().toLocaleDateString('fr-FR'),
+                status: 'En attente'
+            };
+
+            let orders = JSON.parse(localStorage.getItem('agriOrders')) || [];
+            orders.push(newOrder);
+            localStorage.setItem('agriOrders', JSON.stringify(orders));
+
+            // Empty cart
+            cart = [];
+            localStorage.setItem('agriCart', JSON.stringify(cart));
+            if (typeof updateCartSidebar === "function") {
+                updateCartSidebar();
+            }
+
+            alert('Votre commande a été envoyée avec succès !');
+            closeOrderForm();
+            document.getElementById('agri-order-form').reset();
+        }
+    </script>
+    <!-- ===== NAVBAR LOADER ===== -->
+    <script src="/components/navbar.js"></script>
+</body>
+
+</html>

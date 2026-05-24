@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestion des Commandes — Admin Agrosence</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="/components/navbar.js"></script>
+    <link rel="stylesheet" href="../../style.css">
+    <style>
+        .page-wrapper { max-width: 1300px; margin: 0 auto; padding: 30px 40px; font-family: 'Inter', sans-serif; }
+        .page-header { margin-bottom: 35px; }
+        .page-header h1 { font-size: 2.2rem; font-weight: 800; background: linear-gradient(135deg, #1a1a2e, #166534, #15803d); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-bottom: 6px; }
+        
+        .stats-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; margin-bottom: 30px; }
+        .stat-card { background: rgba(255,255,255,0.8); backdrop-filter: blur(15px); padding: 22px; border-radius: 18px; border: 2px solid rgba(21,128,61,0.1); }
+        .stat-card .val { font-size: 1.8rem; font-weight: 800; color: #1a1a2e; }
+        .stat-card .lbl { font-size: 0.8rem; color: rgba(0,0,0,0.4); font-weight: 600; }
+
+        .table-container { background: white; border-radius: 20px; border: 2px solid rgba(21,128,61,0.1); overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.03); }
+        .c-table { width: 100%; border-collapse: collapse; }
+        .c-table th { text-align: left; padding: 16px 20px; background: #f9fafb; font-size: 0.75rem; color: #6b7280; text-transform: uppercase; letter-spacing: 0.05em; }
+        .c-table td { padding: 16px 20px; border-bottom: 1px solid #f3f4f6; font-size: 0.9rem; }
+        
+        .status-badge { padding: 5px 12px; border-radius: 50px; font-size: 0.75rem; font-weight: 600; }
+        .status-En-attente { background: #fef3c7; color: #92400e; }
+        .status-Validée { background: #dcfce7; color: #166534; }
+        .status-Livrée { background: #dbeafe; color: #1e40af; }
+        .status-Refusée { background: #fee2e2; color: #991b1b; }
+
+        .price-tag { font-weight: 800; color: #15803d; }
+        .date-cell { color: #6b7280; font-size: 0.8rem; }
+        
+        .search-bar { margin-bottom: 20px; width: 100%; padding: 12px 20px; border-radius: 12px; border: 2px solid rgba(21,128,61,0.1); outline: none; }
+
+        /* وضع مظلم فاخر (Dark Green Neural Theme) */
+        body.dark-mode {
+            background: radial-gradient(circle at 15% 85%, rgba(129, 243, 186, 0.08) 0%, transparent 50%),
+                        radial-gradient(circle at 85% 15%, rgba(130, 233, 164, 0.15) 0%, transparent 50%),
+                        linear-gradient(to bottom, #06130b 0%, #0a1910 100%) !important;
+            color: #ffffff !important;
+        }
+        body.dark-mode .neural-background {
+            display: none !important;
+        }
+        body.dark-mode .page-header h1 {
+            background: linear-gradient(135deg, #ffffff, #81f3ba, #10b981) !important;
+            -webkit-background-clip: text !important;
+            -webkit-text-fill-color: transparent !important;
+            background-clip: text !important;
+        }
+        body.dark-mode .page-header p {
+            color: rgba(255, 255, 255, 0.7) !important;
+        }
+        body.dark-mode .stat-card {
+            background: rgba(15, 35, 25, 0.85) !important;
+            border-color: rgba(129, 243, 186, 0.2) !important;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4) !important;
+        }
+        body.dark-mode .stat-card .val {
+            color: #ffffff !important;
+        }
+        body.dark-mode .stat-card .lbl {
+            color: rgba(255, 255, 255, 0.5) !important;
+        }
+        body.dark-mode .search-bar {
+            background: rgba(15, 35, 25, 0.8) !important;
+            border-color: rgba(129, 243, 186, 0.25) !important;
+            color: #ffffff !important;
+        }
+        body.dark-mode .search-bar::placeholder {
+            color: rgba(255, 255, 255, 0.4) !important;
+        }
+        body.dark-mode .table-container {
+            background: rgba(15, 35, 25, 0.85) !important;
+            border-color: rgba(129, 243, 186, 0.2) !important;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4) !important;
+        }
+        body.dark-mode .c-table th {
+            background: rgba(129, 243, 186, 0.05) !important;
+            color: rgba(255, 255, 255, 0.6) !important;
+            border-bottom: 2px solid rgba(129, 243, 186, 0.15) !important;
+        }
+        body.dark-mode .c-table td {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+            color: #ffffff !important;
+        }
+        body.dark-mode .c-table tbody tr:hover {
+            background: rgba(129, 243, 186, 0.04) !important;
+        }
+        body.dark-mode .date-cell {
+            color: rgba(255, 255, 255, 0.6) !important;
+        }
+        body.dark-mode .price-tag {
+            color: #81f3ba !important;
+        }
+        body.dark-mode .status-En-attente {
+            background: rgba(245, 158, 11, 0.2) !important;
+            color: #fbbf24 !important;
+            border: 1px solid rgba(245, 158, 11, 0.4) !important;
+        }
+        body.dark-mode .status-Validée {
+            background: rgba(16, 185, 129, 0.2) !important;
+            color: #34d399 !important;
+            border: 1px solid rgba(16, 185, 129, 0.4) !important;
+        }
+        body.dark-mode .status-Livrée {
+            background: rgba(59, 130, 246, 0.2) !important;
+            color: #60a5fa !important;
+            border: 1px solid rgba(59, 130, 246, 0.4) !important;
+        }
+        body.dark-mode .status-Refusée {
+            background: rgba(239, 68, 68, 0.2) !important;
+            color: #f87171 !important;
+            border: 1px solid rgba(239, 68, 68, 0.4) !important;
+        }
+    </style>
+</head>
+<body>
+    <script>
+        if (localStorage.getItem('theme') === 'dark') {
+            document.body.classList.add('dark-mode');
+        }
+    </script>
+    <div class="neural-background"></div>
+    <div id="navbar-container"></div>
+
+    <div class="page-wrapper">
+        <div class="page-header">
+       <br>
+<br>
+<br>
+<br>
+<br>
+     <h1 data-i18n="Toutes les Commandes">📦 Toutes les Commandes</h1>
+            <p data-i18n="Suivi global des transactions commerciales entre agriculteurs et experts">Suivi global des transactions commerciales entre agriculteurs et experts</p>
+        </div>
+
+        <div class="stats-row" id="orderStats">
+            <div class="stat-card"><div class="val" id="totalOrders">—</div><div class="lbl" data-i18n="Commandes totales">Commandes totales</div></div>
+            <div class="stat-card"><div class="val" id="totalRevenue">—</div><div class="lbl"  data-i18n="Chiffre d'affaires (DA)">Chiffre d'affaires (DA)</div></div>
+            <div class="stat-card"><div class="val" id="pendingOrders">—</div><div class="lbl" data-i18n="En attente">En attente</div></div>
+            <div class="stat-card"><div class="val" id="completedOrders">—</div><div class="lbl" data-i18n="Terminées">Terminées</div></div>
+        </div>
+
+        <input type="text" id="orderSearch" class="search-bar" placeholder="Rechercher par agriculteur, expert ou produit...">
+
+        <div class="table-container">
+            <table class="c-table">
+                <thead>
+                    <tr>
+                        <th data-i18n="Date">Date</th>
+                        <th data-i18n="Agriculteur">Agriculteur</th>
+                        <th data-i18n="Expert">Expert</th>
+                        <th data-i18n="Produits">Produits</th>
+                        <th data-i18n="Total">Total</th>
+                        <th data-i18n="Status">Status</th>
+                    </tr>
+                </thead>
+                <tbody id="orderBody">
+                    <tr><td colspan="6" style="text-align:center; padding:50px;" data-i18n="Chargement...">Chargement...</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        let allOrders = [];
+
+        async function loadOrders() {
+            const token = localStorage.getItem('token');
+            if (!token) {
+                document.getElementById('orderBody').innerHTML = '<tr><td colspan="6" style="text-align:center; padding:20px;">Veuillez vous reconnecter.</td></tr>';
+                return;
+            }
+
+            try {
+                const apiBase = window.location.origin;
+                console.log("Tentative de chargement depuis:", apiBase + "/api/orders/all");
+                const res = await fetch(apiBase + '/api/orders/all', { 
+                    headers: { 'x-auth-token': token } 
+                });
+
+                if (res.status === 403) {
+                    throw new Error("Accès refusé. Vous n'avez مشكلة في الصلاحيات (Pas Admin).");
+                }
+                if (!res.ok) throw new Error("Erreur serveur (" + res.status + ")");
+
+                allOrders = await res.json();
+                console.log("Commandes chargées:", allOrders);
+                
+                updateStats(allOrders);
+                renderOrders(allOrders);
+            } catch (err) {
+                console.error("Erreur:", err.message);
+                document.getElementById('orderBody').innerHTML = `<tr><td colspan="6" style="text-align:center; color:#ef4444; padding:20px; font-weight:bold;">❌ ${err.message} <br> <small>Essayez de vous déconnecter et de vous reconnecter.</small></td></tr>`;
+            }
+        }
+
+        function updateStats(list) {
+            document.getElementById('totalOrders').textContent = list.length;
+            const revenue = list.reduce((sum, o) => sum + (o.totalPrice || 0), 0);
+            document.getElementById('totalRevenue').textContent = revenue.toLocaleString();
+            document.getElementById('pendingOrders').textContent = list.filter(o => o.status === 'En attente').length;
+            document.getElementById('completedOrders').textContent = list.filter(o => o.status === 'Livrée' || o.status === 'Validée').length;
+        }
+
+        function renderOrders(list) {
+            const body = document.getElementById('orderBody');
+            if (list.length === 0) {
+                body.innerHTML = '<tr><td colspan="6" style="text-align:center; padding:50px;">Aucune commande trouvée</td></tr>';
+                return;
+            }
+
+            body.innerHTML = list.map(o => `
+                <tr>
+                    <td class="date-cell">${new Date(o.createdAt).toLocaleDateString()}</td>
+                    <td><div style="font-weight:600">${o.farmerName}</div><div style="font-size:0.75rem; color:#9ca3af">${o.location}</div></td>
+                    <td style="font-weight:500">${o.expert}</td>
+                    <td style="max-width:250px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;" title="${o.product}">${o.product}</td>
+                    <td class="price-tag">${o.totalPrice.toLocaleString()} DA</td>
+                    <td><span class="status-badge status-${o.status.replace(' ', '-')}">${o.status}</span></td>
+                </tr>
+            `).join('');
+        }
+
+        document.getElementById('orderSearch').addEventListener('input', (e) => {
+            const q = e.target.value.toLowerCase();
+            const filtered = allOrders.filter(o => 
+                o.farmerName.toLowerCase().includes(q) || 
+                o.expert.toLowerCase().includes(q) || 
+                o.product.toLowerCase().includes(q)
+            );
+            renderOrders(filtered);
+        });
+
+        loadOrders();
+    </script>
+</body>
+</html>

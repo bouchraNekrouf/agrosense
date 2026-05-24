@@ -1,0 +1,1045 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Discussion avec les Experts | Agrosence</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #0a1f0e;
+            color: #fff;
+            height: 100vh;
+            overflow: hidden;
+            padding-top: 105px !important;
+        }
+
+        .neural-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            background: radial-gradient(circle at 15% 85%, rgb(10, 59, 19) 0%, transparent 50%),
+                radial-gradient(circle at 85% 15%, rgba(130, 233, 164, 0.5) 0%, transparent 50%),
+                radial-gradient(circle at 45% 60%, rgb(16, 88, 32) 0%, transparent 50%),
+                linear-gradient(135deg, #0f3f1b 0%, #0f3f1b 100%);
+            animation: bgPulse 14s ease-in-out infinite;
+        }
+
+        @keyframes bgPulse {
+
+            0%,
+            100% {
+                filter: brightness(0.9) saturate(1.4);
+            }
+
+            50% {
+                filter: brightness(1.05) saturate(1.6);
+            }
+        }
+
+        /* ===== LAYOUT ===== */
+        /* 70px = approximate global navbar height */
+        .chat-app {
+            display: flex;
+            height: 100%;
+        }
+
+        /* ===== SIDEBAR ===== */
+        .sidebar {
+            width: 340px;
+            background: rgba(10, 31, 14, 0.85);
+            backdrop-filter: blur(30px);
+            border-right: 1px solid rgba(130, 233, 164, 0.1);
+            display: flex;
+            flex-direction: column;
+            flex-shrink: 0;
+        }
+
+        .sidebar-header {
+            padding: 20px;
+            border-bottom: 1px solid rgba(130, 233, 164, 0.1);
+        }
+
+        .sidebar-header .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            margin-bottom: 18px;
+        }
+
+        .brand-icon {
+            width: 38px;
+            height: 38px;
+            background: linear-gradient(135deg, #81f3ba, #2c5a36);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+        }
+
+        .brand-name {
+            font-size: 1.2rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #fff, #81f3ba);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .sidebar-title {
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: #81f3ba;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .sidebar-title::before {
+            content: '';
+            width: 20px;
+            height: 2px;
+            background: linear-gradient(90deg, #81f3ba, transparent);
+        }
+
+        .search-box {
+            position: relative;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 12px 16px 12px 42px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(130, 233, 164, 0.12);
+            border-radius: 12px;
+            color: #fff;
+            font-family: inherit;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            outline: none;
+        }
+
+        .search-box input::placeholder {
+            color: rgba(255, 255, 255, 0.3);
+        }
+
+        .search-box input:focus {
+            border-color: rgba(130, 233, 164, 0.4);
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .search-box::before {
+            content: '🔍';
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 0.85rem;
+        }
+
+        /* Expert List */
+        .user-list {
+            flex: 1;
+            overflow-y: auto;
+            padding: 10px;
+        }
+
+        .user-list::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .user-list::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .user-list::-webkit-scrollbar-thumb {
+            background: rgba(130, 233, 164, 0.2);
+            border-radius: 4px;
+        }
+
+        .user-item {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 14px 16px;
+            border-radius: 14px;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            margin-bottom: 4px;
+            position: relative;
+        }
+
+        .user-item:hover {
+            background: rgba(130, 233, 164, 0.08);
+        }
+
+        .user-item.active {
+            background: rgba(130, 233, 164, 0.12);
+            border: 1px solid rgba(130, 233, 164, 0.2);
+        }
+
+        .user-item .user-avatar {
+            width: 46px;
+            height: 46px;
+            background: linear-gradient(135deg, #81f3ba, #2c5a36);
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            font-weight: 700;
+            flex-shrink: 0;
+            box-shadow: 0 4px 12px rgba(129, 243, 186, 0.2);
+        }
+
+        .user-item .user-details {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .user-item .user-name {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: #fff;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .user-item .user-location {
+            font-size: 0.78rem;
+            color: rgba(255, 255, 255, 0.4);
+            margin-top: 2px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .online-dot {
+            width: 10px;
+            height: 10px;
+            background: #4ade80;
+            border-radius: 50%;
+            border: 2px solid rgba(10, 31, 14, 0.9);
+            position: absolute;
+            bottom: 12px;
+            left: 48px;
+            box-shadow: 0 0 6px rgba(74, 222, 128, 0.5);
+        }
+
+        .sidebar-back {
+            padding: 16px 20px;
+            border-top: 1px solid rgba(130, 233, 164, 0.1);
+        }
+
+        .sidebar-back a {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 0.9rem;
+            transition: color 0.3s ease;
+        }
+
+        .sidebar-back a:hover {
+            color: #81f3ba;
+        }
+
+        /* ===== CHAT AREA ===== */
+        .chat-area {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background: #ffffff;
+        }
+
+        /* Chat Header */
+        .chat-header {
+            padding: 18px 30px;
+            background: rgba(10, 31, 14, 0.7);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(130, 233, 164, 0.1);
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .chat-header .chat-avatar {
+            width: 44px;
+            height: 44px;
+            background: linear-gradient(135deg, #81f3ba, #2c5a36);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+        .chat-header .chat-info {
+            flex: 1;
+        }
+
+        .chat-header .chat-name {
+            font-size: 1.05rem;
+            font-weight: 600;
+        }
+
+        .chat-header .chat-status {
+            font-size: 0.8rem;
+            color: #4ade80;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .chat-header .chat-status .dot {
+            width: 6px;
+            height: 6px;
+            background: #4ade80;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                box-shadow: 0 0 0 0 rgba(74, 222, 128, 0.4);
+            }
+
+            50% {
+                box-shadow: 0 0 0 6px rgba(74, 222, 128, 0);
+            }
+        }
+
+        /* Messages */
+        .chat-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            background: #f8faf9;
+        }
+
+        .chat-messages::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .chat-messages::-webkit-scrollbar-thumb {
+            background: rgba(21, 128, 61, 0.25);
+            border-radius: 4px;
+        }
+
+        .message {
+            max-width: 65%;
+            padding: 14px 20px;
+            border-radius: 18px;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            color: #1a1a2e;
+            position: relative;
+            animation: msgAppear 0.3s ease-out;
+        }
+
+        @keyframes msgAppear {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .message.sent {
+            align-self: flex-end;
+            background: linear-gradient(135deg, #15803d, #166534);
+            color: #ffffff;
+            border: none;
+            border-bottom-right-radius: 6px;
+        }
+
+        .message.received {
+            align-self: flex-start;
+            background: #e8eceb;
+            color: #1a1a2e;
+            border: 1px solid rgba(0, 0, 0, 0.06);
+            border-bottom-left-radius: 6px;
+        }
+
+        .message.sent .msg-time {
+            font-size: 0.7rem;
+            color: rgba(255, 255, 255, 0.6);
+            margin-top: 6px;
+            text-align: right;
+        }
+
+        .message.received .msg-time {
+            font-size: 0.7rem;
+            color: rgba(0, 0, 0, 0.35);
+            margin-top: 6px;
+            text-align: right;
+        }
+
+        /* Empty State */
+        .empty-chat {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 40px;
+        }
+
+        .empty-icon {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            opacity: 0.7;
+        }
+
+        .empty-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: #15803d;
+        }
+
+        .empty-desc {
+            color: rgba(0, 0, 0, 0.45);
+            font-size: 1rem;
+            max-width: 400px;
+        }
+
+        /* Chat Input */
+        .chat-input-area {
+            padding: 18px 30px;
+            background: rgba(10, 31, 14, 0.7);
+            backdrop-filter: blur(20px);
+            border-top: 1px solid rgba(130, 233, 164, 0.1);
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .chat-input-area input {
+            flex: 1;
+            padding: 14px 20px;
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(130, 233, 164, 0.12);
+            border-radius: 14px;
+            color: #fff;
+            font-family: inherit;
+            font-size: 0.95rem;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .chat-input-area input::placeholder {
+            color: rgba(255, 255, 255, 0.3);
+        }
+
+        .chat-input-area input:focus {
+            border-color: rgba(130, 233, 164, 0.4);
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .send-btn {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, #81f3ba, #2c5a36);
+            border: none;
+            border-radius: 14px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(129, 243, 186, 0.3);
+        }
+
+        .send-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 20px rgba(129, 243, 186, 0.5);
+        }
+
+        .send-btn:active {
+            transform: scale(0.95);
+        }
+
+        /* Loading */
+        .loading-spinner {
+            text-align: center;
+            padding: 40px;
+            color: rgba(255, 255, 255, 0.4);
+        }
+
+        /* Mobile */
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 100%;
+                position: absolute;
+                z-index: 100;
+                height: 100vh;
+            }
+
+            .sidebar.hidden {
+                display: none;
+            }
+
+            .chat-area {
+                width: 100%;
+            }
+
+            .mobile-menu-btn {
+                display: flex !important;
+                width: 40px;
+                height: 40px;
+                background: rgba(130, 233, 164, 0.1);
+                border: 1px solid rgba(130, 233, 164, 0.2);
+                border-radius: 10px;
+                align-items: center;
+                justify-content: center;
+                cursor: pointer;
+                font-size: 1.2rem;
+            }
+        }
+
+        .msg-badge {
+            background: #ef4444;
+            color: white;
+            padding: 2px 6px;
+            border-radius: 50%;
+            font-size: 0.7rem;
+            font-weight: 700;
+            margin-left: auto;
+            animation: bounce 0.5s ease-in-out;
+        }
+
+        @keyframes bounce {
+
+            0%,
+            20%,
+            50%,
+            80%,
+            100% {
+                transform: translateY(0);
+            }
+
+            40% {
+                transform: translateY(-5px);
+            }
+
+            60% {
+                transform: translateY(-3px);
+            }
+        }
+
+        .typing-bubble {
+            display: flex;
+            gap: 5px;
+            padding: 12px 18px;
+            background: #e8eceb;
+            border-radius: 18px;
+            border-bottom-left-radius: 4px;
+            width: fit-content;
+            margin-bottom: 10px;
+            align-self: flex-start;
+            animation: msgAppear 0.3s ease-out;
+        }
+
+        .dot-anim {
+            width: 7px;
+            height: 7px;
+            background: #15803d;
+            border-radius: 50%;
+            animation: typing-dots 1.4s infinite ease-in-out;
+            opacity: 0.4;
+        }
+
+        .dot-anim:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .dot-anim:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+
+        @keyframes typing-dots {
+
+            0%,
+            100% {
+                opacity: 0.4;
+                transform: scale(1);
+            }
+
+            50% {
+                opacity: 1;
+                transform: scale(1.3);
+            }
+        }
+
+        /* EPIC DARK MODE OVERRIDES (DARK GREEN NEURAL) */
+        body.dark-mode {
+            background: radial-gradient(circle at 15% 85%, rgba(129, 243, 186, 0.1) 0%, transparent 50%),
+                        radial-gradient(circle at 85% 15%, rgba(130, 233, 164, 0.15) 0%, transparent 50%),
+                        linear-gradient(to bottom, #06130b 0%, #0a1910 100%) !important;
+            color: #ffffff !important;
+            animation: bgPulse 14s ease-in-out infinite !important;
+        }
+        body.dark-mode .neural-background {
+            display: none !important;
+        }
+        body.dark-mode .sidebar {
+            background: rgba(10, 31, 14, 0.85) !important;
+            border-color: rgba(130, 233, 164, 0.2) !important;
+        }
+        body.dark-mode .sidebar-title,
+        body.dark-mode .user-name,
+        body.dark-mode #chatName { color: #ffffff !important; }
+        body.dark-mode .sidebar-header,
+        body.dark-mode .chat-header,
+        body.dark-mode .chat-messages,
+        body.dark-mode .chat-input-area {
+            background: rgba(15, 35, 25, 0.7) !important;
+            border-color: rgba(130, 233, 164, 0.2) !important;
+        }
+        body.dark-mode .chat-messages,
+        body.dark-mode .chat-area {
+            background: transparent !important;
+        }
+        body.dark-mode .chat-input-area input,
+        body.dark-mode .search-box input {
+            background: rgba(10, 31, 14, 0.6) !important;
+            border-color: rgba(130, 233, 164, 0.3) !important;
+            color: #ffffff !important;
+        }
+        body.dark-mode .message.received,
+        body.dark-mode .typing-bubble {
+            background: rgba(255, 255, 255, 0.1) !important;
+            color: #ffffff !important;
+            border: 1px solid rgba(130, 233, 164, 0.1) !important;
+        }
+        body.dark-mode .user-item:hover, 
+        body.dark-mode .user-item.active {
+            background: rgba(129, 243, 186, 0.15) !important;
+        }
+        body.dark-mode .sidebar-back a {
+            color: #81f3ba !important;
+        }
+        body.dark-mode .brand-name { 
+            background: linear-gradient(135deg, #fff, #81f3ba) !important; 
+            -webkit-background-clip: text !important; 
+        }
+        body.dark-mode .empty-title {
+            color: #81f3ba !important;
+        }
+        body.dark-mode .empty-desc {
+            color: rgba(255, 255, 255, 0.6) !important;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="neural-background"></div>
+
+    <!-- ===== GLOBAL NAVBAR ===== -->
+    <div id="navbar-container"></div>
+
+
+    <div class="chat-app">
+        <!-- SIDEBAR: Expert List -->
+        <div class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-title" data-i18n="Experts Disponibles">Experts Disponibles</div>
+                <div class="search-box">
+                    <input   data-i18n="Rechercher un expert..." type="text" id="searchInput" placeholder="Rechercher un expert...">
+                </div>
+            </div>
+
+            <div class="user-list" id="expertList">
+                <div class="loading-spinner" data-i18n="Chargement des experts...">Chargement des experts...</div>
+            </div>
+
+            <div class="sidebar-back">
+                <a href="../index.html" data-i18n="← Retour au profil">← Retour au profil</a>
+            </div>
+        </div>
+
+        <!-- CHAT AREA -->
+        <div class="chat-area" id="chatArea">
+            <!-- Default: no chat selected -->
+            <div class="empty-chat" id="emptyChatState">
+                <div class="empty-icon">💬</div>
+                <div class="empty-title" data-i18n="Commencez une discussion">Commencez une discussion</div>
+                <div class="empty-desc" data-i18n="sélectionnez un expert dans la liste pour démarrer une conversation et obtenir des conseils agricoles personnalisés.">
+                    Sélectionnez un expert dans la liste pour démarrer une conversation et obtenir des conseils
+                    agricoles personnalisés.
+                </div>
+            </div>
+
+            <!-- Active Chat (hidden by default) -->
+            <div id="activeChatState" style="display: none; flex-direction: column; height: 100%;">
+                <div class="chat-header">
+
+                    <div class="chat-avatar" id="chatAvatar">?</div>
+                    <div class="chat-info">
+                        <div class="chat-name" id="chatName" data-i18n="Expert">Expert</div>
+                        <div class="chat-status" id="chatStatusContainer">
+                            <div class="dot" id="onDot"></div><span id="onLabel" data-i18n="Expert agricole">Expert agricole</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="chat-messages" id="chatMessages"></div>
+                <div class="chat-input-area">
+                    <input type="text" id="messageInput" placeholder="Écrire un message..." autocomplete="off">
+                    <button class="send-btn" id="sendBtn">➤</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 1. Ajouter le script client de Socket.io -->
+    <script src="/socket.io/socket.io.js"></script>
+
+    <script>
+        // Theme sync
+        if (localStorage.getItem('theme') === 'dark') {
+            document.documentElement.classList.add('dark-mode');
+            document.body.classList.add('dark-mode');
+        }
+
+        // Auth check
+        const token = localStorage.getItem('token');
+        const userName = localStorage.getItem('userName');
+        if (!token || !userName) {
+            window.location.href = '../../../logsigin/sign.html';
+        }
+
+        let currentChatUserId = null;
+        let currentUserId = null;
+        let socket = null;
+        let typingTimeout = null; // Pour le Stop Typing
+
+        // Get current user ID from token
+        async function getCurrentUser() {
+            try {
+                const res = await fetch('/api/user/profile', { headers: { 'x-auth-token': token } });
+                if (!res.ok) return;
+                const data = await res.json();
+                currentUserId = data._id;
+                initSocket();
+            } catch (err) {
+                console.error('[Chat] Error getting profile:', err);
+            }
+        }
+
+        function initSocket() {
+            socket = io();
+
+            socket.on('connect', () => {
+                console.log('✅ Connecté au serveur Real-Time');
+                socket.emit('join', currentUserId);
+            });
+
+            socket.on('receive_message', (msg) => {
+                // Si la conversation est ouverte
+                if (currentChatUserId && (msg.sender === currentChatUserId || msg.sender._id === currentChatUserId)) {
+                    appendMessage(msg);
+                } else {
+                    // Sinon, montrer un badge de notification !
+                    showUnreadBadge(msg.sender._id || msg.sender);
+                    playNotificationSound();
+                }
+            });
+
+            socket.on('message_sent_confirm', (msg) => {
+                appendMessage(msg);
+            });
+
+            // Écouter l'indicateur "écrit..."
+            socket.on('user_typing', (data) => {
+                if (currentChatUserId && data.senderId === currentChatUserId) {
+                    // Texte dans le header
+                    document.getElementById('onLabel').textContent = 'Est en train d\'écrire...';
+                    document.getElementById('onLabel').style.color = '#15803d';
+                    document.getElementById('onLabel').style.fontStyle = 'italic';
+
+                    // Bulle animée dans la zone de messages
+                    showTypingBubble(true);
+                }
+            });
+
+            socket.on('user_stop_typing', (data) => {
+                if (currentChatUserId && data.senderId === currentChatUserId) {
+                    document.getElementById('onLabel').textContent = 'Expert agricole';
+                    document.getElementById('onLabel').style.color = '';
+                    document.getElementById('onLabel').style.fontStyle = '';
+
+                    showTypingBubble(false);
+                }
+            });
+
+            socket.on('error', (errMsg) => alert(errMsg));
+        }
+
+        function showTypingBubble(show) {
+            const container = document.getElementById('chatMessages');
+            let bubble = document.getElementById('typingBubble');
+
+            if (show) {
+                if (!bubble) {
+                    bubble = document.createElement('div');
+                    bubble.id = 'typingBubble';
+                    bubble.className = 'typing-bubble';
+                    bubble.innerHTML = '<div class="dot-anim"></div><div class="dot-anim"></div><div class="dot-anim"></div>';
+                    container.appendChild(bubble);
+                }
+                bubble.style.display = 'flex';
+                container.scrollTop = container.scrollHeight;
+            } else if (bubble) {
+                bubble.style.display = 'none';
+            }
+        }
+
+        function showUnreadBadge(senderId) {
+            const badge = document.getElementById(`badge-${senderId}`);
+            if (badge) {
+                let count = parseInt(badge.textContent) || 0;
+                badge.textContent = count + 1;
+                badge.style.display = 'block';
+            }
+        }
+
+        function playNotificationSound() {
+            // Optionnel: petit bip sonore
+            const audio = new Audio('https://assets.mixkit.co/active_storage/sfx/2354/2354-preview.mp3');
+            audio.volume = 0.3;
+            audio.play().catch(e => console.log('Auto-play blocked'));
+        }
+
+        function appendMessage(msg) {
+            const container = document.getElementById('chatMessages');
+            const bubble = document.getElementById('typingBubble');
+            const isSent = (msg.sender === currentUserId || msg.sender._id === currentUserId);
+            const time = new Date(msg.timestamp).toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
+
+            const msgDiv = document.createElement('div');
+            msgDiv.className = `message ${isSent ? 'sent' : 'received'}`;
+            msgDiv.innerHTML = `${msg.content}<div class="msg-time">${time}</div>`;
+
+            if (bubble) {
+                container.insertBefore(msgDiv, bubble);
+            } else {
+                container.appendChild(msgDiv);
+            }
+            container.scrollTop = container.scrollHeight;
+        }
+
+        // Load expert list
+        async function loadExperts() {
+            const listEl = document.getElementById('expertList');
+            try {
+                const res = await fetch('/api/user/friends', { headers: { 'x-auth-token': token } });
+                if (!res.ok) {
+                    listEl.innerHTML = '<div class="loading-spinner">Erreur de chargement</div>';
+                    return;
+                }
+                const experts = await res.json();
+
+                if (!experts.length) {
+                    listEl.innerHTML = '<div class="loading-spinner">Aucun expert trouvé</div>';
+                    return;
+                }
+
+                listEl.innerHTML = '';
+                experts.forEach(expert => {
+                    const item = document.createElement('div');
+                    item.className = 'user-item';
+                    item.dataset.id = expert._id;
+                    item.dataset.name = expert.nom || 'Anonyme';
+                    item.innerHTML = `
+                        <div class="user-avatar">${(expert.nom || '?').charAt(0).toUpperCase()}</div>
+                        <div class="user-details" style="display:flex; align-items:center; width:100%;">
+                            <div style="flex:1;">
+                                <div class="user-name">${expert.nom || 'Anonyme'}</div>
+                                <div class="user-location">📍 ${expert.localisation || 'Non spécifié'}</div>
+                            </div>
+                            <div class="msg-badge" id="badge-${expert._id}" style="display:none;">0</div>
+                        </div>
+                        <div class="online-dot"></div>
+                    `;
+                    item.addEventListener('click', () => openChat(expert));
+                    listEl.appendChild(item);
+                });
+            } catch (err) {
+                console.error('[Chat] Error loading experts:', err);
+                listEl.innerHTML = '<div class="loading-spinner">Erreur de chargement</div>';
+            }
+        }
+
+        // Open chat
+        function openChat(expert) {
+            currentChatUserId = expert._id;
+
+
+            const token = localStorage.getItem('token');
+            if (token) {
+                fetch('/api/chat/mark-read/' + expert._id, {
+                    method: 'PUT',
+                    headers: { 'x-auth-token': token }
+                });
+            }
+            // Effacer le badge
+            const badge = document.getElementById(`badge-${expert._id}`);
+            if (badge) {
+                badge.style.display = 'none';
+                badge.textContent = '0';
+            }
+
+            document.getElementById('emptyChatState').style.display = 'none';
+            document.getElementById('activeChatState').style.display = 'flex';
+            document.getElementById('chatAvatar').textContent = (expert.nom || '?').charAt(0).toUpperCase();
+            document.getElementById('chatName').textContent = expert.nom || 'Anonyme';
+            document.getElementById('onLabel').textContent = 'Expert agricole'; // Reset status
+
+            document.querySelectorAll('.user-item').forEach(item => item.classList.remove('active'));
+            document.querySelector(`.user-item[data-id="${expert._id}"]`)?.classList.add('active');
+
+            if (window.innerWidth <= 768) {
+                document.getElementById('sidebar').classList.add('hidden');
+            }
+
+            loadMessagesHistory();
+        }
+
+        async function loadMessagesHistory() {
+            if (!currentChatUserId || !currentUserId) return;
+            try {
+                const res = await fetch(`/api/chat/messages/${currentChatUserId}`, {
+                    headers: { 'x-auth-token': token }
+                });
+                if (!res.ok) return;
+                const messages = await res.json();
+                const container = document.getElementById('chatMessages');
+
+                container.innerHTML = messages.map(msg => {
+                    const isSent = (msg.sender === currentUserId || msg.sender._id === currentUserId);
+                    const time = new Date(msg.timestamp).toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
+                    return `<div class="message ${isSent ? 'sent' : 'received'}">${msg.content}<div class="msg-time">${time}</div></div>`;
+                }).join('');
+
+                container.scrollTop = container.scrollHeight;
+            } catch (err) {
+                console.error('[Chat] Error loading history:', err);
+            }
+        }
+
+        async function sendMessage() {
+            const input = document.getElementById('messageInput');
+            const content = input.value.trim();
+            if (!content || !currentChatUserId || !socket) return;
+
+            socket.emit('send_message', {
+                senderId: currentUserId,
+                receiverId: currentChatUserId,
+                content: content
+            });
+
+            input.value = '';
+            // Stop typing manual trigger
+            socket.emit('stop_typing', { senderId: currentUserId, receiverId: currentChatUserId });
+        }
+
+        // ============= TYPING DETECTOR =============
+        document.getElementById('messageInput').addEventListener('input', () => {
+            if (!currentChatUserId || !socket) return;
+
+            // Envoyer "Typing"
+            socket.emit('typing', { senderId: currentUserId, receiverId: currentChatUserId });
+
+            // Gérer le timeout pour "Stop Typing"
+            clearTimeout(typingTimeout);
+            typingTimeout = setTimeout(() => {
+                socket.emit('stop_typing', { senderId: currentUserId, receiverId: currentChatUserId });
+            }, 3000);
+        });
+
+        document.getElementById('sendBtn').addEventListener('click', sendMessage);
+        document.getElementById('messageInput').addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') sendMessage();
+        });
+
+        document.getElementById('searchInput').addEventListener('input', (e) => {
+            const query = e.target.value.toLowerCase();
+            document.querySelectorAll('.user-item').forEach(item => {
+                item.style.display = item.dataset.name.toLowerCase().includes(query) ? 'flex' : 'none';
+            });
+        });
+
+        document.getElementById('mobileMenuBtn')?.addEventListener('click', () => {
+            document.getElementById('sidebar').classList.toggle('hidden');
+        });
+
+        async function fetchUnreadCounts() {
+            try {
+                const res = await fetch('/api/chat/unread', { headers: { 'x-auth-token': token } });
+                if (!res.ok) return;
+                const unread = await res.json();
+                
+                const counts = {};
+                unread.forEach(msg => {
+                    const sId = msg.sender._id || msg.sender;
+                    counts[sId] = (counts[sId] || 0) + 1;
+                });
+                
+                for (const [senderId, count] of Object.entries(counts)) {
+                    const badge = document.getElementById(`badge-${senderId}`);
+                    if (badge) {
+                        badge.textContent = count;
+                        badge.style.display = 'block';
+                    }
+                }
+            } catch (err) {
+                console.error('[Chat] Error loading unread counts:', err);
+            }
+        }
+
+        (async () => {
+            await getCurrentUser();
+            await loadExperts();
+            await fetchUnreadCounts();
+        })();
+    </script>
+    <script src="../../../components/translations.js"></script>
+<script src="../../../components/i18n.js"></script>
+
+    <!-- ===== NAVBAR LOADER ===== -->
+    <script src="/components/navbar.js"></script>
+</body>
+
+</html>

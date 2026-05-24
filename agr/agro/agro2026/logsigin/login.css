@@ -1,0 +1,563 @@
+/* -------------------------------------- */
+/* RESET & BASE */
+/* -------------------------------------- */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+ body {
+     font-family: 'Inter', 'Segoe UI', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+     background: #0f3f1b;
+     color: solid #0f3f1b;
+     overflow-x: hidden;
+     min-height: 100vh;
+     font-weight: 400;
+     line-height: 1.6;
+     -webkit-font-smoothing: antialiased;
+     -moz-osx-font-smoothing: grayscale;
+}
+/* Couleur de base de l'arrière-plan..........................................;*/
+ .neural-background {
+     position: fixed;
+     top: 0;
+     left: 0;
+     width: 100%;
+     height: 100%;
+     z-index: -2;
+     background: radial-gradient(circle at 15% 85%, rgb(10, 59, 19) 0%, transparent 50%), radial-gradient(circle at 85% 15%, rgba(130, 233, 164, 0.5) 0%, transparent 50%), radial-gradient(circle at 45% 60%, rgb(16, 88, 32) 0%, transparent 50%), radial-gradient(circle at 70% 40%, rgb(16, 88, 32) 0%, transparent 50%), linear-gradient(135deg, #0f3f1b 0%, #0f3f1b 50%, #0f3f1b 100%);
+     animation: backgroundPulse 14s ease-in-out infinite;
+}
+ @keyframes backgroundPulse {
+     0%, 100% {
+         filter: brightness(0.9) saturate(1.4) hue-rotate(0deg);
+    }
+     33% {
+         filter: brightness(1.1) saturate(1.7) hue-rotate(15deg);
+    }
+     66% {
+         filter: brightness(1.0) saturate(1.5) hue-rotate(-10deg);
+    }
+}
+/* ------------------------ Formes ---------------------- */
+ .geometric-shapes {
+     position: fixed;
+     top: 0;
+     left: 0;
+     width: 100%;
+     height: 100%;
+     z-index: -1;
+     overflow: hidden;
+}
+ .shape {
+     position: absolute;
+     border: 1px solid rgba(0, 255, 255, 0.3);
+     animation: floatShape 20s linear infinite;
+}
+ .shape:nth-child(1) {
+     width: 100px;
+     height: 100px;
+     left: 10%;
+     animation-delay: 0s;
+     border-color: rgba(227, 236, 231, 0.4);
+}
+ .shape:nth-child(2) {
+     width: 60px;
+     height: 60px;
+     left: 70%;
+     animation-delay: -5s;
+     border-radius: 50%;
+     border-color: rgba(147, 112, 219, 0.4);
+}
+ .shape:nth-child(3) {
+     width: 80px;
+     height: 80px;
+     left: 30%;
+     animation-delay: -10s;
+     transform: rotate(45deg);
+     border-color: rgba(198, 221, 116, 0.4);
+}
+ .shape:nth-child(4) {
+     width: 120px;
+     height: 120px;
+     left: 50%;
+     animation-delay: -15s;
+     clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+     background: linear-gradient(45deg, rgba(8, 66, 30, 0.1), transparent);
+}
+ @keyframes floatShape {
+     from {
+         transform: translateY(100vh) rotate(0deg);
+         opacity: 0;
+    }
+     10%, 90% {
+         opacity: 1;
+    }
+     to {
+         transform: translateY(-100px) rotate(360deg);
+         opacity: 0;
+    }
+}
+/* -------------------------------- Lignes ---------------------*/
+ .neural-lines {
+     position: fixed;
+     top: 0;
+     left: 0;
+     width: 100%;
+     height: 100%;
+     z-index: -1;
+}
+ .neural-line {
+     position: absolute;
+     background: linear-gradient(90deg, transparent, #fff, transparent);
+     height: 3px;
+     animation: neuralPulse 3s ease-in-out infinite;
+}
+ .neural-line:nth-child(1) {
+     top: 20%;
+     left: 0;
+     width: 100%;
+     background: linear-gradient(90deg, transparent, #6de49f, transparent);
+     animation-delay: 0s;
+}
+ .neural-line:nth-child(2) {
+     top: 60%;
+     left: 0;
+     width: 100%;
+     background: linear-gradient(90deg, transparent, #196633, transparent);
+     animation-delay: -1s;
+}
+ .neural-line:nth-child(3) {
+     top: 40%;
+     left: 0;
+     width: 100%;
+     background: linear-gradient(90deg, transparent, #24a713, transparent);
+     animation-delay: -2s;
+}
+ @keyframes neuralPulse {
+     0%, 100% {
+         opacity: 0.2;
+         transform: scaleX(0.5);
+    }
+     50% {
+         opacity: 1;
+         transform: scaleX(1);
+    }
+}
+
+/* Centre de l'interface */
+.w-full.max-w-md {
+  width: 100%;
+  max-width: 500px;
+  margin: auto;
+}
+
+/* -------------------------------------- */
+/* Titre supérieur */
+/* -------------------------------------- */
+
+.text-center.mb-8 {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.text-center.mb-8 h1 {
+  font-size: 1.9rem;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.text-center.mb-8 p {
+  color: #9ca3af;
+}
+
+/* Icône de démarrage */
+.inline-flex {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.bg-gradient {
+  background: linear-gradient(to bottom right, #22c55e, #059669);
+}
+
+.rounded-2xl {
+  border-radius: 1rem;
+}
+
+/* -------------------------------------- */
+/* Carte de formulaire (Glassmorphism) */
+/* -------------------------------------- */
+
+form {
+  width: 90%;
+}
+
+.bg-white\/5 {
+  background: rgba(141, 114, 114, 0.06);
+}
+
+.backdrop-blur-xl {
+  backdrop-filter: blur(25px);
+}
+
+.card-glass {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 32px;
+  border-radius: 18px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+}
+
+.space-y-6 > * + * {
+  margin-top: 1.5rem;
+}
+
+.space-y-2 > * + * {
+  margin-top: 0.5rem;
+}
+
+
+/* -------------------------------------- */
+/* Champs de saisie */
+/* -------------------------------------- */
+
+label {
+  font-size: 0.9rem;
+  color: #d1d5db;
+}
+
+.relative {
+  position: relative;
+}
+
+.relative svg {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 20px;
+  height: 20px;
+  color: #81f3ba;
+}
+/* ------------------------ Écriture interne -------------- */
+input {
+  width: 100%;
+  padding: 12px  50px 12px 12px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 14px;
+  color: #fff;
+  outline: none;
+  transition: 0.25s;
+}
+/* ------------------- Nom masqué ------------------- */
+input::placeholder {
+  color: #9ca3af;
+}
+/* ----------------- Couleur de bordure au clic --------------------- */
+input:focus {
+  border-color: transparent;
+  box-shadow: 0 0 0 3px rgba(0, 255, 255, 0.5);
+}
+
+/* Bouton pour afficher le mot de passe */
+.relative button {
+  position: absolute;
+  left: 50px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: #afa59c;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.relative button:hover {
+  color: #fff;
+}
+
+/* -------------------------------------- */
+/* Type d'utilisateur */
+/* -------------------------------------- */
+
+.grid {
+   display: flex; /* Changer l'affichage en flex */
+  justify-content: space-between; /* Répartir les boutons uniformément */
+  gap: 20px; /* L'espacement entre les boutons */
+}
+
+.grid-cols-2 {
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.user-type-btn {
+  flex: 1 1 0; /* Faire en sorte que les boutons aient la même taille */
+
+  padding: 14px;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.06);
+  color: #9ca3af;
+  transition: 0.25s;
+  text-align: center;
+}
+
+.user-type-btn:hover {
+  border-color: rgba(255, 255, 255, 0.25);
+  color: #fff;
+}
+
+.user-type-selected {
+  border-color: #22c55e;
+  background: rgba(34, 197, 94, 0.1);
+  color: #22c55e;
+}
+
+.btn {
+    background: linear-gradient(135deg, #81f3ba 0%, #2c5a36 100%);
+    border: none;
+    border-radius: 12px;
+    padding: 16px 24px;
+    color: white;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+    transform: translateY(0);
+    box-shadow: 0 4px 15px rgba(11, 194, 41, 0.4);
+}
+
+.btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.5s ease;
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(99, 241, 153, 0.6);
+}
+
+.btn:hover::before {
+    left: 100%;
+}
+
+.btn:active {
+    transform: translateY(0);
+}
+
+/* Loading State */
+.btn.loading {
+    pointer-events: none;
+}
+
+.btn-text {
+    transition: opacity 0.3s ease;
+}
+
+.btn-loader {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 20px;
+    height: 20px;
+    border: 2px solid transparent;
+    border-top: 2px solid white;
+    border-radius: 50%;
+    opacity: 0;
+    animation: spin 1s linear infinite;
+    transition: opacity 0.3s ease;
+}
+
+.btn.loading .btn-text {
+    opacity: 0;
+}
+
+.btn.loading .btn-loader {
+    opacity: 1;
+}
+
+/* Social Login */
+.social-login {
+    display :flex;
+    gap: 10px;
+    margin-bottom: 24px;
+      justify-content: center; 
+}
+
+.social-btn {
+    flex: 0;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 12px;
+    padding: 12px 16px;
+    color: white;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.social-btn1:hover {
+    background: rgba(255, 255, 255, 0.15);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+.social-btn1 {
+    flex: 1;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 12px;
+    padding: 12px 16px;
+    color: white;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.social-btn:hover {
+    background: rgba(255, 255, 255, 0.15);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+/* Signup Link */
+.signup-link {
+    text-align: center;
+}
+
+.signup-link p {
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 14px;
+}
+
+.signup-link a {
+    color: #81f3ba;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.signup-link a:hover {
+    color: white;
+}
+/* ------
+-------------------------------- */
+/* checkbox */
+/* -------------------------------------- */
+
+#terms {
+  width: 18px;
+  height: 18px;
+  accent-color: #22c55e;
+}
+
+.flex.items-start {
+  display: flex;
+  gap: 12px;
+}
+
+/* -------------------------------------- */
+/* Bouton de création de compte */
+/* -------------------------------------- */
+
+.submit-btn {
+  width: 100%;
+  padding: 14px 20px;
+  background: linear-gradient(to right, #22c55e, #059669);
+  color: #fff;
+  border: none;
+  border-radius: 14px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: 0.25s;
+}
+
+.submit-btn:hover {
+  background: linear-gradient(to right, #16a34a, #047857);
+}
+
+.submit-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* -------------------------------------- */
+/* Les trois cartes du bas */
+/* -------------------------------------- */
+
+.cards {
+  margin-top: 32px;
+  display: grid;
+  gap: 16px;
+}
+
+@media (min-width: 768px) {
+  .cards {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.cards .card {
+  text-align: center;
+  padding: 16px;
+  background: rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(25px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 14px;
+}
+
+.cards .card h3 {
+  margin-top: 8px;
+  margin-bottom: 4px;
+  font-weight: 600;
+}
+
+.cards .card p {
+  color: #9ca3af;
+  font-size: 0.9rem;
+}
+
+/* -------------------------------------- */
+/* Liens */
+/* -------------------------------------- */
+
+a {
+  color: #22c55e;
+  text-decoration: none;
+  transition: 0.2s;
+}
+
+a:hover {
+  color: #86efac;
+}

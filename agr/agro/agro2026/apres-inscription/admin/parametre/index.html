@@ -1,0 +1,746 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Paramètres du Profil | Administrateur Agrosence</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-green: #15803d;
+            --dark-green: #114c23;
+            --glass-bg: rgba(255, 255, 255, 0.9);
+            --glass-border: rgba(130, 233, 164, 0.4);
+            --text-light: #1a1a2e;
+            --danger: #ef4444;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #ffffff;
+            color: var(--text-light);
+            min-height: 100vh;
+        }
+
+        .profile-wrapper {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            padding: 120px 20px 40px;
+        }
+
+        .neural-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            background: radial-gradient(circle at 15% 85%, rgba(129, 243, 186, 0.05) 0%, transparent 50%),
+                radial-gradient(circle at 85% 15%, rgba(130, 233, 164, 0.08) 0%, transparent 50%),
+                linear-gradient(to bottom, #ffffff 0%, rgba(129, 243, 186, 0.25) 50%, #ffffff 100%);
+            animation: backgroundPulse 14s ease-in-out infinite;
+        }
+
+        @keyframes backgroundPulse {
+
+            0%,
+            100% {
+                filter: brightness(0.9) saturate(1.4) hue-rotate(0deg);
+            }
+
+            33% {
+                filter: brightness(1.1) saturate(1.7) hue-rotate(15deg);
+            }
+
+            66% {
+                filter: brightness(1.0) saturate(1.5) hue-rotate(-10deg);
+            }
+        }
+
+        .geometric-shapes {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .shape {
+            position: absolute;
+            border: 1px solid rgba(0, 255, 255, 0.3);
+            animation: floatShape 20s linear infinite;
+        }
+
+        .shape:nth-child(1) {
+            width: 100px;
+            height: 100px;
+            left: 10%;
+            animation-delay: 0s;
+            border-color: rgba(227, 236, 231, 0.4);
+        }
+
+        .shape:nth-child(2) {
+            width: 60px;
+            height: 60px;
+            left: 70%;
+            animation-delay: -5s;
+            border-radius: 50%;
+            border-color: rgba(147, 112, 219, 0.4);
+        }
+
+        .shape:nth-child(3) {
+            width: 80px;
+            height: 80px;
+            left: 30%;
+            animation-delay: -10s;
+            transform: rotate(45deg);
+            border-color: rgba(198, 221, 116, 0.4);
+        }
+
+        .shape:nth-child(4) {
+            width: 120px;
+            height: 120px;
+            left: 50%;
+            animation-delay: -15s;
+            clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+            background: linear-gradient(45deg, rgba(8, 66, 30, 0.1), transparent);
+        }
+
+        @keyframes floatShape {
+            from {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+
+            10%,
+            90% {
+                opacity: 1;
+            }
+
+            to {
+                transform: translateY(-100px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        .neural-lines {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+
+        .neural-line {
+            position: absolute;
+            background: linear-gradient(90deg, transparent, #fff, transparent);
+            height: 3px;
+            animation: neuralPulse 3s ease-in-out infinite;
+        }
+
+        .neural-line:nth-child(1) {
+            top: 20%;
+            left: 0;
+            width: 100%;
+            background: linear-gradient(90deg, transparent, #6de49f, transparent);
+            animation-delay: 0s;
+        }
+
+        .neural-line:nth-child(2) {
+            top: 60%;
+            left: 0;
+            width: 100%;
+            background: linear-gradient(90deg, transparent, #196633, transparent);
+            animation-delay: -1s;
+        }
+
+        .neural-line:nth-child(3) {
+            top: 40%;
+            left: 0;
+            width: 100%;
+            background: linear-gradient(90deg, transparent, #24a713, transparent);
+            animation-delay: -2s;
+        }
+
+        @keyframes neuralPulse {
+
+            0%,
+            100% {
+                opacity: 0.2;
+                transform: scaleX(0.5);
+            }
+
+            50% {
+                opacity: 1;
+                transform: scaleX(1);
+            }
+        }
+
+        .profile-container {
+            width: 100%;
+            max-width: 600px;
+            padding: 20px;
+        }
+
+        .glass-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(25px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+            animation: slideUp 0.6s ease-out forwards;
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        @keyframes slideUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .profile-img {
+            width: 120px;
+            height: 120px;
+            background: linear-gradient(135deg, #1e293b, #0f172a);
+            border-radius: 50%;
+            margin: -80px auto 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 50px;
+            font-weight: bold;
+            color: #fff;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            border: 5px solid #ffffff;
+        }
+
+        h2 {
+            text-align: center;
+            font-size: 2rem;
+            margin-bottom: 5px;
+            font-weight: 800;
+        }
+
+        p.subtitle {
+            text-align: center;
+            color: rgba(0, 0, 0, 0.5);
+            font-size: 1rem;
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--primary-green);
+            font-weight: 600;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 15px;
+            background: rgba(0, 0, 0, 0.04);
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            border-radius: 12px;
+            color: #1a1a2e;
+            font-size: 1.1rem;
+            font-family: inherit;
+            transition: all 0.3s ease;
+            box-sizing: border-box;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--primary-green);
+            background: rgba(0, 0, 0, 0.02);
+            box-shadow: 0 0 10px rgba(129, 243, 186, 0.2);
+        }
+
+        .actions {
+            display: flex;
+            gap: 15px;
+            margin-top: 35px;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 16px;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: inherit;
+            text-align: center;
+            text-decoration: none;
+        }
+
+        .btn-save {
+            background: var(--primary-green);
+            color: #fff;
+            box-shadow: 0 4px 15px rgba(129, 243, 186, 0.4);
+        }
+
+        .btn-save:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(129, 243, 186, 0.6);
+        }
+
+        .btn-back {
+            background: rgba(0, 0, 0, 0.05);
+            color: #1a1a2e;
+            border: 1px solid rgba(0, 0, 0, 0.15);
+        }
+
+        .btn-back:hover {
+            background: rgba(0, 0, 0, 0.1);
+        }
+
+        .alert-box {
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+            text-align: center;
+            display: none;
+            font-weight: bold;
+        }
+
+        .alert-success {
+            background: rgba(129, 243, 186, 0.2);
+            color: var(--primary-green);
+            border: 1px solid var(--primary-green);
+        }
+
+        .alert-error {
+            background: rgba(239, 68, 68, 0.2);
+            color: var(--danger);
+            border: 1px solid var(--danger);
+        }
+
+        .role-indicator {
+            display: inline-block;
+            padding: 4px 12px;
+            background: #1e293b;
+            color: white;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .settings-section {
+            margin-top: 30px;
+        }
+
+        .section-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--dark-green);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border-bottom: 2px solid var(--glass-border);
+            padding-bottom: 10px;
+        }
+
+        .toggle-group {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .toggle-group:last-child {
+            border-bottom: none;
+        }
+
+        .toggle-label {
+            font-weight: 500;
+            color: #4b5563;
+        }
+
+        /* Switch Styling */
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 26px;
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 34px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        input:checked + .slider {
+            background-color: var(--primary-green);
+        }
+
+        input:focus + .slider {
+            box-shadow: 0 0 1px var(--primary-green);
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(24px);
+        }
+
+        select.form-input {
+            width: 100%;
+            padding: 12px;
+            background: rgba(0, 0, 0, 0.04);
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            border-radius: 12px;
+            color: #1a1a2e;
+            font-size: 1rem;
+            font-family: inherit;
+            cursor: pointer;
+        }
+
+        .password-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        @media (max-width: 600px) {
+            .password-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* تصحيح الوضع المظلم الشامل للإعدادات - لا أزرق ولا تمويه */
+        body.dark-mode {
+            background-color: transparent !important;
+            color: #e2fff0 !important;
+        }
+
+        /* جعل خلفية الإعدادات مطابقة تماماً لخلفية Accueil (الوضع المظلم) */
+        body.dark-mode .neural-background {
+            background: 
+                radial-gradient(circle at 50% -20%, rgba(255, 255, 255, 0.12) 0%, transparent 50%),
+                radial-gradient(circle at 15% 85%, rgba(129, 243, 186, 0.08) 0%, transparent 50%),
+                radial-gradient(circle at 85% 15%, rgba(130, 233, 164, 0.15) 0%, transparent 50%),
+                linear-gradient(to bottom, #06130b 0%, #020604 100%) !important;
+        }
+
+        @keyframes accueilPulse {
+            0%, 100% { filter: brightness(0.9) saturate(1.4) hue-rotate(0deg); }
+            33% { filter: brightness(1.1) saturate(1.7) hue-rotate(15deg); }
+            66% { filter: brightness(1.0) saturate(1.5) hue-rotate(-10deg); }
+        }
+
+        body.dark-mode .glass-card {
+            background: #0d1a12 !important; /* أخضر داكن جداً */
+            border: none !important; /* إزالة الإطار تماماً */
+            box-shadow: none !important; /* إزالة الظل تماماً */
+            backdrop-filter: none !important;
+        }
+
+        body.dark-mode h2, 
+        body.dark-mode label,
+        body.dark-mode .toggle-label {
+            color: #ffffff !important;
+        }
+
+        body.dark-mode .section-title {
+            background: none !important;
+            backdrop-filter: none !important;
+            color: #ffffff !important;
+            border: none !important; /* إزالة أي خطوط تحت العناوين */
+            padding-bottom: 10px !important;
+        }
+
+        body.dark-mode input, 
+        body.dark-mode select {
+            background: #15251c !important; /* أخضر زيتوني داكن */
+            border: none !important; /* إزالة إطار الخانات تماماً */
+            color: #ffffff !important;
+            box-shadow: none !important; /* إزالة أي ظل أزرق */
+            outline: none !important;
+        }
+
+        body.dark-mode input:focus, 
+        body.dark-mode select:focus {
+            background: #1b2e23 !important; /* تفتيح بسيط جداً عند الضغط */
+            border: none !important;
+            box-shadow: none !important;
+            outline: none !important;
+        }
+    </style>
+</head>
+
+<body>
+    <script>
+        if (localStorage.getItem('theme') === 'dark') {
+            document.body.classList.add('dark-mode');
+        }
+    </script>
+    <!-- ===== UNIVERSAL NAVBAR ===== -->
+    <div id="navbar-container"></div>
+
+    <!-- Epic Neural Background -->
+    <div class="neural-background"></div>
+
+    <!-- Floating Geometric Shapes -->
+    <div class="geometric-shapes">
+        <div class="shape"></div>
+        <div class="shape"></div>
+        <div class="shape"></div>
+        <div class="shape"></div>
+    </div>
+
+    <!-- Neural Network Lines -->
+    <div class="neural-lines">
+        <div class="neural-line"></div>
+        <div class="neural-line"></div>
+        <div class="neural-line"></div>
+    </div>
+    <div class="profile-wrapper">
+        <div class="profile-container">
+            <div class="glass-card">
+                <div class="profile-img" id="userInitial">A</div>
+                <div style="text-align: center;"><span class="role-indicator" data-i18n="Administrateur">🔐 Administrateur</span></div>
+                <h2 data-i18n="Paramètres du Profil">Paramètres du Profil</h2>
+                <p class="subtitle" data-i18n="Gestion des informations de l'administrateur">Gestion des informations de l'administrateur</p>
+                <div id="alertBox" class="alert-box"></div>
+                <form id="profileForm">
+                    <div class="settings-section">
+                        <h3 class="section-title" data-i18n=" Informations Personnelles">👤 Informations Personnelles</h3>
+                        <div class="form-group"><label data-i18n="Nom de l'administrateur">Nom de l'administrateur</label><input type="text" id="nom" required
+                                placeholder="Chargement..."></div>
+                        <div class="form-group"><label data-i18n="Numéro de contact">Numéro de contact</label><input type="tel" id="phone" required
+                                placeholder="Chargement..."></div>
+                        <div class="form-group"><label data-i18n="E-mail système">E-mail système</label><input type="email" id="email" required
+                                placeholder="Chargement..."></div>
+                    </div>
+
+                    <!-- Password Section -->
+                    <div class="settings-section">
+                        <h3 class="section-title" data-i18n="Sécurité & Mot de passe">🔐 Sécurité & Mot de passe</h3>
+                        <div class="form-group">
+                            <label data-i18n="Ancien mot de passe">Ancien mot de passe</label>
+                            <input type="password" id="oldPassword" placeholder="••••••••">
+                        </div>
+                        <div class="password-grid">
+                            <div class="form-group">
+                                <label data-i18n="Nouveau mot de passe">Nouveau mot de passe</label>
+                                <input type="password" id="newPassword" placeholder="••••••••">
+                            </div>
+                            <div class="form-group">
+                                <label data-i18n="Confirmer le mot de passe">Confirmer le mot de passe</label>
+                                <input type="password" id="confirmPassword" placeholder="••••••••">
+                            </div>
+                        </div>
+                    </div>
+
+                     <!-- Preferences Section -->
+                    <div class="settings-section">
+                        <h3 class="section-title" data-i18n="Préférences">⚙️ Préférences</h3>
+                        <div class="form-group">
+                            <label data-i18n="Langue de l'interface">Langue de l'interface</label>
+<select class="form-input" id="langSelector">
+                                <option value="fr" data-i18n="Français">Français</option>
+                                <option value="ar" data-i18n="Arabe"> Arabe</option>
+                                <option value="en" data-i18n="Anglais">Anglais </option>
+                            </select>
+                        </div>
+                        <div class="toggle-group">
+                            <span class="toggle-label" data-i18n="Mode Sombre ">Mode Sombre </span>
+                            <label class="switch">
+                                <input type="checkbox" id="darkModeToggle">
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Suggestions: Notifications & Support -->
+                    <div class="settings-section">
+                        <h3 class="section-title" data-i18n="Notifications">🔔 Notifications</h3>
+                        <div class="toggle-group">
+                            <span class="toggle-label" data-i18n="Alertes système par Email">Alertes système par Email</span>
+                            <label class="switch">
+                                <input type="checkbox" checked>
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                        <div class="toggle-group">
+                            <span class="toggle-label" data-i18n="Notifications de navigateur">Notifications de navigateur</span>
+                            <label class="switch">
+                                <input type="checkbox">
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="settings-section">
+                        <h3 class="section-title" data-i18n="Aide & Support">🤝 Aide & Support</h3>
+                        <div class="toggle-group">
+                            <span class="toggle-label" data-i18n="Envoyer des rapports d'erreurs">Envoyer des rapports d'erreurs</span>
+                            <label class="switch">
+                                <input type="checkbox" checked>
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                        <div style="margin-top: 15px;">
+                            <a href="#" style="color: var(--primary-green); text-decoration: none; font-size: 0.9rem; font-weight: 600;" data-i18n="Centre d'aide">📜 Centre d'aide</a>
+                            <span style="margin: 0 10px; color: #ccc;">|</span>
+                            <a href="#" style="color: var(--primary-green); text-decoration: none; font-size: 0.9rem; font-weight: 600;" data-i18n="Contacter le support">💬 Contacter le support</a>
+                        </div>
+                    </div>
+
+                    <div class="actions">
+                        <button type="submit" class="btn btn-save" id="saveBtn" data-i18n="Mettre à jour les paramètres">Mettre à jour les paramètres</button>
+                        <a href="../profil/index.html" class="btn btn-back" data-i18n="Annuler">Annuler</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script>
+        const token = localStorage.getItem('token');
+        const form = document.getElementById('profileForm');
+        const saveBtn = document.getElementById('saveBtn');
+        const alertBox = document.getElementById('alertBox');
+        if (!token) window.location.href = "../../../logsigin/sign.html";
+
+        function showAlert(msg, type) {
+            alertBox.innerText = msg;
+            alertBox.className = "alert-box " + (type === 'success' ? 'alert-success' : 'alert-error');
+            alertBox.style.display = 'block';
+            setTimeout(() => { alertBox.style.display = 'none'; }, 4000);
+        }
+
+        async function loadProfile() {
+            try {
+                const res = await fetch('/api/user/profile', { method: 'GET', headers: { 'x-auth-token': token } });
+                const data = await res.json();
+                if (res.ok) {
+                    document.getElementById('nom').value = data.nom || 'Admin';
+                    document.getElementById('phone').value = data.phone || '';
+                    document.getElementById('email').value = data.email || 'admin@agrosence.com';
+                    document.getElementById('userInitial').innerText = (data.nom || 'Admin').charAt(0).toUpperCase();
+                } else { 
+                    // Fallback to local storage
+                    document.getElementById('nom').value = localStorage.getItem('userName') || 'Admin';
+                    document.getElementById('userInitial').innerText = (localStorage.getItem('userName') || 'Admin').charAt(0).toUpperCase();
+                }
+            } catch (err) {
+                console.error(err);
+                document.getElementById('nom').value = localStorage.getItem('userName') || 'Admin';
+            }
+        }
+        loadProfile();
+
+        const darkModeToggle = document.getElementById('darkModeToggle');
+
+        // ضبط حالة الزر حسب الاختيار المحفوظ
+        if (localStorage.getItem('theme') === 'dark') {
+            darkModeToggle.checked = true;
+        }
+
+        // عند الضغط على الزر
+        darkModeToggle.addEventListener('change', () => {
+            if (darkModeToggle.checked) {
+                document.body.classList.add('dark-mode');
+                document.documentElement.classList.add('dark-mode');
+                localStorage.setItem('theme', 'dark');
+            } else {
+                document.body.classList.remove('dark-mode');
+                document.documentElement.classList.remove('dark-mode');
+                localStorage.setItem('theme', 'light');
+            }
+        });
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const original = saveBtn.innerText;
+            saveBtn.innerText = 'Enregistrement...'; saveBtn.disabled = true;
+
+            const newPwd = document.getElementById('newPassword').value;
+            const confirmPwd = document.getElementById('confirmPassword').value;
+
+            if (newPwd && newPwd !== confirmPwd) {
+                showAlert('Les nouveaux mots de passe ne correspondent pas', 'error');
+                saveBtn.innerText = original; saveBtn.disabled = false;
+                return;
+            }
+
+            const updateData = { 
+                nom: document.getElementById('nom').value, 
+                phone: document.getElementById('phone').value, 
+                email: document.getElementById('email').value 
+            };
+            try {
+                const res = await fetch('/api/user/profile', { 
+                    method: 'PUT', 
+                    headers: { 'Content-Type': 'application/json', 'x-auth-token': token }, 
+                    body: JSON.stringify(updateData) 
+                });
+                const data = await res.json();
+
+                localStorage.setItem('userName', updateData.nom);
+                document.getElementById('userInitial').innerText = updateData.nom.charAt(0).toUpperCase();
+
+                if (res.ok) {
+                    showAlert(data.message || 'Paramètres mis à jour avec succès', 'success');
+                } else {
+                    showAlert('Modifié localement (Mode hors-ligne)', 'success');
+                }
+            } catch (err) {
+                showAlert('Erreur lors de l\'enregistrement, mais pris en compte localement', 'success');
+            }
+            finally { saveBtn.innerText = original; saveBtn.disabled = false; }
+        });
+    </script>
+    <script src="/components/navbar.js"></script>
+</body>
+
+</html>

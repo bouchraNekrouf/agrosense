@@ -1,0 +1,1101 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Admin — Agrosence</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="/components/navbar.js"></script>
+    <link rel="stylesheet" href="../../style.css">
+    <style>
+        .dash{max-width:1300px;margin:0 auto;padding:10px 40px 30px;font-family:'Inter',sans-serif; min-height: calc(100vh - 80px); display: flex; flex-direction: column;}
+        .dash-content-wrapper { flex: 1; }
+
+        /* Fade in */
+        .fade-in{opacity:0;transform:translateY(28px);transition:all .7s ease}
+        .fade-in.v{opacity:1;transform:translateY(0)}
+
+        /* Header */
+        .dash-head{margin-bottom:30px}
+        .dash-head h1{font-size:2.2rem;font-weight:800;background:linear-gradient(135deg,#1a1a2e,#166534,#15803d);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:5px}
+        .dash-head p{color:rgba(0,0,0,.42);font-size:1rem}
+
+        /* Stats row */
+        .s-row{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:28px}
+        .s-card{background:rgba(255,255,255,.8);backdrop-filter:blur(18px);border:2px solid rgba(21,128,61,.12);border-radius:18px;padding:22px 20px;display:flex;align-items:center;gap:15px;transition:all .35s ease;box-shadow:0 2px 12px rgba(0,0,0,.03)}
+        .s-card:hover{transform:translateY(-4px);border-color:rgba(21,128,61,.3);box-shadow:0 10px 30px rgba(0,0,0,.06)}
+        .s-card .ic{width:52px;height:52px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:1.5rem;flex-shrink:0}
+        .ic.g{background:rgba(21,128,61,.1)}.ic.b{background:rgba(59,130,246,.1)}.ic.o{background:rgba(245,158,11,.1)}.ic.p{background:rgba(139,92,246,.1)}
+        .s-card .nm{font-size:1.7rem;font-weight:800;color:#1a1a2e;line-height:1.2}
+        .s-card .lb{font-size:.78rem;color:rgba(0,0,0,.4);font-weight:500}
+
+        /* Grid 2 cols */
+        .g2{display:grid;grid-template-columns:1.4fr 1fr;gap:20px;margin-bottom:22px}
+
+        /* Glass panel */
+        .panel{background:rgba(255,255,255,.8);backdrop-filter:blur(18px);border:2px solid rgba(21,128,61,.1);border-radius:20px;padding:26px;box-shadow:0 3px 18px rgba(0,0,0,.03)}
+        .panel-title{font-size:1.05rem;font-weight:700;color:#1a1a2e;margin-bottom:18px;display:flex;align-items:center;gap:8px}
+        .panel-title .dot{width:8px;height:8px;border-radius:50%;background:#15803d;box-shadow:0 0 8px rgba(21,128,61,.4)}
+
+        /* Chart area */
+        .chart-box{position:relative;height:260px;border-radius:14px;overflow:hidden;background:rgba(21,128,61,.02);border:1px solid rgba(21,128,61,.06);padding:16px}
+        .chart-bar-row{display:flex;align-items:flex-end;gap:10px;height:100%;padding-top:10px}
+        .chart-col{flex:1;display:flex;flex-direction:column;align-items:center;gap:6px}
+        .chart-bar{width:100%;border-radius:8px 8px 0 0;transition:height .8s cubic-bezier(.16,1,.3,1);background:linear-gradient(180deg,#15803d,#166534);position:relative;min-height:4px}
+        .chart-bar:hover{filter:brightness(1.15);box-shadow:0 -4px 15px rgba(21,128,61,.2)}
+        .chart-bar .val{position:absolute;top:-22px;left:50%;transform:translateX(-50%);font-size:.7rem;font-weight:700;color:#15803d;white-space:nowrap}
+        .chart-label{font-size:.68rem;color:rgba(0,0,0,.35);font-weight:600;text-align:center}
+
+        /* Donut chart */
+        .donut-wrap{display:flex;align-items:center;justify-content:center;gap:30px;height:100%}
+        .donut-svg{width:160px;height:160px}
+        .donut-legend{display:flex;flex-direction:column;gap:14px}
+        .legend-item{display:flex;align-items:center;gap:10px;font-size:.88rem;color:#1a1a2e;font-weight:500}
+        .legend-dot{width:12px;height:12px;border-radius:4px;flex-shrink:0}
+
+        /* Recent list */
+        .recent-list{display:flex;flex-direction:column;gap:10px;max-height:310px;overflow-y:auto}
+        .recent-item{display:flex;align-items:center;gap:13px;padding:12px 14px;border-radius:14px;border:1px solid rgba(0,0,0,.04);transition:all .25s ease;background:rgba(255,255,255,.5)}
+        .recent-item:hover{background:rgba(21,128,61,.04);border-color:rgba(21,128,61,.12)}
+        .recent-item .av{width:38px;height:38px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.85rem;color:#fff;flex-shrink:0}
+        .av.f{background:linear-gradient(135deg,#15803d,#166534)}.av.e{background:linear-gradient(135deg,#2563eb,#1d4ed8)}
+        .recent-item .ri-info{flex:1;min-width:0}
+        .ri-name{font-weight:600;font-size:.88rem;color:#1a1a2e;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+        .ri-sub{font-size:.75rem;color:rgba(0,0,0,.35);margin-top:1px}
+        .ri-time{font-size:.7rem;color:rgba(0,0,0,.28);font-weight:500;flex-shrink:0}
+
+        /* Quick links */
+        .quick-links{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:4px}
+        .q-link{display:flex;align-items:center;gap:12px;padding:16px 18px;border-radius:14px;background:rgba(255,255,255,.6);border:1.5px solid rgba(21,128,61,.1);text-decoration:none;color:#1a1a2e;transition:all .3s ease;font-size:.9rem;font-weight:600}
+        .q-link:hover{border-color:rgba(21,128,61,.35);background:rgba(21,128,61,.04);transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,0,0,.04)}
+        .q-link .ql-icon{font-size:1.3rem}
+
+        /* Top wilayas */
+        .wilaya-list{display:flex;flex-direction:column;gap:10px}
+        .wilaya-row{display:flex;align-items:center;gap:12px}
+        .wilaya-row .wname{font-size:.85rem;font-weight:600;color:#1a1a2e;width:130px;flex-shrink:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+        .wilaya-row .wbar-bg{flex:1;height:10px;background:rgba(21,128,61,.06);border-radius:6px;overflow:hidden}
+        .wilaya-row .wbar{height:100%;border-radius:6px;background:linear-gradient(90deg,#15803d,#81f3ba);transition:width 1s cubic-bezier(.16,1,.3,1)}
+        .wilaya-row .wcount{font-size:.78rem;font-weight:700;color:#15803d;width:32px;text-align:right}
+
+        /* Footer */
+        .dash-footer{text-align:center;padding:30px;color:rgba(0,0,0,.25);font-size:.82rem;margin-top:10px}
+        .dash-footer span{color:#15803d;font-weight:600}
+
+        /* Hero Section */
+        .hero-section {
+            padding: 80px 20px 40px;
+            text-align: center;
+            position: relative;
+        }
+        .hero-greeting {
+            font-size: 1.1rem;
+            color: rgba(0, 0, 0, 0.45);
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            margin-bottom: 12px;
+            font-weight: 500;
+        }
+        .hero-name {
+            font-size: 4.2rem;
+            font-weight: 800;
+            line-height: 1.1;
+            background: linear-gradient(135deg, #15803d, #166534, #1a1a2e);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 20px;
+            text-transform: capitalize;
+        }
+        .hero-tagline {
+            font-size: 1.2rem;
+            color: rgba(0, 0, 0, 0.55);
+            max-width: 700px;
+            margin: 0 auto 30px;
+            line-height: 1.6;
+        }
+        .hero-tagline .highlight {
+            color: #15803d;
+            font-weight: 600;
+        }
+
+        /* Hero Section */
+        .hero-section {
+            padding: 80px 20px 40px;
+            text-align: center;
+            position: relative;
+            transition: all 0.5s ease;
+        }
+        .hero-section.centered {
+            min-height: calc(100vh - 250px);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .hero-greeting {
+            font-size: 1.1rem;
+            color: rgba(0, 0, 0, 0.45);
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            margin-bottom: 12px;
+            font-weight: 500;
+        }
+        .hero-name {
+            font-size: 4.2rem;
+            font-weight: 800;
+            line-height: 1.1;
+            background: linear-gradient(135deg, #15803d, #166534, #1a1a2e);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 20px;
+            text-transform: capitalize;
+        }
+        .hero-tagline {
+            font-size: 1.2rem;
+            color: rgba(0, 0, 0, 0.55);
+            max-width: 700px;
+            margin: 0 auto 30px;
+            line-height: 1.6;
+        }
+        .hero-tagline .highlight {
+            color: #15803d;
+            font-weight: 600;
+        }
+
+        /* Responsive */
+        @media(max-width:1024px){.s-row{grid-template-columns:repeat(2,1fr)}.g2{grid-template-columns:1fr}}
+        @media(max-width:768px){
+            .dash{padding:18px 16px 40px}
+            .hero-name { font-size: 2.8rem; }
+            .hero-section.centered { min-height: calc(100vh - 200px); }
+            .dash-head h1{font-size:1.6rem}
+            .s-row{grid-template-columns:1fr 1fr;gap:10px}
+            .s-card{padding:16px 14px}.s-card .nm{font-size:1.3rem}.quick-links{grid-template-columns:1fr}
+        }
+        @media(max-width:480px){.s-row{grid-template-columns:1fr}}        /* وضع مظلم فاخر (Dark Green Neural Theme) */
+        body.dark-mode {
+            background: radial-gradient(circle at 15% 85%, rgba(129, 243, 186, 0.08) 0%, transparent 50%),
+                        radial-gradient(circle at 85% 15%, rgba(130, 233, 164, 0.15) 0%, transparent 50%),
+                        linear-gradient(to bottom, #06130b 0%, #0a1910 100%) !important;
+            color: #ffffff !important;
+        }
+        body.dark-mode .neural-background {
+            display: none !important;
+        }
+        body.dark-mode .dash-head h1 {
+            background: linear-gradient(135deg, #ffffff, #81f3ba, #10b981) !important;
+            -webkit-background-clip: text !important;
+            -webkit-text-fill-color: transparent !important;
+            background-clip: text !important;
+        }
+        body.dark-mode .hero-name {
+            background: none !important;
+            -webkit-background-clip: initial !important;
+            -webkit-text-fill-color: #ffffff !important;
+            background-clip: initial !important;
+            color: #ffffff !important;
+        }
+        body.dark-mode .dash-head h2 {
+            color: #ffffff !important;
+        }
+        body.dark-mode .dash-head p,
+        body.dark-mode .hero-greeting,
+        body.dark-mode .hero-tagline {
+            color: #ffffff !important;
+        }
+        body.dark-mode .hero-tagline .highlight {
+            color: #81f3ba !important;
+        }
+        body.dark-mode .s-card {
+            background: rgba(15, 35, 25, 0.85) !important;
+            border-color: rgba(129, 243, 186, 0.2) !important;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4) !important;
+        }
+        body.dark-mode .s-card:hover {
+            border-color: rgba(129, 243, 186, 0.45) !important;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5) !important;
+            transform: translateY(-4px) !important;
+        }
+        body.dark-mode .s-card .nm {
+            color: #ffffff !important;
+        }
+        body.dark-mode .s-card .lb {
+            color: rgba(255, 255, 255, 0.5) !important;
+        }
+        body.dark-mode .panel {
+            background: rgba(15, 35, 25, 0.85) !important;
+            border-color: rgba(129, 243, 186, 0.15) !important;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4) !important;
+        }
+        body.dark-mode .panel-title {
+            color: #ffffff !important;
+        }
+        body.dark-mode .panel-title .dot {
+            background: #81f3ba !important;
+            box-shadow: 0 0 8px rgba(129, 243, 186, 0.6) !important;
+        }
+        body.dark-mode .chart-box {
+            background: rgba(129, 243, 186, 0.03) !important;
+            border-color: rgba(129, 243, 186, 0.1) !important;
+        }
+        body.dark-mode .chart-bar .val {
+            color: #81f3ba !important;
+        }
+        body.dark-mode .chart-label {
+            color: rgba(255, 255, 255, 0.5) !important;
+        }
+        body.dark-mode .legend-item {
+            color: #ffffff !important;
+        }
+        body.dark-mode .recent-item {
+            background: rgba(20, 48, 32, 0.5) !important;
+            border-color: rgba(129, 243, 186, 0.1) !important;
+        }
+        body.dark-mode .recent-item:hover {
+            background: rgba(129, 243, 186, 0.1) !important;
+            border-color: rgba(129, 243, 186, 0.25) !important;
+        }
+        body.dark-mode .ri-name {
+            color: #ffffff !important;
+        }
+        body.dark-mode .ri-sub {
+            color: rgba(255, 255, 255, 0.6) !important;
+        }
+        body.dark-mode .ri-time {
+            color: rgba(255, 255, 255, 0.4) !important;
+        }
+        body.dark-mode .q-link {
+            background: rgba(20, 48, 32, 0.5) !important;
+            border-color: rgba(129, 243, 186, 0.15) !important;
+            color: #ffffff !important;
+        }
+        body.dark-mode .q-link:hover {
+            background: rgba(129, 243, 186, 0.1) !important;
+            border-color: rgba(129, 243, 186, 0.35) !important;
+            transform: translateY(-2px) !important;
+        }
+        body.dark-mode .wilaya-row .wname {
+            color: #ffffff !important;
+        }
+        body.dark-mode .wilaya-row .wbar-bg {
+            background: rgba(255, 255, 255, 0.08) !important;
+        }
+        body.dark-mode .wilaya-row .wbar {
+            background: linear-gradient(90deg, #15803d, #81f3ba) !important;
+        }
+        body.dark-mode .wilaya-row .wcount {
+            color: #81f3ba !important;
+        }
+        body.dark-mode .dash-footer {
+            color: rgba(255, 255, 255, 0.4) !important;
+        }
+        body.dark-mode .dash-footer span {
+            color: #81f3ba !important;
+        }
+
+        /* AI Model Metrics Custom CSS */
+        .metrics-cards-row {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            margin-bottom: 20px;
+            margin-top: 10px;
+        }
+        .metric-card {
+            background: rgba(255, 255, 255, 0.95);
+            border: 2px solid rgba(21, 128, 61, 0.1);
+            border-radius: 16px;
+            padding: 18px 20px;
+            transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.02);
+            position: relative;
+            overflow: hidden;
+        }
+        .metric-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: #15803d;
+            opacity: 0.7;
+        }
+        .metric-card:hover {
+            transform: translateY(-4px);
+            border-color: rgba(21, 128, 61, 0.3);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+        }
+        .metric-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+        .metric-card-title {
+            font-size: 0.78rem;
+            font-weight: 700;
+            color: rgba(0, 0, 0, 0.45);
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+        }
+        .metric-card-icon {
+            font-size: 1.3rem;
+            opacity: 0.8;
+        }
+        .metric-card-value {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: #1a1a2e;
+            line-height: 1.2;
+            margin-bottom: 4px;
+        }
+        .metric-card-subtitle {
+            font-size: 0.75rem;
+            color: rgba(0, 0, 0, 0.4);
+            font-weight: 500;
+        }
+
+        body.dark-mode .metric-card {
+            background: rgba(15, 35, 25, 0.85) !important;
+            border-color: rgba(129, 243, 186, 0.18) !important;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3) !important;
+        }
+        body.dark-mode .metric-card::before {
+            background: #81f3ba;
+        }
+        body.dark-mode .metric-card:hover {
+            border-color: rgba(129, 243, 186, 0.45) !important;
+            box-shadow: 0 12px 35px rgba(0, 0, 0, 0.45) !important;
+        }
+        body.dark-mode .metric-card-title {
+            color: rgba(255, 255, 255, 0.5) !important;
+        }
+        body.dark-mode .metric-card-value {
+            color: #ffffff !important;
+        }
+        body.dark-mode .metric-card-subtitle {
+            color: rgba(255, 255, 255, 0.4) !important;
+        }
+
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: 1fr 1.3fr;
+            gap: 24px;
+            margin-top: 5px;
+        }
+        .metrics-chart-container {
+            display: grid;
+            grid-template-columns: auto 1fr;
+            grid-template-rows: 1fr auto;
+            gap: 12px;
+            height: 250px;
+            background: rgba(21, 128, 61, 0.02);
+            border: 2px solid rgba(21, 128, 61, 0.08);
+            border-radius: 18px;
+            padding: 18px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.01);
+        }
+        body.dark-mode .metrics-chart-container {
+            background: rgba(129, 243, 186, 0.03) !important;
+            border-color: rgba(129, 243, 186, 0.15) !important;
+        }
+        .metrics-y-axis {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: flex-end;
+            font-size: 0.72rem;
+            color: rgba(0, 0, 0, 0.4);
+            padding-right: 10px;
+            height: calc(100% - 10px);
+            border-right: 1px solid rgba(0, 0, 0, 0.06);
+        }
+        body.dark-mode .metrics-y-axis {
+            color: rgba(255, 255, 255, 0.5) !important;
+            border-right-color: rgba(255, 255, 255, 0.1) !important;
+        }
+        .metrics-chart-area {
+            position: relative;
+            height: calc(100% - 10px);
+        }
+        .metrics-chart-bars {
+            display: flex;
+            justify-content: space-around;
+            align-items: flex-end;
+            height: 100%;
+        }
+        .metrics-bar-col {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 25%;
+            height: 100%;
+            justify-content: flex-end;
+        }
+        .metrics-bar-wrapper {
+            width: 100%;
+            height: calc(100% - 20px);
+            display: flex;
+            align-items: flex-end;
+            background: rgba(0, 0, 0, 0.03);
+            border-radius: 8px;
+            position: relative;
+            overflow: visible;
+        }
+        body.dark-mode .metrics-bar-wrapper {
+            background: rgba(255, 255, 255, 0.03) !important;
+        }
+        .metrics-bar {
+            width: 100%;
+            border-radius: 8px 8px 0 0;
+            background: linear-gradient(180deg, #81f3ba, #10b981, #059669);
+            position: relative;
+            transition: height 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+            min-height: 4px;
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.25);
+        }
+        .metrics-bar:hover {
+            filter: brightness(1.1);
+            box-shadow: 0 4px 18px rgba(16, 185, 129, 0.45);
+        }
+        .metrics-bar-val {
+            position: absolute;
+            top: -28px;
+            left: 50%;
+            transform: translateX(-50%) translateY(5px);
+            font-size: 0.72rem;
+            font-weight: 750;
+            color: #ffffff;
+            background: #15803d;
+            padding: 3px 6px;
+            border-radius: 6px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+            opacity: 0;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            pointer-events: none;
+            white-space: nowrap;
+        }
+        body.dark-mode .metrics-bar-val {
+            color: #06130b !important;
+            background: #81f3ba !important;
+        }
+        .metrics-bar:hover .metrics-bar-val {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+        .metrics-bar-label {
+            font-size: 0.72rem;
+            color: rgba(0, 0, 0, 0.45);
+            font-weight: 600;
+            margin-top: 8px;
+            white-space: nowrap;
+        }
+        body.dark-mode .metrics-bar-label {
+            color: rgba(255, 255, 255, 0.6) !important;
+        }
+        .metrics-legend {
+            grid-column: span 2;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 4px;
+        }
+        .legend-color-box {
+            width: 25px;
+            height: 12px;
+            background: linear-gradient(180deg, #81f3ba, #10b981);
+            border-radius: 3px;
+        }
+        .legend-text {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: rgba(0, 0, 0, 0.5);
+        }
+        body.dark-mode .legend-text {
+            color: rgba(255, 255, 255, 0.6) !important;
+        }
+
+        .metrics-info-container {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            justify-content: space-between;
+        }
+        .metrics-test-percent {
+            font-size: 0.85rem;
+            color: rgba(0, 0, 0, 0.5);
+            font-weight: 500;
+        }
+        body.dark-mode .metrics-test-percent {
+            color: rgba(255, 255, 255, 0.6) !important;
+        }
+        .metrics-main-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #15803d;
+            line-height: 1.4;
+        }
+        body.dark-mode .metrics-main-title {
+            color: #81f3ba !important;
+        }
+        .metrics-sub-title {
+            font-size: 0.92rem;
+            font-weight: 700;
+            color: #2563eb;
+            margin-bottom: 2px;
+        }
+        body.dark-mode .metrics-sub-title {
+            color: #60a5fa !important;
+        }
+        
+        .matrix-wrapper {
+            display: grid;
+            grid-template-columns: 85px 85px 85px 85px;
+            gap: 8px;
+            align-items: center;
+            margin: 4px 0;
+        }
+        .matrix-header-row, .matrix-body-row, .matrix-footer-row {
+            display: contents;
+        }
+        .matrix-corner {
+            height: 100%;
+        }
+        .matrix-header-label {
+            text-align: center;
+            font-size: 0.78rem;
+            font-weight: 600;
+            color: #4b5563;
+        }
+        body.dark-mode .matrix-header-label {
+            color: rgba(255, 255, 255, 0.7) !important;
+        }
+        .matrix-side-label {
+            font-size: 0.78rem;
+            color: #4b5563;
+        }
+        body.dark-mode .matrix-side-label {
+            color: rgba(255, 255, 255, 0.7) !important;
+        }
+        .matrix-side-label.text-adapte {
+            color: #0d9488;
+            text-align: right;
+        }
+        body.dark-mode .matrix-side-label.text-adapte {
+            color: #2dd4bf !important;
+        }
+        .matrix-side-label.text-inadapte {
+            color: #0d9488;
+            text-align: right;
+        }
+        body.dark-mode .matrix-side-label.text-inadapte {
+            color: #2dd4bf !important;
+        }
+        .matrix-cell {
+            background: rgba(255, 255, 255, 0.9);
+            border: 1px solid rgba(0, 0, 0, 0.06);
+            padding: 6px 10px;
+            text-align: center;
+            font-size: 0.78rem;
+            border-radius: 8px;
+            color: #1f2937;
+            transition: all 0.25s ease;
+        }
+        body.dark-mode .matrix-cell {
+            background: rgba(20, 48, 32, 0.6) !important;
+            border-color: rgba(129, 243, 186, 0.15) !important;
+            color: #ffffff !important;
+        }
+        .matrix-cell.tp-cell, .matrix-cell.tn-cell {
+            background: rgba(34, 197, 94, 0.08);
+            border: 1.5px solid rgba(34, 197, 94, 0.2);
+            color: #15803d;
+            font-weight: 700;
+        }
+        body.dark-mode .matrix-cell.tp-cell, body.dark-mode .matrix-cell.tn-cell {
+            background: rgba(34, 197, 94, 0.12) !important;
+            border-color: rgba(129, 243, 186, 0.3) !important;
+            color: #81f3ba !important;
+        }
+        .matrix-cell.fp-cell, .matrix-cell.fn-cell {
+            background: rgba(239, 68, 68, 0.06);
+            border: 1.5px solid rgba(239, 68, 68, 0.15);
+            color: #dc2626;
+        }
+        body.dark-mode .matrix-cell.fp-cell, body.dark-mode .matrix-cell.fn-cell {
+            background: rgba(239, 68, 68, 0.1) !important;
+            border-color: rgba(239, 68, 68, 0.25) !important;
+            color: #f87171 !important;
+        }
+        .matrix-cell.font-bold {
+            font-weight: 700;
+        }
+        .matrix-footer-label {
+            grid-column: span 2;
+            text-align: center;
+            font-size: 0.78rem;
+            color: #2563eb;
+            font-weight: 600;
+            margin-top: 4px;
+        }
+        body.dark-mode .matrix-footer-label {
+            color: #60a5fa !important;
+        }
+
+        .metrics-equations {
+            font-family: monospace;
+            font-size: 0.78rem;
+            color: #4b5563;
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+            margin-top: 2px;
+        }
+        body.dark-mode .metrics-equations {
+            color: rgba(255, 255, 255, 0.5) !important;
+        }
+        .text-primary-color {
+            color: #2563eb;
+        }
+        body.dark-mode .text-primary-color {
+            color: #60a5fa !important;
+        }
+
+        @media(max-width:768px) {
+            .metrics-cards-row {
+                grid-template-columns: 1fr;
+                gap: 12px;
+            }
+            .metrics-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            .matrix-wrapper {
+                grid-template-columns: 80px 80px 80px 80px;
+                font-size: 0.75rem;
+            }
+            .matrix-cell {
+                padding: 6px 8px;
+                font-size: 0.75rem;
+            }
+            .matrix-side-label, .matrix-header-label, .matrix-footer-label {
+                font-size: 0.75rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <script>
+        if (localStorage.getItem('theme') === 'dark') {
+            document.body.classList.add('dark-mode');
+        }
+    </script>
+    <div class="neural-background"></div>
+    <div class="geometric-shapes"><div class="shape"></div><div class="shape"></div><div class="shape"></div><div class="shape"></div></div>
+    <div class="neural-lines"><div class="neural-line"></div><div class="neural-line"></div><div class="neural-line"></div></div>
+    <div id="navbar-container"></div>
+
+    <div class="dash">
+        <div class="dash-content-wrapper">
+            <!-- Hero Section (Profile View) -->
+            <section class="hero-section fade-in" id="hero-section">
+                <div class="hero-greeting" data-i18n="Espace Administrateur Agrosence">Espace Administrateur Agrosence</div>
+                <h1 class="hero-name" id="welcomeName" data-i18n="Chargement...">Chargement...</h1>
+                <p class="hero-tagline" data-i18n="Bienvenue dans votre" data-i18n="— supervisez la plateforme, 
+                    gérez les utilisateurs et assurez le bon fonctionnement d'Agrosence ">
+                    Bienvenue dans votre <span class="highlight" data-i18n="centre de contrôle">centre de contrôle</span> — supervisez la plateforme, 
+                    gérez les utilisateurs et assurez le bon fonctionnement d'Agrosence 🔐
+                </p>
+            </section>
+<br><br>
+<br>
+<br>
+
+<br>
+<br>
+            <!-- Dashboard Specific Content (Stats/Charts) -->
+            <div id="dashboard-content" style="display: none;">
+            <!-- Stats Title -->
+            <div class="dash-head fade-in" style="margin-top: 5px;">
+                <h2 style="font-size: 1.5rem; font-weight: 700; color: #1a1a2e; margin-bottom: 5px;" data-i18n="Tableau de Bord">📊 Tableau de Bord</h2>
+                <p data-i18n="Vue d'ensemble de la plateforme">Vue d'ensemble de la plateforme</p>
+            </div>
+            <!-- Stats -->
+            <div class="s-row fade-in">
+                <div class="s-card"><div class="ic g">👤</div><div><div class="nm" id="stTotal">—</div><div class="lb"  data-i18n="Total inscrits">Total inscrits</div></div></div>
+                <div class="s-card"><div class="ic g">🚜</div><div><div class="nm" id="stFarm">—</div><div class="lb" data-i18n="Agriculteurs">Agriculteurs</div></div></div>
+                <div class="s-card"><div class="ic b">👨‍🔬</div><div><div class="nm" id="stExp">—</div><div class="lb" data-i18n="Experts">Experts</div></div></div>
+                <div class="s-card"><div class="ic p">📦</div><div><div class="nm" id="stOrders">—</div><div class="lb" data-i18n="Commandes">Commandes</div></div></div>
+            </div>
+
+            <!-- Row: Bar Chart + Donut -->
+            <div class="g2 fade-in">
+                <div class="panel">
+                    <div class="panel-title" data-i18n="Boutiques par Spécialité"><div class="dot"></div>Boutiques par Spécialité</div>
+                    <div class="chart-box"><div class="chart-bar-row" id="boutiqueChart"></div></div>
+                </div>
+                <div class="panel">
+                    <div class="panel-title" data-i18n="Répartition des rôles"><div class="dot"></div>Répartition des rôles</div>
+                    <div class="chart-box" style="border:none;background:none">
+                        <div class="donut-wrap">
+                            <svg class="donut-svg" viewBox="0 0 42 42">
+                                <circle cx="21" cy="21" r="15.9" fill="none" stroke="rgba(21,128,61,.08)" stroke-width="5"/>
+                                <circle id="donutFarm" cx="21" cy="21" r="15.9" fill="none" stroke="#15803d" stroke-width="5" stroke-dasharray="0 100" stroke-dashoffset="25" stroke-linecap="round" style="transition:stroke-dasharray 1.2s ease"/>
+                                <circle id="donutExp" cx="21" cy="21" r="15.9" fill="none" stroke="#2563eb" stroke-width="5" stroke-dasharray="0 100" stroke-dashoffset="25" stroke-linecap="round" style="transition:stroke-dasharray 1.2s ease"/>
+                            </svg>
+                            <div class="donut-legend">
+                                <div class="legend-item"><div class="legend-dot" style="background:#15803d"></div><span id="lgFarm" data-i18n="Agriculteurs: —">Agriculteurs: —</span></div>
+                                <div class="legend-item"><div class="legend-dot" style="background:#2563eb"></div><span id="lgExp" data-i18n=">Experts: —">Experts: —</span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Row: AI Model Performance Metrics -->
+            <div class="panel fade-in" style="margin-bottom: 22px;">
+                <div class="panel-title" data-i18n="Performances du Modèle d'IA"><div class="dot"></div>Performances du Modèle d'IA</div>
+                
+                <div class="metrics-cards-row">
+                    <!-- Accuracy Card -->
+                    <div class="metric-card">
+                        <div class="metric-card-header">
+                            <span class="metric-card-title" data-i18n="Précision (Accuracy)">Précision (Accuracy)</span>
+                            <span class="metric-card-icon">🎯</span>
+                        </div>
+                        <div id="cardAccuracy" class="metric-card-value">0%</div>
+                        <div class="metric-card-subtitle" data-i18n="Global model performance">Performance globale du modèle</div>
+                    </div>
+                    <!-- Sensitivity Card -->
+                    <div class="metric-card">
+                        <div class="metric-card-header">
+                            <span class="metric-card-title" data-i18n="Sensibilité (Sensitivity)">Sensibilité (Sensitivity)</span>
+                            <span class="metric-card-icon">📈</span>
+                        </div>
+                        <div id="cardSensitivity" class="metric-card-value">0%</div>
+                        <div class="metric-card-subtitle" data-i18n="True positive rate">Taux de vrais positifs</div>
+                    </div>
+                    <!-- Specificity Card -->
+                    <div class="metric-card">
+                        <div class="metric-card-header">
+                            <span class="metric-card-title" data-i18n="Spécificité (Specificity)">Spécificité (Specificity)</span>
+                            <span class="metric-card-icon">🔍</span>
+                        </div>
+                        <div id="cardSpecificity" class="metric-card-value">0%</div>
+                        <div class="metric-card-subtitle" data-i18n="True negative rate">Taux de vrais négatifs</div>
+                    </div>
+                </div>
+
+                <div class="metrics-grid">
+                    <!-- Left Column: Bar Chart -->
+                    <div class="metrics-chart-container">
+                        <div class="metrics-y-axis">
+                            <span>100</span>
+                            <span>80</span>
+                            <span>60</span>
+                            <span>40</span>
+                            <span>20</span>
+                            <span>0</span>
+                        </div>
+                        <div class="metrics-chart-area">
+                            <div class="metrics-chart-bars">
+                                <!-- Bar 1: Sensitivity -->
+                                <div class="metrics-bar-col">
+                                    <div class="metrics-bar-wrapper">
+                                        <div id="barSensitivity" class="metrics-bar" style="height: 0%;">
+                                            <div id="valSensitivity" class="metrics-bar-val">0%</div>
+                                        </div>
+                                    </div>
+                                    <span class="metrics-bar-label">Sensitivity</span>
+                                </div>
+                                <!-- Bar 2: Specificity -->
+                                <div class="metrics-bar-col">
+                                    <div class="metrics-bar-wrapper">
+                                        <div id="barSpecificity" class="metrics-bar" style="height: 0%;">
+                                            <div id="valSpecificity" class="metrics-bar-val">0%</div>
+                                        </div>
+                                    </div>
+                                    <span class="metrics-bar-label">Specificity</span>
+                                </div>
+                                <!-- Bar 3: Accuracy -->
+                                <div class="metrics-bar-col">
+                                    <div class="metrics-bar-wrapper">
+                                        <div id="barAccuracy" class="metrics-bar" style="height: 0%;">
+                                            <div id="valAccuracy" class="metrics-bar-val">0%</div>
+                                        </div>
+                                    </div>
+                                    <span class="metrics-bar-label">Accuracy</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="metrics-legend">
+                            <span class="legend-color-box"></span>
+                            <span class="legend-text">Model Metrics</span>
+                        </div>
+                    </div>
+
+                    <!-- Right Column: Confusion Matrix & Info -->
+                    <div class="metrics-info-container">
+                        <div class="metrics-test-percent" style="margin-bottom: 8px; line-height: 1.5;">
+                            Algorithme : <strong id="metricsAlgorithm">Random Forest</strong> <br>
+                            Répartition : Train <strong id="metricsTrainPct">80%</strong> | Val <strong id="metricsValPct">5%</strong> | Test <strong id="metricsTestPct">15%</strong>
+                        </div>
+                        <h3 class="metrics-main-title">Analyse complète des performances du modèle d'apprentissage automatique d'Agrosence</h3>
+                        <h4 class="metrics-sub-title">Meilleur Modèle</h4>
+                        
+                        <!-- Confusion Matrix Table -->
+                        <div class="matrix-wrapper">
+                            <div class="matrix-header-row">
+                                <div class="matrix-corner"></div>
+                                <div class="matrix-header-label">Inadapté</div>
+                                <div class="matrix-header-label">Adapté</div>
+                                <div class="matrix-corner"></div>
+                            </div>
+                            <div class="matrix-body-row">
+                                <div class="matrix-side-label font-bold text-adapte">Adapté</div>
+                                <div class="matrix-cell">FN = <span id="matrixFN">2.0</span></div>
+                                <div class="matrix-cell font-bold">TP = <span id="matrixTP">695.0</span></div>
+                                <div class="matrix-side-label font-bold text-adapte" style="text-align: left;">Adapté</div>
+                            </div>
+                            <div class="matrix-body-row">
+                                <div class="matrix-side-label font-bold text-inadapte">Inadapté</div>
+                                <div class="matrix-cell font-bold">TN = <span id="matrixTN">300.0</span></div>
+                                <div class="matrix-cell">FP = <span id="matrixFP">3.0</span></div>
+                                <div class="matrix-side-label font-bold text-inadapte" style="text-align: left;">Inadapté</div>
+                            </div>
+                            <div class="matrix-footer-row">
+                                <div class="matrix-corner"></div>
+                                <div class="matrix-footer-label">Matrice de confusion - Culture Adaptée vs Inadaptée</div>
+                                <div class="matrix-corner"></div>
+                            </div>
+                        </div>
+
+                        <!-- Mathematical Equations -->
+                        <div class="metrics-equations">
+                            <div class="eq-row">Accuracy = (TP + TN) / (TP + FP + FN + TN)</div>
+                            <div class="eq-row">Sensitivity = TP / (TP + FN)</div>
+                            <div class="eq-row">Specificity = TN / (TN + FP)</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Row: Recent + Quick/Wilayas -->
+            <div class="g2 fade-in">
+                <div class="panel">
+                    <div class="panel-title"><div class="dot"></div>Derniers inscrits</div>
+                    <div class="recent-list" id="recentList"><p style="color:rgba(0,0,0,.3);text-align:center;padding:30px">Chargement...</p></div>
+                </div>
+                <div class="panel">
+                    <div class="panel-title"><div class="dot"></div>Top Wilayas</div>
+                    <div class="wilaya-list" id="wilayaList"><p style="color:rgba(0,0,0,.3);text-align:center;padding:30px">Chargement...</p></div>
+
+                    <div style="margin-top:22px">
+                        <div class="panel-title" style="margin-bottom:12px"><div class="dot"></div>Accès rapide</div>
+                        <div class="quick-links">
+                            <a href="/apres-inscription/admin/utilisateurs.html" class="q-link"><span class="ql-icon">👥</span>Utilisateurs</a>
+                            <a href="/apres-inscription/admin/index.html?view=dashboard" class="q-link"><span class="ql-icon">📊</span>Actualiser</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="dash-footer">&copy; 2026 <span>Agrosence</span> — Panneau d'administration 🌱</div>
+    </div>
+
+    <script>
+    (async function(){
+        const token = localStorage.getItem('token');
+        if(!token){window.location.href='../../logsigin/sign.html';return}
+
+        // View control
+        const urlParams = new URLSearchParams(window.location.search);
+        const isDashboardView = urlParams.get('view') === 'dashboard';
+        const dashContent = document.getElementById('dashboard-content');
+        const heroSection = document.getElementById('hero-section');
+        
+        if (isDashboardView && dashContent) {
+            dashContent.style.display = 'block';
+            if (heroSection) heroSection.style.display = 'none';
+        } else if (heroSection) {
+            heroSection.classList.add('centered');
+        }
+
+        // Scroll reveal
+        const obs=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('v');obs.unobserve(e.target)}})},{threshold:.1});
+        document.querySelectorAll('.fade-in').forEach(el=>obs.observe(el));
+
+        // Set name
+        const welcomeName = document.getElementById('welcomeName');
+        if (welcomeName) welcomeName.textContent = localStorage.getItem('userName') || 'Administrateur';
+
+        let farmers=[],experts=[], orders=[], modelMetrics=null;
+        try{
+            const apiBase = window.location.origin;
+            const[fR,eR, oR, mR]=await Promise.all([
+                fetch(apiBase + '/api/user/all/agriculteur',{headers:{'x-auth-token':token}}),
+                fetch(apiBase + '/api/user/all/expert',{headers:{'x-auth-token':token}}),
+                fetch(apiBase + '/api/orders/all',{headers:{'x-auth-token':token}}),
+                fetch(apiBase + '/api/user/metrics',{headers:{'x-auth-token':token}})
+            ]);
+            if(fR.ok)farmers=await fR.json();
+            if(eR.ok)experts=await eR.json();
+            if(oR.ok)orders=await oR.json();
+            if(mR.ok)modelMetrics=await mR.json();
+        }catch(e){console.error(e)}
+
+        const all=[...farmers,...experts];
+        const boutiques=experts.filter(u=>u.boutique&&u.boutique.name&&u.boutique.name.trim()).length;
+
+        // Animate counters
+        function countUp(id,target){
+            const el=document.getElementById(id);
+            if(target===0){el.textContent='0';return}
+            let cur=0;const step=Math.max(1,Math.ceil(target/60));
+            const t=setInterval(()=>{cur+=step;if(cur>=target){el.textContent=target;clearInterval(t)}else el.textContent=cur},25);
+        }
+        countUp('stTotal',all.length);
+        countUp('stFarm',farmers.length);
+        countUp('stExp',experts.length);
+        countUp('stOrders',orders.length);
+
+        // ===== BOUTIQUE CHART: Spécialités Réelles (Basé sur l'image) =====
+        const mainSpecs = [
+            "Engrais & Semences", 
+            "Bio & Naturel", 
+            "Équipements", 
+            "Vétérinaire", 
+            "Irrigation"
+        ];
+        
+        const bMap = {};
+        mainSpecs.forEach(s => bMap[s] = 0);
+
+        experts.forEach(u => {
+            if (u.boutique && u.boutique.name && u.boutique.name.trim() !== '') {
+                const spec = (u.boutique.specialty || '').toLowerCase();
+                
+                if (spec.includes('engrais') || spec.includes('semences')) bMap['Engrais & Semences']++;
+                else if (spec.includes('biologiques') || spec.includes('naturels') || spec.includes('bio')) bMap['Bio & Naturel']++;
+                else if (spec.includes('équipements') || spec.includes('outils')) bMap['Équipements']++;
+                else if (spec.includes('vétérinaires') || spec.includes('bétail')) bMap['Vétérinaire']++;
+                else if (spec.includes('irrigation') || spec.includes('rechange')) bMap['Irrigation']++;
+            }
+        });
+
+        const maxB = Math.max(...Object.values(bMap), 1);
+        const bContainer = document.getElementById('boutiqueChart');
+        bContainer.innerHTML = '';
+
+        mainSpecs.forEach((s, i) => {
+            const count = bMap[s];
+            const pct = Math.round((count / maxB) * 100);
+            const col = document.createElement('div'); col.className = 'chart-col';
+            col.innerHTML = `
+                <div class="chart-bar" style="height:0%; background: linear-gradient(180deg, #15803d, #81f3ba);">
+                    <div class="val" style="display:block; opacity:1;">${count}</div>
+                </div>
+                <div class="chart-label" style="font-size: 0.6rem; line-height: 1; margin-top: 5px;">${s}</div>
+            `;
+            bContainer.appendChild(col);
+            setTimeout(() => { 
+                col.querySelector('.chart-bar').style.height = Math.max(pct, 5) + '%';
+            }, 100 + i * 60);
+        });
+
+        // ===== DONUT =====
+        const total=all.length||1;
+        const fPct=Math.round((farmers.length/total)*100);
+        const ePct=100-fPct;
+        setTimeout(()=>{
+            document.getElementById('donutFarm').setAttribute('stroke-dasharray',fPct+' '+(100-fPct));
+            document.getElementById('donutExp').setAttribute('stroke-dasharray',ePct+' '+(100-ePct));
+            document.getElementById('donutExp').setAttribute('stroke-dashoffset',25-fPct);
+        },300);
+        document.getElementById('lgFarm').textContent='Agriculteurs: '+farmers.length+' ('+fPct+'%)';
+        document.getElementById('lgExp').textContent='Experts: '+experts.length+' ('+ePct+'%)';
+
+        // ===== RECENT =====
+        const sorted=[...all].sort((a,b)=>new Date(b.date||0)-new Date(a.date||0)).slice(0,8);
+        const rl=document.getElementById('recentList');
+        if(sorted.length===0){rl.innerHTML='<p style="color:rgba(0,0,0,.3);text-align:center;padding:30px">Aucun utilisateur</p>';return}
+        rl.innerHTML=sorted.map(u=>{
+            const init=(u.nom||'?')[0].toUpperCase();
+            const isF=u.role==='agriculteur';
+            const d=u.date?new Date(u.date).toLocaleDateString('fr-FR',{day:'2-digit',month:'short',year:'numeric'}):'—';
+            return `<div class="recent-item">
+                <div class="av ${isF?'f':'e'}">${init}</div>
+                <div class="ri-info"><div class="ri-name">${u.nom||'Inconnu'}</div><div class="ri-sub">${isF?'🚜 Agriculteur':'👨‍🔬 Expert'} · ${u.localisation||'—'}</div></div>
+                <div class="ri-time">${d}</div>
+            </div>`
+        }).join('');
+
+        // ===== TOP WILAYAS =====
+        const wMap={};
+        all.forEach(u=>{if(u.localisation){const w=u.localisation;wMap[w]=(wMap[w]||0)+1}});
+        const topW=Object.entries(wMap).sort((a,b)=>b[1]-a[1]).slice(0,6);
+        const maxW=topW.length?topW[0][1]:1;
+        const wl=document.getElementById('wilayaList');
+        if(topW.length===0){wl.innerHTML='<p style="color:rgba(0,0,0,.3);text-align:center;padding:20px">Aucune donnée</p>';return}
+        wl.innerHTML=topW.map((w,i)=>{
+            const pct=Math.round((w[1]/maxW)*100);
+            return `<div class="wilaya-row">
+                <div class="wname">${w[0]}</div>
+                <div class="wbar-bg"><div class="wbar" style="width:0%" data-w="${pct}"></div></div>
+                <div class="wcount">${w[1]}</div>
+            </div>`
+        }).join('');
+        setTimeout(()=>{document.querySelectorAll('.wbar').forEach(b=>{b.style.width=b.dataset.w+'%'})},400);
+
+        // ===== MODEL METRICS (Accuracy, Sensitivity, Specificity) =====
+        if (modelMetrics) {
+            document.getElementById('metricsTestPct').textContent = `${modelMetrics.testProportion}%`;
+            
+            // Set Confusion Matrix
+            document.getElementById('matrixTP').textContent = modelMetrics.tp.toFixed(1);
+            document.getElementById('matrixTN').textContent = modelMetrics.tn.toFixed(1);
+            document.getElementById('matrixFP').textContent = modelMetrics.fp.toFixed(1);
+            document.getElementById('matrixFN').textContent = modelMetrics.fn.toFixed(1);
+
+            // Set Card values
+            document.getElementById('cardAccuracy').textContent = `${modelMetrics.accuracy.toFixed(2)}%`;
+            document.getElementById('cardSensitivity').textContent = `${modelMetrics.sensitivity.toFixed(2)}%`;
+            document.getElementById('cardSpecificity').textContent = `${modelMetrics.specificity.toFixed(2)}%`;
+
+            // Set chart bars height and text values
+            setTimeout(() => {
+                const barSens = document.getElementById('barSensitivity');
+                const valSens = document.getElementById('valSensitivity');
+                if (barSens && valSens) {
+                    barSens.style.height = `${modelMetrics.sensitivity}%`;
+                    valSens.textContent = `${modelMetrics.sensitivity.toFixed(2)}%`;
+                }
+
+                const barSpec = document.getElementById('barSpecificity');
+                const valSpec = document.getElementById('valSpecificity');
+                if (barSpec && valSpec) {
+                    barSpec.style.height = `${modelMetrics.specificity}%`;
+                    valSpec.textContent = `${modelMetrics.specificity.toFixed(2)}%`;
+                }
+
+                const barAcc = document.getElementById('barAccuracy');
+                const valAcc = document.getElementById('valAccuracy');
+                if (barAcc && valAcc) {
+                    barAcc.style.height = `${modelMetrics.accuracy}%`;
+                    valAcc.textContent = `${modelMetrics.accuracy.toFixed(2)}%`;
+                }
+            }, 500);
+        }
+    })();
+    </script>
+    <script src="../../components/translations.js"></script>
+<script src="../../components/i18n.js"></script>
+
+</body>
+</html>

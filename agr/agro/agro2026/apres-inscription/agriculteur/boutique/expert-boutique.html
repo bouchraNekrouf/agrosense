@@ -1,0 +1,817 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Boutique Expert | Agrosence</title>
+    <link rel="stylesheet" href="../../expertt/boutique/boutique.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        .page-header {
+            background-color: #f1f5f9;
+            padding: 10px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .page-header h1 {
+            font-size: 1.5rem;
+            color: #166534;
+        }
+
+        /* ===== BOUTIQUE TOOLBAR (Sub-header) ===== */
+        .boutique-toolbar {
+            position: sticky;
+            top :90px;
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(15px);
+            border-bottom: 1px solid rgba(22, 101, 52, 0.1);
+            padding: 12px 50px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            z-index: 99;
+            margin-bottom: 0;
+        }
+
+        .toolbar-brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #166534;
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+
+        .toolbar-brand a {
+            color: #10b981;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.9rem;
+            transition: color 0.2s;
+        }
+
+        .toolbar-brand a:hover {
+            color: #047857;
+        }
+
+        .toolbar-brand .separator {
+            color: #cbd5e1;
+            font-size: 0.7rem;
+        }
+
+        .toolbar-actions {
+            display: flex;
+            gap: 12px;
+        }
+
+        .toolbar-btn {
+            padding: 8px 18px;
+            border-radius: 50px;
+            border: 1px solid rgba(22, 101, 52, 0.2);
+            background: transparent;
+            color: #166534;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+            position: relative;
+            text-decoration: none;
+        }
+
+        .toolbar-btn:hover {
+            background: rgba(22, 101, 52, 0.05);
+            border-color: #166534;
+        }
+
+        .toolbar-btn .badge-dot {
+            position: absolute;
+            top: -4px;
+            right: -4px;
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+            color: white;
+            border-radius: 50%;
+            font-size: 0.6rem;
+            font-weight: bold;
+            width: 18px;
+            height: 18px;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 6px rgba(220, 38, 38, 0.4);
+        }
+
+        /* ===== SHIMMER SKELETON ANIMATIONS ===== */
+        .shimmer {
+            animation: shimmerEffect 1.5s infinite linear;
+            background: linear-gradient(to right, #f1f5f9 4%, #e2e8f0 25%, #f1f5f9 36%);
+            background-size: 1000px 100%;
+        }
+
+        @keyframes shimmerEffect {
+            0% {
+                background-position: -1000px 0;
+            }
+
+            100% {
+                background-position: 1000px 0;
+            }
+        }
+
+        body {
+            padding-top: 170px;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- ===== GLOBAL NAVBAR ===== -->
+    <div id="navbar-container"></div>
+
+    <!-- ===== BOUTIQUE TOOLBAR (Sub-header) ===== -->
+    <div class="boutique-toolbar">
+        <div class="toolbar-brand">
+            <i class="fas fa-store-alt"></i>
+            <a href="index.html" data-i18n="Boutiques">Boutiques</a>
+            <i class="fas fa-chevron-right separator"></i>
+            <span id="breadcrumb-expert-name" data-i18n="Boutique">Boutique</span>
+        </div>
+        <div class="toolbar-actions">
+            <button class="toolbar-btn" onclick="openFarmerOrdersPanel()" data-i18n="Mes Commandes">
+                <i class="fas fa-clipboard-list"></i> Mes Commandes
+                <span id="farmer-orders-badge" class="badge-dot">0</span>
+            </button>
+        </div>
+    </div>
+
+    <main class="main-content" style="padding-top: 20px;">
+        <!-- Banner Info Boutique -->
+        <div
+            style="max-width: 1200px; margin: 0 auto 20px auto; background: #fff; padding: 20px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.03); display: flex; align-items: center; justify-content: space-between;">
+            <div>
+                <h1 id="shop-banner-title" style="margin: 0; font-size: 1.8rem; color: #0f172a;" data-i18n="Boutique">Boutique</h1>
+                <p style="margin: 5px 0 0 0; color: #64748b; font-size: 1rem;" data-i18n="Propriétaire:">Propriétaire: <span
+                        id="shop-banner-expert" style="font-weight: 600; color: #334155;"></span></p>
+                <a href="#" onclick="openShopInfoPanel(event)" 
+                    style="font-size: 0.85rem; color: #10b981; text-decoration: underline; display: inline-block; margin-top: 8px;" data-i18n="Voir
+                    plus d'informations">Voir
+                    plus d'informations</a>
+            </div>
+            <div style="font-size: 3rem;">🛍️</div>
+        </div>
+
+        <!-- Slide-out Info Panel -->
+        <div id="shop-info-panel"
+            style="position: fixed; top: 0; right: -400px; width: 400px; height: 100vh; background: #fff; box-shadow: -5px 0 25px rgba(0,0,0,0.1); z-index: 999; transition: right 0.3s ease; padding: 100px 30px 30px 30px; display: flex; flex-direction: column;">
+            <div
+                style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; padding-bottom: 15px; border-bottom: 1px solid #e2e8f0;">
+                <h3 style="margin: 0; font-size: 1.2rem; color: #0f172a;" data-i18n="Infos Boutique"><i class="fas fa-info-circle"
+                        style="color:#10b981; margin-right:8px;"></i> Infos Boutique</h3>
+                <button onclick="closeShopInfoPanel()"
+                    style="background: none; border: none; font-size: 1.5rem; color: #64748b; cursor: pointer;"><i
+                        class="fas fa-times"></i></button>
+            </div>
+            <div style="flex: 1;">
+                <div style="margin-bottom: 20px;">
+                    <label  data-i18n="Nom de
+                        l'expert" style="display:block; font-size: 0.85rem; color: #64748b; margin-bottom: 5px;">Nom de
+                        l'expert</label>
+                    <p id="info-panel-expert" style="margin:0; font-weight: 500; color: #1e293b;"></p>
+                </div>
+                <div style="margin-bottom: 20px;">
+                    <label style="display:block; font-size: 0.85rem; color: #64748b; margin-bottom: 5px;" data-i18n="Wilaya /
+                        Localisation">📍 Wilaya /
+                        Localisation</label>
+                    <p id="info-panel-wilaya" style="margin:0; font-weight: 500; color: #1e293b;"></p>
+                </div>
+                <div style="margin-bottom: 20px;">
+                    <label style="display:block; font-size: 0.85rem; color: #64748b; margin-bottom: 5px;" data-i18n="Spécialité
+                        Principale">Spécialité
+                        Principale</label>
+                    <p id="info-panel-specialite" style="margin:0; font-weight: 500; color: #10b981;"></p>
+                </div>
+                <div style="margin-bottom: 20px;">
+                    <label style="display:block; font-size: 0.85rem; color: #64748b; margin-bottom: 5px;" data-i18n="Description
+                        détaillée">Description
+                        détaillée</label>
+                    <p id="info-panel-desc"
+                        style="margin:0; font-weight: 400; color: #334155; line-height: 1.5; font-size: 0.95rem;"></p>
+                </div>
+            </div>
+        </div>
+
+        <section id="fellah-view" class="view active-view" style="display:block;">
+            <div class="fellah-container">
+                <aside class="sidebar">
+                    <h3 data-i18n="Catégories">Catégories</h3>
+                    <ul id="category-list" class="category-list"></ul>
+                </aside>
+
+                <div class="products-area">
+                    <div class="header-area">
+                        <h2 id="current-category-title" data-i18n="Toutes les catégories">Toutes les catégories</h2>
+                        <button class="cart-btn" onclick="toggleCart()" data-i18n="Panier">
+                            <i class="fas fa-shopping-cart"></i> Panier
+                            <span id="cart-count">0</span>
+                        </button>
+                    </div>
+
+                    <div id="products-grid" class="products-grid"></div>
+                </div>
+
+                <div id="cart-panel" class="cart-panel hidden">
+                    <div class="cart-header">
+                        <h3 data-i18n="Votre Panier"><i class="fas fa-shopping-cart"></i> Votre Panier</h3>
+                        <button class="close-btn" onclick="toggleCart()"><i class="fas fa-times"></i></button>
+                    </div>
+                    <div id="cart-items" class="cart-items"></div>
+                    <div class="cart-footer">
+                        <div class="cart-total">
+                            <span data-i18n="Total:">Total:</span>
+                            <span id="cart-total-price">0.00 DA</span>
+                        </div>
+                        <button class="checkout-btn" onclick="openOrderForm()" data-i18n=" Lancer la commande"><i class="fas fa-paper-plane"></i>
+                            Lancer la commande</button>
+                    </div>
+                </div>
+
+                <!-- Order Form Modal -->
+                <div id="order-modal" class="cart-panel hidden"
+                    style="width: 400px; right: -450px; background: white; z-index: 2000; position: fixed; height: 100vh; top: 0; box-shadow: -5px 0 15px rgba(0,0,0,0.1); padding: 20px; transition: right 0.3s; display: flex; flex-direction: column;">
+                    <div class="cart-header"
+                        style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #e2e8f0; padding-bottom: 15px; margin-bottom: 20px;">
+                        <h3 style="color: #15803d; margin: 0;" data-i18n="Passer la Commande"><i class="fas fa-clipboard-list"></i> Passer la Commande
+                        </h3>
+                        <button class="close-btn" onclick="closeOrderForm()"
+                            style="background: none; border: none; font-size: 1.2rem; cursor: pointer; color: #64748b;"><i
+                                class="fas fa-times"></i></button>
+                    </div>
+                    <form id="agri-order-form" onsubmit="submitOrder(event)"
+                        style="display: flex; flex-direction: column; gap: 15px; flex-grow: 1;">
+                        <div>
+                            <label style="display: block; margin-bottom: 5px; font-weight: 500;" data-i18n="Nom Complet">Nom Complet</label>
+                            <input type="text" id="order-name" required placeholder="Votre nom complet"
+                                style="width: 100%; padding: 10px; border: 1px solid #cbd5e1; border-radius: 8px;">
+                        </div>
+                        <div>
+                            <label style="display: block; margin-bottom: 5px; font-weight: 500;" data-i18n="Numéro de
+                                Téléphone">Numéro de
+                                Téléphone</label>
+                            <input type="tel" id="order-phone" required placeholder="Ex: 0555..."
+                                style="width: 100%; padding: 10px; border: 1px solid #cbd5e1; border-radius: 8px;">
+                        </div>
+                        <div>
+                            <label style="display: block; margin-bottom: 5px; font-weight: 500;" data-i18n="Wilaya">Wilaya</label>
+                            <select id="order-location" required
+                                style="width: 100%; padding: 10px; border: 1px solid #cbd5e1; border-radius: 8px; background: white; margin-bottom: 5px;">
+                                <option value="" disabled selected data-i18n="Sélectionnez votre wilaya">Sélectionnez votre wilaya</option>
+                                 <option value="01 - Adrar" data-i18n="Adrar">01 - Adrar</option>
+<option value="02 - Chlef" data-i18n="Chlef">02 - Chlef</option>
+<option value="03 - Laghouat" data-i18n="Laghouat">03 - Laghouat</option>
+<option value="04 - Oum El Bouaghi" data-i18n="Oum el bouaghi">04 - Oum El Bouaghi</option>
+<option value="05 - Batna" data-i18n="Batna">05 - Batna</option>
+<option value="06 - Béjaïa" data-i18n="Bejaia">06 - Béjaïa</option>
+<option value="07 - Biskra" data-i18n="Biskra">07 - Biskra</option>
+<option value="08 - Béchar" data-i18n="Bechar">08 - Béchar</option>
+<option value="09 - Blida" data-i18n="Blida">09 - Blida</option>
+<option value="10 - Bouira" data-i18n="Bouira">10 - Bouira</option>
+<option value="11 - Tamanrasset" data-i18n="Tamanrasset">11 - Tamanrasset</option>
+<option value="12 - Tébessa" data-i18n="Tebessa">12 - Tébessa</option>
+<option value="13 - Tlemcen" data-i18n="Tlemcen">13 - Tlemcen</option>
+<option value="14 - Tiaret" data-i18n="Tiaret">14 - Tiaret</option>
+<option value="15 - Tizi Ouzou" data-i18n="Tizi ouzou">15 - Tizi Ouzou</option>
+<option value="16 - Alger" data-i18n="Alger">16 - Alger</option>
+<option value="17 - Djelfa" data-i18n="Djelfa">17 - Djelfa</option>
+<option value="18 - Jijel" data-i18n="Jijel">18 - Jijel</option>
+<option value="19 - Sétif" data-i18n="Setif">19 - Sétif</option>
+<option value="20 - Saïda" data-i18n="Saida">20 - Saïda</option>
+<option value="21 - Skikda" data-i18n="Skikda">21 - Skikda</option>
+<option value="22 - Sidi Bel Abbès" data-i18n="Sidi bel abbes">22 - Sidi Bel Abbès</option>
+<option value="23 - Annaba" data-i18n="Annaba">23 - Annaba</option>
+<option value="24 - Guelma" data-i18n="Guelma">24 - Guelma</option>
+<option value="25 - Constantine" data-i18n="Constantine">25 - Constantine</option>
+<option value="26 - Médéa" data-i18n="Medea">26 - Médéa</option>
+<option value="27 - Mostaganem" data-i18n="Mostaganem">27 - Mostaganem</option>
+<option value="28 - M'Sila" data-i18n="Msila">28 - M'Sila</option>
+<option value="29 - Mascara" data-i18n="Mascara">29 - Mascara</option>
+<option value="30 - Ouargla" data-i18n="Ouargla">30 - Ouargla</option>
+<option value="31 - Oran" data-i18n="Oran">31 - Oran</option>
+<option value="32 - El Bayadh" data-i18n="El bayadh">32 - El Bayadh</option>
+<option value="33 - Illizi" data-i18n="Illizi">33 - Illizi</option>
+<option value="34 - Bordj Bou Arreridj" data-i18n="Bordj bou arreridj">34 - Bordj Bou Arreridj</option>
+<option value="35 - Boumerdès" data-i18n="Boumerdes">35 - Boumerdès</option>
+<option value="36 - El Tarf" data-i18n="El tarf">36 - El Tarf</option>
+<option value="37 - Tindouf" data-i18n="Tindouf">37 - Tindouf</option>
+<option value="38 - Tissemsilt" data-i18n="Tissemsilt">38 - Tissemsilt</option>
+<option value="39 - El Oued" data-i18n="El oued">39 - El Oued</option>
+<option value="40 - Khenchela" data-i18n="Khenchela">40 - Khenchela</option>
+<option value="41 - Souk Ahras" data-i18n="Souk ahras">41 - Souk Ahras</option>
+<option value="42 - Tipaza" data-i18n="Tipaza">42 - Tipaza</option>
+<option value="43 - Mila" data-i18n="Mila">43 - Mila</option>
+<option value="44 - Aïn Defla" data-i18n="In defla">44 - Aïn Defla</option>
+<option value="45 - Naâma" data-i18n="Naama">45 - Naâma</option>
+<option value="46 - Aïn Témouchent" data-i18n="Ain temouchent">46 - Aïn Témouchent</option>
+<option value="47 - Ghardaïa" data-i18n="Ghardaia">47 - Ghardaïa</option>
+<option value="48 - Relizane" data-i18n="Relizane">48 - Relizane</option>
+<option value="49 - Timimoun" data-i18n="Timimoun">49 - Timimoun</option>
+<option value="50 - Bordj Badji Mokhtar" data-i18n="Bordj badji mokhtar">50 - Bordj Badji Mokhtar</option>
+<option value="51 - Ouled Djellal" data-i18n="Ouled djellal">51 - Ouled Djellal</option>
+<option value="52 - Béni Abbès" data-i18n="Beni abbes">52 - Béni Abbès</option>
+<option value="53 - In Salah" data-i18n="In salah">53 - In Salah</option>
+<option value="54 - In Guezzam" data-i18n="In guezzam">54 - In Guezzam</option>
+<option value="55 - Touggourt" data-i18n="Touggourt">55 - Touggourt</option>
+<option value="56 - Djanet" data-i18n="Djanet">56 - Djanet</option>
+<option value="57 - El M'Ghair" data-i18n="El mghair">57 - El M'Ghair</option>
+<option value="58 - El Meniaa" data-i18n="El meniaa">58 - El Meniaa</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label style="display: block; margin-bottom: 5px; font-weight: 500;" data-i18n="Adresse exacte
+                                (Détaillée)">Adresse exacte
+                                (Détaillée)</label>
+                            <input type="text" id="order-address" required placeholder="Quartier, rue, bâtiment..."
+                                style="width: 100%; padding: 10px; border: 1px solid #cbd5e1; border-radius: 8px;">
+                        </div>
+                        <!-- Products are taken from cart -->
+                        <div style="margin-top: auto; padding-top: 20px;">
+                            <button type="submit"
+                                style="width: 100%; background: #10b981; color: white; border: none; padding: 12px; border-radius: 8px; font-weight: 600; font-size: 1.1rem; cursor: pointer;"><i
+                                    class="fas fa-paper-plane" data-i18n="Envoyer la commande"></i> Envoyer la commande</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <!-- Hidden Elements Required by boutique.js -->
+        <div style="display:none;">
+            <table class="products-table">
+                <tbody id="admin-products-table"></tbody>
+            </table>
+            <form id="product-form">
+                <input type="hidden" id="product-id">
+                <input type="text" id="product-name">
+                <select id="product-category"></select>
+                <input type="number" id="product-price">
+                <input type="url" id="product-image">
+            </form>
+            <div id="product-modal">
+                <h3 id="modal-title"></h3>
+            </div>
+        </div>
+
+        <!-- FARMER ORDERS PANEL -->
+        <div id="farmer-orders-panel"
+            style="position: fixed; top: 0; right: -450px; width: 450px; height: 100vh; background: #f8fafc; box-shadow: -5px 0 25px rgba(0,0,0,0.1); z-index: 3000; transition: right 0.3s ease; display: flex; flex-direction: column;">
+            <div
+                style="background: white; padding: 20px; border-bottom: 1px solid #e2e8f0; display: flex; justify-content: space-between; align-items: center;">
+                <h3 style="margin: 0; font-size: 1.2rem; color: #0f172a;"><i class="fas fa-clipboard-list"
+                        style="color:#10b981; margin-right:8px;" data-i18n="Mes Commandes"></i> Mes Commandes</h3>
+                <button onclick="closeFarmerOrdersPanel()"
+                    style="background: none; border: none; font-size: 1.5rem; color: #64748b; cursor: pointer;"><i
+                        class="fas fa-times"></i></button>
+            </div>
+            <div id="farmer-orders-list"
+                style="padding: 20px; flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 15px;">
+                <!-- Orders injected here via JS -->
+            </div>
+        </div>
+    </main>
+
+    <script src="../../expertt/boutique/boutique.js"></script>
+    <script>
+        // Use existing products from boutique.js
+        let currentExpert = 'Zahra'; // Default
+
+        document.addEventListener("DOMContentLoaded", async () => {
+            updateFarmerOrdersBadge(); // Update the notification badge on load
+            const urlParams = new URLSearchParams(window.location.search);
+            const expertName = urlParams.get('expert');
+            if (expertName) {
+                currentExpert = expertName.trim();
+                const breadcrumb = document.getElementById('breadcrumb-expert-name');
+                if (breadcrumb) breadcrumb.textContent = expertName;
+
+                // Fetch info
+                let wilaya = "Non spécifiée";
+                let shopName = `Boutique de ${expertName}`;
+                let specialty = "Général";
+                let desc = "Aucune description fournie.";
+
+                // 1. Try DB
+                let expertIdToLoad = null;
+                try {
+                    const token = localStorage.getItem('token');
+                    const res = await fetch('/api/user/public/experts', { headers: { 'x-auth-token': token } });
+                    if (res.ok) {
+                        const dbData = await res.json();
+                        const found = dbData.find(e => e.nom === expertName);
+                        if (found) {
+                            expertIdToLoad = found._id;
+                            if (found.localisation) wilaya = found.localisation;
+                            if (found.boutique && found.boutique.name) {
+                                shopName = found.boutique.name;
+                                specialty = found.boutique.specialty || 'Général';
+                                desc = found.boutique.description || desc;
+                            }
+                        }
+                    }
+                } catch (e) { }
+
+                // 2. Local config/Experts list
+                const localExperts = JSON.parse(localStorage.getItem('allExperts')) || [];
+                const localData = localExperts.find(e => e.nom === expertName);
+                if (localData) {
+                    if (localData.localisation) wilaya = localData.localisation;
+                    if (localData.specialite) shopName = localData.specialite;
+                    if (localData.real_specialty) specialty = localData.real_specialty;
+                    if (localData.description) desc = localData.description;
+                }
+
+                // 3. Fallback to Zahra
+                if (expertName.toLowerCase().includes('zahra')) {
+                    const configKey = `agriBoutiqueConfig_${expertName.trim().toLowerCase()}`;
+                    let zConf = JSON.parse(localStorage.getItem(configKey)) || JSON.parse(localStorage.getItem('agriBoutiqueConfig'));
+                    if (zConf) {
+                        shopName = zConf.name || shopName;
+                        specialty = zConf.specialty || specialty;
+                        desc = zConf.desc || desc;
+                    }
+                } else if (localData && !localData.description) {
+                    desc = `Bienvenue dans la boutique de ${expertName}. Cette boutique vous propose des produits de la catégorie : ${specialty}.`;
+                }
+
+                document.getElementById('shop-banner-title').textContent = shopName;
+                document.getElementById('shop-banner-expert').textContent = expertName;
+
+                document.getElementById('info-panel-expert').textContent = expertName;
+                document.getElementById('info-panel-wilaya').textContent = wilaya;
+                document.getElementById('info-panel-specialite').textContent = specialty;
+                document.getElementById('info-panel-desc').textContent = desc;
+
+                // Load expert's products from DB
+                if (expertIdToLoad) {
+                    const grid = document.getElementById('products-grid');
+                    if (grid) {
+                        grid.innerHTML = Array(4).fill(`
+                            <div style="background: white; border-radius: 12px; padding: 15px; border: 1px solid #e2e8f0;">
+                                <div class="shimmer" style="height: 150px; background: #e2e8f0; border-radius: 8px; margin-bottom: 15px;"></div>
+                                <div class="shimmer" style="height: 18px; width: 60%; background: #e2e8f0; border-radius: 4px; margin-bottom: 10px;"></div>
+                                <div class="shimmer" style="height: 14px; width: 30%; background: #e2e8f0; border-radius: 4px; margin-bottom: 20px;"></div>
+                                <div class="shimmer" style="height: 35px; width: 100%; background: #e2e8f0; border-radius: 6px;"></div>
+                            </div>
+                        `).join('');
+                    }
+
+                    await loadProductsFromAPI(expertIdToLoad);
+                    if (typeof renderFellahProducts === 'function') {
+                        renderFellahProducts();
+                    }
+                }
+            }
+        });
+
+        function openShopInfoPanel(e) {
+            if (e) e.preventDefault();
+            document.getElementById('shop-info-panel').style.right = '0';
+        }
+
+        function closeShopInfoPanel() {
+            document.getElementById('shop-info-panel').style.right = '-400px';
+        }
+
+        async function openOrderForm() {
+            let cart = JSON.parse(localStorage.getItem('agriCart')) || [];
+            if (cart.length === 0) {
+                alert("Votre panier est vide. Veuillez ajouter des produits avant de commander.");
+                return;
+            }
+            if (!document.getElementById('cart-panel').classList.contains('hidden')) {
+                toggleCart(); // Close cart if it's open
+            }
+
+            // Auto-fill user data from backend API
+            try {
+                const token = localStorage.getItem('token');
+                if (token) {
+                    const profileRes = await fetch('/api/user/profile', { headers: { 'x-auth-token': token } });
+                    if (profileRes.ok) {
+                        const profileData = await profileRes.json();
+
+                        // Set Name
+                        if (profileData.nom) {
+                            document.getElementById('order-name').value = profileData.nom;
+                        }
+                        // Set Phone
+                        if (profileData.phone) {
+                            document.getElementById('order-phone').value = profileData.phone;
+                        }
+                        // Set Wilaya
+                        if (profileData.localisation) {
+                            const wilayaSelect = document.getElementById('order-location');
+                            for (let opt of wilayaSelect.options) {
+                                if (opt.value === profileData.localisation) {
+                                    opt.selected = true;
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                }
+            } catch (e) {
+                console.warn('Erreur chargement profil pour pré-remplissage:', e);
+            }
+
+            const modal = document.getElementById('order-modal');
+            modal.style.right = '0px';
+            modal.classList.remove('hidden');
+        }
+
+        function closeOrderForm() {
+            const modal = document.getElementById('order-modal');
+            modal.style.right = '-450px';
+            setTimeout(() => modal.classList.add('hidden'), 300);
+        }
+
+        async function submitOrder(event) {
+            event.preventDefault();
+            const name = document.getElementById('order-name').value;
+            const phone = document.getElementById('order-phone').value;
+            const location = document.getElementById('order-location').value;
+            const exactAddress = document.getElementById('order-address').value;
+
+            let cart = JSON.parse(localStorage.getItem('agriCart')) || [];
+            if (cart.length === 0) return;
+
+            // Create detailed order items for precise stats and display
+            const orderItems = cart.map(item => ({
+                name: item.name,
+                quantity: item.quantity,
+                category: item.category,
+                price: parseFloat(item.price) || 0
+            }));
+
+            const productStr = orderItems.map(item => `${item.quantity}x ${item.name}`).join(', ');
+
+            const newOrder = {
+                expert: currentExpert,
+                farmerContext: localStorage.getItem('userName'),
+                farmerName: name,
+                farmerPhone: phone,
+                location: location,
+                exactAddress: exactAddress,
+                product: productStr,
+                items: orderItems,
+                status: 'En attente'
+            };
+
+            const token = localStorage.getItem('token');
+            if (!token) {
+                alert("Vous devez être connecté pour passer une commande.");
+                return;
+            }
+
+            try {
+                // Send to MongoDB Backend
+                const res = await fetch('/api/orders', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'x-auth-token': token },
+                    body: JSON.stringify(newOrder)
+                });
+
+                if (!res.ok) {
+                    const err = await res.json().catch(() => ({}));
+                    alert("Erreur lors de l'envoi de la commande: " + (err.message || 'Serveur injoignable'));
+                    return;
+                }
+
+                // Empty local cart
+                cart = [];
+                localStorage.setItem('agriCart', JSON.stringify(cart));
+                if (typeof updateCartSidebar === "function") {
+                    updateCartSidebar();
+                }
+
+                alert('Votre commande a été envoyée avec succès à l\'expert !');
+                closeOrderForm();
+                document.getElementById('agri-order-form').reset();
+
+                // Immediately update farmer orders UI from database
+                if (typeof openFarmerOrdersPanel === "function") {
+                    openFarmerOrdersPanel(); // it will now fetch from API if we update it
+                }
+            } catch (error) {
+                console.error("Erreur serveur:", error);
+                alert("Erreur de connexion...");
+            }
+        }
+
+        // ================== FARMER ORDERS TRACKING ==================
+        async function updateFarmerOrdersBadge() {
+            const token = localStorage.getItem('token');
+            if (!token) return;
+            try {
+                const res = await fetch('/api/orders/farmer', { headers: { 'x-auth-token': token } });
+                if (res.ok) {
+                    const myOrders = await res.json();
+                    const badge = document.getElementById('farmer-orders-badge');
+                    if (badge && myOrders.length > 0) {
+                        badge.textContent = myOrders.length;
+                        badge.style.display = 'flex';
+                    } else if (badge) {
+                        badge.style.display = 'none';
+                    }
+                }
+            } catch (e) {
+                console.warn("Erreur badge farmer:", e);
+            }
+        }
+
+        async function openFarmerOrdersPanel() {
+            const token = localStorage.getItem('token');
+            const list = document.getElementById('farmer-orders-list');
+
+            // Show Skeleton Loader for Orders
+            list.innerHTML = Array(3).fill(`
+                <div style="background: white; padding: 15px; border-radius: 12px; border: 1px solid #e2e8f0; margin-bottom:10px;">
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 15px;">
+                        <div class="shimmer" style="height: 16px; width: 40%; background: #e2e8f0; border-radius: 4px;"></div>
+                        <div class="shimmer" style="height: 12px; width: 20%; background: #e2e8f0; border-radius: 4px;"></div>
+                    </div>
+                    <div class="shimmer" style="height: 14px; width: 70%; background: #e2e8f0; border-radius: 4px; margin-bottom: 20px;"></div>
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <div class="shimmer" style="height: 25px; width: 30%; background: #e2e8f0; border-radius: 50px;"></div>
+                        <div class="shimmer" style="height: 35px; width: 40%; background: #e2e8f0; border-radius: 8px;"></div>
+                    </div>
+                </div>
+            `).join('');
+
+            const panel = document.getElementById('farmer-orders-panel');
+            if (panel) panel.style.right = '0';
+
+            try {
+                const res = await fetch('/api/orders/farmer', { headers: { 'x-auth-token': token } });
+                if (!res.ok) throw new Error('Failed to load');
+                let myOrders = await res.json();
+
+                list.innerHTML = '';
+
+                if (myOrders.length === 0) {
+                    list.innerHTML = `<div style="text-align:center; padding: 40px; color: #64748b;">Aucune commande passée.</div>`;
+                } else {
+                    myOrders.forEach(order => {
+                        const isValidee = order.status === 'Validée' || order.status === 'Validée (Rappel)';
+                        const isRappel = order.status && order.status.includes('Rappel');
+
+                        // Format date
+                        const d = new Date(order.createdAt);
+                        const dateStr = !isNaN(d) ? d.toLocaleDateString('fr-FR') : order.date || '';
+
+                        // Colors
+                        let statusBg = '#fee2e2'; // Red default
+                        let statusColor = '#dc2626';
+                        let statusText = order.status || 'En attente';
+
+                        if (order.status === 'Validée') {
+                            statusBg = '#dcfce7';
+                            statusColor = '#16a34a';
+                            statusText = '✔ Vue! votre commande';
+                        } else if (order.status === 'Validée (Rappel)') {
+                            statusBg = '#dcfce7';
+                            statusColor = '#16a34a';
+                            statusText = '✔ Vue votre Rappel';
+                        }
+
+                        list.innerHTML += `
+                            <div id="farmer-order-card-${order._id}" style="background: white; padding: 15px; border-radius: 12px; border: 1px solid #e2e8f0; box-shadow: 0 2px 10px rgba(0,0,0,0.02); margin-bottom:10px;">
+                                <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                                    <strong style="color: #0f172a;">Expert: ${order.expert}</strong>
+                                    <span style="font-size: 0.8rem; color: #64748b;">${dateStr}</span>
+                                </div>
+                                <div style="font-size: 0.9rem; color: #334155; margin-bottom: 15px;">
+                                    Produits: <strong>${order.product}</strong>
+                                    <div style="font-size: 0.8rem; color: #10b981; font-weight: 700; margin-top: 4px;">Total: ${parseFloat(order.totalPrice || 0).toLocaleString()} DZD</div>
+                                </div>
+                                <div style="display: flex; flex-direction: column; gap: 10px;">
+                                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                                        <span class="badger-status" style="background: ${statusBg}; color: ${statusColor}; padding: 4px 10px; border-radius: 50px; font-size: 0.8rem; font-weight: 600;">${statusText}</span>
+                                        ${order.status === 'Validée' ? `<button onclick="relancerOrder('${order._id}')" style="background:none; border: 1px solid #cbd5e1; color: #64748b; padding: 4px 8px; border-radius: 6px; font-size: 0.75rem; cursor: pointer;"><i class="fas fa-redo"></i> Relancer</button>` : ''}
+                                    </div>
+                                    
+                                    <!-- Double Handshake Button -->
+                                    ${order.status === 'Validée' && !order.farmerReceived ? `
+                                        <button onclick="confirmReception('${order._id}', this)" style="width: 100%; background: #1e293b; color: white; border: none; padding: 8px; border-radius: 8px; font-size: 0.85rem; font-weight: 600; cursor: pointer; transition: 0.2s;">
+                                            <i class="fas fa-box-open"></i> J'ai reçu ma commande
+                                        </button>
+                                    ` : (order.farmerReceived && order.status !== 'Livrée' ? `
+                                        <div style="text-align: center; font-size: 0.75rem; color: #10b981; font-weight: 600; background: #f0fdf4; padding: 6px; border-radius: 8px; border: 1px dashed #10b981;">
+                                            ⏳ En attente de clôture par l'expert
+                                        </div>
+                                    ` : '')}
+                                </div>
+                            </div>
+                        `;
+                    });
+                }
+            } catch (e) {
+                list.innerHTML = `<div style="text-align:center; padding: 40px; color: red;">Erreur de chargement des commandes.</div>`;
+            }
+        }
+
+        async function relancerOrder(orderId) {
+            const token = localStorage.getItem('token');
+            try {
+                const res = await fetch(`/api/orders/${orderId}/status`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json', 'x-auth-token': token },
+                    body: JSON.stringify({ status: 'En attente (Rappel)' })
+                });
+                if (res.ok) {
+                    openFarmerOrdersPanel(); // Refresh
+                    alert('Rappel envoyé ! La commande est redevenue en attente.');
+                }
+            } catch (e) {
+                console.error(e);
+            }
+        }
+
+        function closeFarmerOrdersPanel() {
+            const panel = document.getElementById('farmer-orders-panel');
+            if (panel) panel.style.right = '-450px';
+        }
+
+        // Real-time update for badge
+        setInterval(updateFarmerOrdersBadge, 30000); // reduced frequency, socket will handle fast updates
+
+        // Double Handshake: Farmer confirms reception
+        async function confirmReception(orderId, btn) {
+            if (!confirm("Avez-vous réellement reçu votre colis ? Cette action informera l'expert.")) return;
+
+            const originalContent = btn.innerHTML;
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Confirmation...';
+
+            const token = localStorage.getItem('token');
+            try {
+                const res = await fetch(`/api/orders/${orderId}/receive`, {
+                    method: 'PUT',
+                    headers: { 'x-auth-token': token }
+                });
+                if (res.ok) {
+                    btn.parentElement.innerHTML = `
+                        <div style="text-align: center; font-size: 0.75rem; color: #10b981; font-weight: 600; background: #f0fdf4; padding: 6px; border-radius: 8px; border: 1px dashed #10b981;">
+                            ⏳ En attente de clôture par l'expert
+                        </div>
+                    `;
+                } else {
+                    btn.disabled = false;
+                    btn.innerHTML = originalContent;
+                }
+            } catch (e) {
+                console.error(e);
+                btn.disabled = false;
+                btn.innerHTML = originalContent;
+            }
+        }
+
+        // Socket Listeners for Real-time UX
+        window.addEventListener('load', () => {
+            const checkSocket = setInterval(() => {
+                if (window.io) {
+                    const socket = io();
+                    const user = JSON.parse(localStorage.getItem('user')) || {};
+                    const userId = user.id || localStorage.getItem('userId');
+                    if (userId) socket.emit('join', userId);
+
+                    socket.on('order_accepted', () => {
+                        console.log('Farmer Socket: Order Accepted');
+                        openFarmerOrdersPanel(); // Refresh list silently
+                        updateFarmerOrdersBadge();
+                    });
+
+                    socket.on('order_completed', () => {
+                        console.log('Farmer Socket: Order Completed');
+                        openFarmerOrdersPanel();
+                        updateFarmerOrdersBadge();
+                    });
+
+                    clearInterval(checkSocket);
+                }
+            }, 1000);
+        });
+    </script>
+    <script src="../../../components/translations.js"></script>
+<script src="../../../components/i18n.js"></script>
+
+    <!-- ===== NAVBAR LOADER ===== -->
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/components/navbar.js"></script>
+</body>
+
+</html>

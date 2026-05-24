@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analyses Expert | Agrosence</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+
+    <style>
+        :root {
+            --primary: #15803d;
+            --primary-light: #86efac;
+            --secondary: #166534;
+            --accent: #22c55e;
+            --bg-body: #f8fafc;
+            --glass-bg: rgba(255, 255, 255, 0.7);
+            --border-glow: rgba(34, 197, 94, 0.2);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: transparent;
+            color: #1e293b;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        /* BACKGROUND EFFECTS */
+                .neural-background {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -2;
+            background: radial-gradient(circle at 15% 85%, rgba(129, 243, 186, 0.05) 0%, transparent 50%),
+                radial-gradient(circle at 85% 15%, rgba(130, 233, 164, 0.08) 0%, transparent 50%),
+                linear-gradient(to bottom, #ffffff 0%, rgba(129, 243, 186, 0.25) 50%, #ffffff 100%);
+            animation: backgroundPulse 14s ease-in-out infinite;
+        }
+        @keyframes backgroundPulse {
+            0%, 100% { filter: brightness(0.9) saturate(1.4) hue-rotate(0deg); }
+            33% { filter: brightness(1.1) saturate(1.7) hue-rotate(15deg); }
+            66% { filter: brightness(1.0) saturate(1.5) hue-rotate(-10deg); }
+        }
+        .geometric-shapes { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; overflow: hidden; }
+        .shape { position: absolute; border: 1px solid rgba(0, 255, 255, 0.3); animation: floatShape 20s linear infinite; }
+        .shape:nth-child(1) { width: 100px; height: 100px; left: 10%; animation-delay: 0s; border-color: rgba(227, 236, 231, 0.4); }
+        .shape:nth-child(2) { width: 60px; height: 60px; left: 70%; animation-delay: -5s; border-radius: 50%; border-color: rgba(147, 112, 219, 0.4); }
+        .shape:nth-child(3) { width: 80px; height: 80px; left: 30%; animation-delay: -10s; transform: rotate(45deg); border-color: rgba(198, 221, 116, 0.4); }
+        .shape:nth-child(4) { width: 120px; height: 120px; left: 50%; animation-delay: -15s; clip-path: polygon(50% 0%, 0% 100%, 100% 100%); background: linear-gradient(45deg, rgba(8, 66, 30, 0.1), transparent); }
+        @keyframes floatShape { from { transform: translateY(100vh) rotate(0deg); opacity: 0; } 10%, 90% { opacity: 1; } to { transform: translateY(-100px) rotate(360deg); opacity: 0; } }
+        .neural-lines { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; }
+        .neural-line { position: absolute; background: linear-gradient(90deg, transparent, #fff, transparent); height: 3px; animation: neuralPulse 3s ease-in-out infinite; }
+        .neural-line:nth-child(1) { top: 20%; left: 0; width: 100%; background: linear-gradient(90deg, transparent, #6de49f, transparent); animation-delay: 0s; }
+        .neural-line:nth-child(2) { top: 60%; left: 0; width: 100%; background: linear-gradient(90deg, transparent, #196633, transparent); animation-delay: -1s; }
+        .neural-line:nth-child(3) { top: 40%; left: 0; width: 100%; background: linear-gradient(90deg, transparent, #24a713, transparent); animation-delay: -2s; }
+        @keyframes neuralPulse { 0%, 100% { opacity: 0.2; transform: scaleX(0.5); } 50% { opacity: 1; transform: scaleX(1); } }
+
+
+        /* TOP BAR */
+        .top-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 15px clamp(10px, 4vw, 40px);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            z-index: 1000;
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(25px);
+            border-bottom: 1px solid var(--border-glow);
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+        }
+
+        .logo-icon {
+            font-size: clamp(0.9rem, 1.2vw, 1.8rem);
+        }
+
+        .brand-name {
+            font-size: clamp(0.8rem, 1vw, 1.5rem);
+            font-weight: 800;
+            background: linear-gradient(135deg, #166534, #15803d);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: #15803d !important;
+            color: #15803d !important;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: clamp(2px, 0.5vw, 10px);
+            align-items: center;
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .nav-link {
+            padding: clamp(6px, 1vw, 10px) clamp(10px, 1.5vw, 18px);
+            border-radius: 14px;
+            font-size: clamp(0.75rem, 1vw, 0.9rem);
+            font-weight: 700;
+            color: #64748b;
+            text-decoration: none;
+            transition: 0.3s;
+        }
+
+        .nav-link:hover {
+            background: #f1f5f9;
+            color: var(--primary);
+        }
+
+        .nav-link.active {
+            background: var(--primary);
+            color: white;
+            box-shadow: 0 4px 15px rgba(21, 128, 61, 0.2);
+        }
+
+        /* DASHBOARD CONTENT */
+        .dashboard {
+            padding: 110px 40px 60px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header-section {
+            margin-bottom: 40px;
+        }
+
+        .header-section h1 {
+            font-size: 2.6rem;
+            font-weight: 800;
+            color: #0f172a;
+            margin-bottom: 8px;
+        }
+
+        .header-section p {
+            color: #64748b;
+            font-size: 1.15rem;
+        }
+
+        /* METRIC CARDS */
+        .metrics-container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 25px;
+            margin-bottom: 35px;
+        }
+
+        .metric-card {
+            background: white;
+            border-radius: 28px;
+            padding: 28px;
+            border: 1px solid var(--border-glow);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.02);
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .metric-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 50px rgba(21, 128, 61, 0.08);
+        }
+
+        .m-icon {
+            width: 65px;
+            height: 65px;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+        }
+
+        .bg-b {
+            background: #eff6ff;
+            color: #3b82f6;
+        }
+
+        .bg-g {
+            background: #f0fdf4;
+            color: #22c55e;
+        }
+
+        .m-info h4 {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            color: #94a3b8;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .m-info .m-val {
+            font-size: 1.85rem;
+            font-weight: 800;
+            color: #1e293b;
+        }
+
+        /* ===== SHIMMER SKELETON ANIMATIONS ===== */
+        .shimmer {
+            animation: shimmerEffect 1.5s infinite linear;
+            background: linear-gradient(to right, #f1f5f9 4%, #e2e8f0 25%, #f1f5f9 36%);
+            background-size: 1000px 100%;
+        }
+
+        @keyframes shimmerEffect {
+            0% {
+                background-position: -1000px 0;
+            }
+
+            100% {
+                background-position: 1000px 0;
+            }
+        }
+
+        /* CHARTS */
+        .panel {
+            background: white;
+            border-radius: 30px;
+            padding: 40px;
+            border: 1px solid var(--border-glow);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.01);
+        }
+
+        .panel-header {
+            margin-bottom: 25px;
+        }
+
+        .panel-header h2 {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: #0f172a;
+        }
+
+        .empty-warning {
+            text-align: center;
+            padding: 80px 40px;
+            border: 2px dashed #cbd5e1;
+            border-radius: 30px;
+            display: none;
+            color: #64748b;
+        }
+
+        #logic-explanation {
+            margin-top: 30px;
+            background: rgba(240, 253, 244, 0.5);
+        }
+
+        /* ضمان ظهور الخطوط السوداء داخل المستطيلات البيضاء في الوضع العادي */
+        .metric-card .m-val, 
+        .metric-card h4, 
+        .panel h2, 
+        .panel p {
+            color: #1e293b !important;
+        }
+
+        /* وضع الإحصائيات المظلم (الذي جعلناه أخضر داكن في الخلفية) */
+        body.dark-mode .metric-card,
+        body.dark-mode .panel {
+            background: #0d2116 !important;
+            border-color: rgba(129, 243, 186, 0.2) !important;
+            color: #ffffff !important;
+        }
+
+        body.dark-mode .panel h2,
+        body.dark-mode .panel p,
+        body.dark-mode .m-info .m-val,
+        body.dark-mode .m-info h4 {
+            color: #ffffff !important;
+        }
+
+        /* ApexCharts labels fix for Normal Mode (White Panel -> Black Text) */
+        .apexcharts-xaxis-label,
+        .apexcharts-yaxis-label,
+        .apexcharts-datalabel,
+        .apexcharts-text tspan {
+            fill: #1e293b !important;
+            font-weight: 700 !important;
+        }
+
+        /* ApexCharts labels fix for Dark Mode (Dark Panel -> White Text) */
+        body.dark-mode .apexcharts-xaxis-label,
+        body.dark-mode .apexcharts-yaxis-label,
+        body.dark-mode .apexcharts-datalabel,
+        body.dark-mode .apexcharts-text tspan {
+            fill: #ffffff !important;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="neural-background"></div>
+    <!-- Floating Geometric Shapes -->
+    <div class="geometric-shapes">
+        <div class="shape"></div>
+        <div class="shape"></div>
+        <div class="shape"></div>
+        <div class="shape"></div>
+    </div>
+
+    <!-- Neural Network Lines -->
+    <div class="neural-lines">
+        <div class="neural-line"></div>
+        <div class="neural-line"></div>
+        <div class="neural-line"></div>
+    </div>
+
+    <!-- ===== UNIVERSAL NAVBAR ===== -->
+    <div id="navbar-container"></div>
+
+
+    <div class="dashboard">
+        <div class="header-section">
+            <h1 data-i18n="Statistiques Réelles">Statistiques Réelles</h1>
+            <p data-i18n="Données calculées à partir de vos commandes effectives sur le terrain">Données calculées à partir de vos commandes effectives sur le terrain</p>
+        </div>
+
+        <div class="metrics-container">
+            <div class="metric-card">
+                <div class="m-icon bg-b">🤝</div>
+                <div class="m-info">
+                    <h4 data-i18n="Mes clients">Mes clients</h4>
+                    <div class="m-val" id="count-friends">0</div>
+                </div>
+            </div>
+            <div class="metric-card">
+                <div class="m-icon bg-g">📦</div>
+                <div class="m-info">
+                    <h4 data-i18n="Nombre de produits vendus">Nombre de produits vendus</h4>
+                    <div class="m-val" id="count-products">0</div>
+                </div>
+            </div>
+        </div>
+
+        <div id="no-data-warning" class="empty-warning">
+            <h2 style="font-size: 3rem; margin-bottom: 10px;">📉</h2>
+            <h2 data-i18n="Aucune commande enregistrée">Aucune commande enregistrée</h2>
+            <p data-i18n="Les statistiques de vente apparaîtront une fois que des agriculteurs auront passé commande dans votre
+                boutique.">Les statistiques de vente apparaîtront une fois que des agriculteurs auront passé commande dans votre
+                boutique.</p>
+        </div>
+
+        <div class="panel" id="main-chart-panel">
+            <div class="panel-header">
+                <h2 data-i18n="Ventes par Catégorie (%)">📊 Ventes par Catégorie (%)</h2>
+                <p style="font-size:0.9rem; color:#64748b;" data-i18n="Analyse des commandes traitées par type de produit">Analyse des commandes traitées par type de produit</p>
+            </div>
+            <div id="salesColumnChart"></div>
+        </div>
+
+
+    <script>
+        const token = localStorage.getItem('token');
+        const userName = localStorage.getItem('userName') || 'Expert';
+
+        // Set page subtitle if needed, but safely
+        const headerP = document.querySelector('.header-section p');
+        if (headerP && userName !== 'Expert') {
+            headerP.textContent = `Analyses de performance pour ${userName}`;
+        }
+
+        let chart = null;
+
+        async function initStats() {
+            if (!token) {
+                console.warn("[statistique] No token found, redirecting...");
+                window.location.href = '../../../logsigin/sign.html';
+                return;
+            }
+
+            console.log("[statistique] Initializing stats for:", userName);
+
+            // 0. Render Skeleton Loaders
+            document.getElementById('count-friends').innerHTML = '<div class="shimmer" style="width: 40px; height: 35px; border-radius: 8px;"></div>';
+            document.getElementById('count-products').innerHTML = '<div class="shimmer" style="width: 50px; height: 35px; border-radius: 8px;"></div>';
+            document.getElementById('salesColumnChart').innerHTML = `
+                <div style="display:flex; justify-content:center; align-items:flex-end; height:350px; gap:30px; padding:20px;">
+                    <div class="shimmer" style="width: 60px; height: 40%; border-radius: 8px;"></div>
+                    <div class="shimmer" style="width: 60px; height: 80%; border-radius: 8px;"></div>
+                    <div class="shimmer" style="width: 60px; height: 60%; border-radius: 8px;"></div>
+                    <div class="shimmer" style="width: 60px; height: 30%; border-radius: 8px;"></div>
+                    <div class="shimmer" style="width: 60px; height: 90%; border-radius: 8px;"></div>
+                </div>
+                <div style="text-align: center; color: #10b981; font-weight: 600; font-size: 0.95rem; margin-top: 10px;">
+                    📊 Analyse de vos données en cours...
+                </div>
+            `;
+
+            try {
+                // ── 1. CLIENTS ACTIFS ──────────────────────
+                const friendsRes = await fetch('/api/user/friends', { headers: { 'x-auth-token': token } });
+                if (friendsRes.ok) {
+                    const friends = await friendsRes.json();
+                    document.getElementById('count-friends').textContent = friends.length;
+                }
+
+                // ── 2 & 3. STATISTICS FROM ORDERS ──────────────────────────────
+                const statsRes = await fetch('/api/orders/stats', { headers: { 'x-auth-token': token } });
+                if (!statsRes.ok) {
+                    const errData = await statsRes.json().catch(() => ({}));
+                    throw new Error(errData.message || 'Stats fetch failed with status ' + statsRes.status);
+                }
+
+                const stats = await statsRes.json();
+                console.log("[statistique] Data received:", stats);
+
+                // Update "Nombre de Produits" = total items commanded
+                document.getElementById('count-products').textContent = stats.totalOrderedItems || 0;
+
+                const allCategories = stats.allCategories || [];
+                const percentageData = allCategories.map(cat => stats.categoryPercentages[cat] || 0);
+                const rawData = allCategories.map(cat => stats.categoryStats[cat] || 0);
+
+                if (!stats.totalOrders || stats.totalOrders === 0) {
+                    document.getElementById('no-data-warning').style.display = 'block';
+                    document.getElementById('main-chart-panel').style.opacity = '0.3';
+                    if (chart) chart.destroy();
+                    // Clear the shimmer correctly
+                    document.getElementById('salesColumnChart').innerHTML = '';
+                    return;
+                } else {
+                    document.getElementById('no-data-warning').style.display = 'none';
+                    document.getElementById('main-chart-panel').style.opacity = '1';
+                }
+
+                // ── 4. RENDER CHART ────────────────────────────────────────────
+                document.getElementById('salesColumnChart').innerHTML = ''; // Clear shimmer before ApexCharts injection
+                const options = {
+                    series: [{ name: 'Ventes (%)', data: percentageData }],
+                    chart: {
+                        type: 'bar', height: 450,
+                        toolbar: { show: false },
+                        animations: { enabled: true, easing: 'easeinout', speed: 800 }
+                    },
+                    plotOptions: {
+                        bar: {
+                            borderRadius: 15, columnWidth: '60%', distributed: true,
+                            dataLabels: { position: 'top' },
+                        }
+                    },
+                    colors: ['#15803d', '#166534', '#10b981', '#34d399', '#6ee7b7', '#f59e0b', '#fbbf24'],
+                    dataLabels: {
+                        enabled: true,
+                        formatter: (val, opts) => {
+                            const raw = rawData[opts.dataPointIndex] || 0;
+                            return val + "%" + (raw > 0 ? ` (${raw})` : '');
+                        },
+                        offsetY: -25,
+                        style: { fontSize: '13px', fontWeight: 800, colors: ["#ffffff"] }
+                    },
+                    xaxis: {
+                        categories: allCategories,
+                        labels: { rotate: -40, style: { fontSize: '11px', fontWeight: 700, colors: '#ffffff' } }
+                    },
+                    yaxis: { max: 100, labels: { formatter: (val) => val + "%", style: { colors: '#ffffff' } } },
+                    grid: { borderColor: 'rgba(255,255,255,0.1)' },
+                    tooltip: {
+                        theme: 'dark',
+                        y: {
+                            formatter: (val, opts) => {
+                                const raw = rawData[opts.dataPointIndex] || 0;
+                                return `${val}% (${raw} unité${raw > 1 ? 's' : ''})`;
+                            }
+                        }
+                    },
+                    legend: { show: false }
+                };
+
+                if (chart) { chart.destroy(); }
+                chart = new ApexCharts(document.querySelector("#salesColumnChart"), options);
+                chart.render();
+
+            } catch (e) {
+                console.error("Erreur chargement stats:", e);
+                document.getElementById('no-data-warning').style.display = 'block';
+                document.getElementById('no-data-warning').innerHTML = `
+                    <h2 style="font-size: 3rem; margin-bottom: 10px;">⚠️</h2>
+                    <h2>Erreur de connexion</h2>
+                    <p>${e.message}</p>
+                    <button onclick="initStats()" style="margin-top:20px; padding:10px 20px; border-radius:10px; border:none; background:var(--primary); color:white; cursor:pointer;">Réessayer</button>
+                `;
+            }
+        }
+
+        initStats();
+    </script>
+    <!-- ===== NAVBAR LOADER ===== -->
+    <script src="/components/navbar.js"></script>
+</body>
+
+</html>

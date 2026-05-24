@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Mon Profil | Agriculteur Agrosence</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-green: #15803d;
+            --dark-green: #114c23;
+            --glass-bg: rgba(255, 255, 255, 0.9);
+            --glass-border: rgba(130, 233, 164, 0.4);
+            --text-light: #1a1a2e;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #ffffff;
+            color: var(--text-light);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .profile-wrapper {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            padding: 120px 20px 40px;
+        }
+
+        /* Neural Background Effect */
+        .neural-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            background: radial-gradient(circle at 15% 85%, rgba(129, 243, 186, 0.05) 0%, transparent 50%),
+                radial-gradient(circle at 85% 15%, rgba(130, 233, 164, 0.08) 0%, transparent 50%),
+                linear-gradient(to bottom, #ffffff 0%, rgba(129, 243, 186, 0.1) 50%, #ffffff 100%);
+            animation: backgroundPulse 14s ease-in-out infinite;
+        }
+
+        @keyframes backgroundPulse {
+            0%, 100% { filter: brightness(1) saturate(1); }
+            50% { filter: brightness(1.05) saturate(1.1); }
+        }
+
+        .geometric-shapes { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; overflow: hidden; }
+        .shape { position: absolute; border: 1px solid rgba(130, 233, 164, 0.3); animation: floatShape 20s linear infinite; }
+        .shape:nth-child(1) { width: 100px; height: 100px; left: 10%; animation-delay: 0s; }
+        .shape:nth-child(2) { width: 60px; height: 60px; left: 70%; animation-delay: -5s; border-radius: 50%; }
+        .shape:nth-child(3) { width: 80px; height: 80px; left: 30%; animation-delay: -10s; transform: rotate(45deg); }
+        .shape:nth-child(4) { width: 120px; height: 120px; left: 50%; animation-delay: -15s; clip-path: polygon(50% 0%, 0% 100%, 100% 100%); background: rgba(130, 233, 164, 0.05); }
+        .shape:nth-child(5) { width: 90px; height: 90px; left: 85%; animation-delay: -2s; border-radius: 20%; }
+        .shape:nth-child(6) { width: 50px; height: 50px; left: 25%; animation-delay: -8s; border-radius: 50%; }
+
+        @keyframes floatShape {
+            from { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+            10%, 90% { opacity: 1; }
+            to { transform: translateY(-100px) rotate(360deg); opacity: 0; }
+        }
+
+        .neural-lines { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; }
+        .neural-line {
+            position: absolute;
+            background: linear-gradient(90deg, transparent, rgba(129, 243, 186, 0.4), transparent);
+            height: 2px; width: 100%;
+            animation: neuralPulse 3s ease-in-out infinite;
+        }
+        .neural-line:nth-child(1) { top: 20%; animation-delay: 0s; }
+        .neural-line:nth-child(2) { top: 60%; animation-delay: -1s; }
+        .neural-line:nth-child(3) { top: 40%; animation-delay: -2s; }
+
+        @keyframes neuralPulse {
+            0%, 100% { opacity: 0.1; transform: scaleX(0.5); }
+            50% { opacity: 0.4; transform: scaleX(1); }
+        }
+
+        .profile-card {
+            width: 100%;
+            max-width: 500px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(25px);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            padding: 0;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            animation: slideUp 0.6s ease-out forwards;
+            margin: 0 auto;
+            position: relative;
+            z-index: 5;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(40px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* EPIC DARK MODE OVERRIDES */
+        body.dark-mode {
+            background-color: transparent !important;
+            color: #ffffff !important;
+        }
+
+        body.dark-mode .neural-background {
+            background: 
+                radial-gradient(circle at 50% -20%, rgba(255, 255, 255, 0.12) 0%, transparent 50%),
+                radial-gradient(circle at 15% 85%, rgba(129, 243, 186, 0.08) 0%, transparent 50%),
+                radial-gradient(circle at 85% 15%, rgba(130, 233, 164, 0.15) 0%, transparent 50%),
+                linear-gradient(to bottom, #06130b 0%, #020604 100%) !important;
+        }
+
+        @keyframes accueilPulse {
+            0%, 100% { filter: brightness(0.9) saturate(1.4) hue-rotate(0deg); }
+            33% { filter: brightness(1.1) saturate(1.7) hue-rotate(15deg); }
+            66% { filter: brightness(1.0) saturate(1.5) hue-rotate(-10deg); }
+        }
+
+        body.dark-mode .profile-card {
+            background: #0d1a12 !important;
+            border: none !important;
+            box-shadow: 0 25px 60px rgba(0,0,0,0.5) !important;
+            backdrop-filter: none !important;
+        }
+
+        body.dark-mode .info-item {
+            background: #15251c !important;
+            border: 1px solid rgba(129, 243, 186, 0.1) !important;
+        }
+
+        body.dark-mode .info-content label { color: rgba(255, 255, 255, 0.5) !important; }
+        body.dark-mode .info-content span { color: #ffffff !important; }
+        body.dark-mode h2, body.dark-mode .username-id { color: #ffffff !important; }
+        body.dark-mode .info-icon { background: rgba(129, 243, 186, 0.1) !important; color: #81f3ba !important; }
+
+        body.dark-mode .role-badge {
+            background: rgba(129, 243, 186, 0.15) !important;
+            color: #81f3ba !important;
+            border-color: rgba(129, 243, 186, 0.3) !important;
+        }
+
+        body.dark-mode .profile-img-container {
+            background: rgba(15, 35, 25, 0.8) !important;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5) !important;
+        }
+
+        body.dark-mode .btn-edit {
+            background: var(--primary-green) !important;
+            color: #ffffff !important;
+            box-shadow: 0 4px 15px rgba(129, 243, 186, 0.4) !important;
+        }
+
+        .profile-card, .info-item, .btn-edit, body {
+            transition: all 0.3s ease;
+        }
+
+        .card-header {
+            height: 140px;
+            background: linear-gradient(135deg, #1e293b, #0f172a);
+            position: relative;
+        }
+
+        .profile-main {
+            padding: 0 40px 40px;
+            text-align: center;
+            position: relative;
+        }
+
+        .profile-img-container {
+            width: 130px;
+            height: 130px;
+            background: #fff;
+            border-radius: 50%;
+            margin: -65px auto 20px;
+            padding: 6px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            position: relative;
+            z-index: 2;
+        }
+
+        .profile-img {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, var(--primary-green), var(--dark-green));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 54px;
+            font-weight: 800;
+            color: #fff;
+        }
+
+        .role-badge {
+            display: inline-block;
+            padding: 6px 16px;
+            background: rgba(21, 128, 61, 0.1);
+            color: var(--primary-green);
+            border: 1px solid rgba(21, 128, 61, 0.2);
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        h2 {
+            font-size: 2rem;
+            font-weight: 800;
+            color: #1e293b;
+            margin-bottom: 6px;
+        }
+
+        .username-id {
+            color: rgba(0,0,0,0.4);
+            font-size: 0.9rem;
+            margin-bottom: 25px;
+        }
+
+        .info-grid {
+            display: grid;
+            gap: 20px;
+            text-align: left;
+            margin-bottom: 35px;
+        }
+
+        .info-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px;
+            background: rgba(0,0,0,0.03);
+            border-radius: 14px;
+            border: 1px solid rgba(0,0,0,0.05);
+        }
+
+        .info-icon {
+            width: 40px;
+            height: 40px;
+            background: #fff;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary-green);
+            font-size: 1.1rem;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        }
+
+        .info-content label {
+            display: block;
+            font-size: 0.75rem;
+            color: rgba(0,0,0,0.4);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .info-content span {
+            font-weight: 700;
+            color: #1e293b;
+            font-size: 1rem;
+        }
+
+        .profile-actions {
+            display: flex;
+            gap: 15px;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 16px;
+            border: none;
+            border-radius: 14px;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            text-decoration: none;
+        }
+
+        .btn-edit {
+            background: var(--primary-green);
+            color: white;
+            box-shadow: 0 10px 25px rgba(21, 128, 61, 0.25);
+        }
+
+        .btn-edit:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 30px rgba(21, 128, 61, 0.35);
+        }
+
+        .btn-dash {
+            background: #fff;
+            color: #1e293b;
+            border: 1px solid rgba(0,0,0,0.1);
+        }
+
+        .btn-dash:hover {
+            background: rgba(0,0,0,0.02);
+            transform: translateY(-3px);
+        }
+
+        /* Decorative shapes in header */
+        .header-decoration {
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
+            top: -20px;
+            right: -20px;
+        }
+                /* EPIC DARK MODE OVERRIDES (MATCHING EXPERT) */
+        body.dark-mode {
+            background-color: transparent !important;
+            color: #ffffff !important;
+        }
+
+        body.dark-mode .neural-background {
+            background: 
+                radial-gradient(circle at 50% -20%, rgba(255, 255, 255, 0.12) 0%, transparent 50%),
+                radial-gradient(circle at 15% 85%, rgba(129, 243, 186, 0.08) 0%, transparent 50%),
+                radial-gradient(circle at 85% 15%, rgba(130, 233, 164, 0.15) 0%, transparent 50%),
+                linear-gradient(to bottom, #06130b 0%, #020604 100%) !important;
+        }
+
+        @keyframes accueilPulse {
+            0%, 100% { filter: brightness(0.9) saturate(1.4) hue-rotate(0deg); }
+            33% { filter: brightness(1.1) saturate(1.7) hue-rotate(15deg); }
+            66% { filter: brightness(1.0) saturate(1.5) hue-rotate(-10deg); }
+        }
+
+        body.dark-mode .profile-card {
+            background: #0d1a12 !important;
+            border: none !important;
+            box-shadow: 0 25px 60px rgba(0,0,0,0.5) !important;
+            backdrop-filter: none !important;
+        }
+
+        body.dark-mode .info-item {
+            background: #15251c !important;
+            border: 1px solid rgba(129, 243, 186, 0.1) !important;
+        }
+
+        body.dark-mode .info-content label { color: rgba(255, 255, 255, 0.5) !important; }
+        body.dark-mode .info-content span { color: #ffffff !important; }
+        body.dark-mode h2, body.dark-mode .username-id { color: #ffffff !important; }
+        body.dark-mode .info-icon { background: rgba(129, 243, 186, 0.1) !important; color: #81f3ba !important; }
+
+        body.dark-mode .role-badge {
+            background: rgba(129, 243, 186, 0.15) !important;
+            color: #81f3ba !important;
+            border-color: rgba(129, 243, 186, 0.3) !important;
+        }
+
+        body.dark-mode .profile-img-container {
+            background: rgba(15, 35, 25, 0.8) !important;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5) !important;
+        }
+
+        body.dark-mode .btn-edit {
+            background: var(--primary-green) !important;
+            color: #ffffff !important;
+            box-shadow: 0 4px 15px rgba(129, 243, 186, 0.4) !important;
+        }
+
+        .profile-card, .info-item, .btn-edit, body {
+            transition: all 0.3s ease;
+        }
+
+    </style>
+</head>
+
+<body>
+    <script>
+        if (localStorage.getItem('theme') === 'dark') {
+            document.documentElement.classList.add('dark-mode');
+            document.body.classList.add('dark-mode');
+        }
+    </script>
+    <!-- ===== UNIVERSAL NAVBAR ===== -->
+    <div id="navbar-container"></div>
+
+    <div class="neural-background"></div>
+    <div class="geometric-shapes">
+        <div class="shape"></div>
+        <div class="shape"></div>
+        <div class="shape"></div>
+        <div class="shape"></div>
+        <div class="shape"></div>
+        <div class="shape"></div>
+    </div>
+    <div class="neural-lines">
+        <div class="neural-line"></div>
+        <div class="neural-line"></div>
+        <div class="neural-line"></div>
+    </div>
+
+    <div class="profile-wrapper">
+        <div class="profile-card">
+            <div class="card-header">
+                <div class="header-decoration"></div>
+            </div>
+            <div class="profile-main">
+                <div class="profile-img-container">
+                    <div class="profile-img" id="userInitial">A</div>
+                </div>
+                <div class="role-badge" data-i18n="Agriculteur"><i class="fas fa-leaf" ></i> Agriculteur</div>
+                <h2 id="displayName" data-i18n="chargement">Chargement...</h2>
+                <div class="username-id" id="userId"data-i18n="agriculteur agrosence">Agriculteur Agrosence</div>
+
+                <div class="info-grid">
+                    <div class="info-item">
+                        <div class="info-icon"><i class="fas fa-envelope"></i></div>
+                        <div class="info-content">
+                            <label data-i18n="E-mail  système">E-mail Système</label>
+                            <span id="displayEmail" data-i18n="chargement">Chargement...</span>
+                        </div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-icon"><i class="fas fa-phone"></i></div>
+                        <div class="info-content">
+                            <label data-i18n="Contact">Contact</label>
+                            <span id="displayPhone" data-i18n="Chargement...">Chargement...</span>
+                        </div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-icon"><i class="fas fa-map-marker-alt"></i></div>
+                        <div class="info-content">
+                            <label data-i18n="Localisation">Localisation</label>
+                            <span id="displayLocation" data-i18n="Chargement...">Chargement...</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="profile-actions">
+                    <a href="../parametre/index.html" class="btn btn-edit" data-i18n="Paramètres">
+                        <i class="fas fa-cog"></i> Paramètres
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const token = localStorage.getItem('token');
+        if (!token) window.location.href = "../../../logsigin/sign.html";
+
+        async function loadProfile() {
+            try {
+                const res = await fetch('/api/user/profile', { method: 'GET', headers: { 'x-auth-token': token } });
+                const data = await res.json();
+                
+                const name = data.nom || localStorage.getItem('userName') || 'Agriculteur';
+                const email = data.email || 'agriculteur@agrosence.com';
+                const phone = data.phone || 'Non spécifié';
+                const loc = data.localisation || localStorage.getItem('userLocation') || 'Non spécifiée';
+                
+                document.getElementById('displayName').textContent = name;
+                document.getElementById('displayEmail').textContent = email;
+                document.getElementById('displayPhone').textContent = phone;
+                document.getElementById('displayLocation').textContent = loc;
+                document.getElementById('userInitial').textContent = name.charAt(0).toUpperCase();
+                
+            } catch (err) {
+                const name = localStorage.getItem('userName') || 'Agriculteur';
+                document.getElementById('displayName').textContent = name;
+                document.getElementById('userInitial').textContent = name.charAt(0).toUpperCase();
+                document.getElementById('displayEmail').textContent = 'agriculteur@agrosence.com';
+                document.getElementById('displayPhone').textContent = '—';
+                document.getElementById('displayLocation').textContent = localStorage.getItem('userLocation') || '—';
+            }
+        }
+        loadProfile();
+    </script>
+    <script src="../theme-manager.js"></script>
+    <script src="/components/navbar.js"></script>
+</body>
+</html>

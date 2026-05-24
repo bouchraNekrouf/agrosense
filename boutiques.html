@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agrosence</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <link href="style.css" rel="stylesheet">
+    <script>
+        if (localStorage.getItem('theme') === 'dark') {
+            document.documentElement.classList.add('dark-mode');
+            document.body.classList.add('dark-mode');
+        }
+    </script>
+    <!--
+
+TemplateMo 597 Neural Glass
+
+https://templatemo.com/tm-597-neural-glass
+
+-->
+    <style>
+        /* Fix the dropdown styling to not be affected by navbar pills */
+        #userDropdownMenu a {
+            background: transparent !important;
+            border: none !important;
+            box-shadow: none !important;
+            border-radius: 12px !important;
+            color: rgba(255, 255, 255, 0.85) !important;
+            padding: 12px 16px !important;
+            display: block !important;
+            text-align: left !important;
+            margin-bottom: 4px;
+            font-weight: 500 !important;
+            transition: all 0.25s ease !important;
+        }
+
+        #userDropdownMenu a:hover {
+            background: rgba(130, 233, 164, 0.12) !important;
+            color: #81f3ba !important;
+            transform: translateX(4px);
+        }
+
+        #userDropdownMenu a::after {
+            display: none !important;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Epic Neural Background -->
+    <div class="neural-background"></div>
+
+    <!-- Floating Geometric Shapes -->
+    <div class="geometric-shapes">
+        <div class="shape"></div>
+        <div class="shape"></div>
+        <div class="shape"></div>
+        <div class="shape"></div>
+    </div>
+
+    <!-- Neural Network Lines -->
+    <div class="neural-lines">
+        <div class="neural-line"></div>
+        <div class="neural-line"></div>
+        <div class="neural-line"></div>
+    </div>
+
+    <!-- Header -->
+    <header class="glass">
+        <nav>
+
+
+            <div class="timeline-year">🚜 Agrosence</div>
+
+            <ul class="nav-links">
+                <li><a href="index.html">Définition</a></li>
+                <li><a href="index.html#showcase">Services</a></li>
+                <li><a href="index.html#timeline">Publication</a></li>
+                <li><a href="index.html#features">Propos</a></li>
+                <li><a href="index.html#footer">Nous</a></li>
+
+                <li id="userMenuContainer" style="display: none; position: relative; align-items: center; gap: 10px;">
+                    <div id="userPill"
+                        style="display: flex; align-items: center; gap: 10px; padding: 6px 16px 6px 6px; background: rgba(130, 233, 164, 0.08); border: 1px solid rgba(130, 233, 164, 0.2); border-radius: 50px; cursor: pointer;">
+                        <div style="width: 32px; height: 32px; background: linear-gradient(135deg, #81f3ba, #2c5a36); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; color: #fff; font-size: 14px;"
+                            id="userInitialCard">U</div>
+                        <span id="userNameDisplay"
+                            style="font-weight: 500; font-size: 0.95rem; color: rgba(255, 255, 255, 0.9);">Name</span>
+                    </div>
+                    <a href="javascript:void(0)" id="userDropdownToggle" title="Menu"
+                        style="display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 5px; width: 44px; height: 44px; border: 1px solid rgba(130, 233, 164, 0.2); border-radius: 12px; background: rgba(130, 233, 164, 0.08); cursor: pointer; transition: all 0.3s ease;">
+                        <span
+                            style="display: block; width: 20px; height: 2px; background-color: #81f3ba; border-radius: 2px;"></span>
+                        <span
+                            style="display: block; width: 20px; height: 2px; background-color: #81f3ba; border-radius: 2px;"></span>
+                        <span
+                            style="display: block; width: 20px; height: 2px; background-color: #81f3ba; border-radius: 2px;"></span>
+                    </a>
+                    <div id="userDropdownMenu"
+                        style="display:none; position:absolute; right:0; top:calc(100% + 15px); background: rgba(10, 45, 20, 0.95); backdrop-filter: blur(30px); padding:12px; border-radius:18px; flex-direction:column; min-width:240px; z-index:1001; border: 1px solid rgba(130, 233, 164, 0.2); box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);">
+                        <!-- Links injected by JS depending on role -->
+                    </div>
+                </li>
+                <li id="authLinkContainer"><a href="logsigin/login.html" id="navAuthLink">Connect</a></li>
+            </ul>
+            <div class="mobile-menu-toggle">
+                <div class="hamburger-line"></div>
+                <div class="hamburger-line"></div>
+                <div class="hamburger-line"></div>
+            </div>
+        </nav>
+        <div class="mobile-nav">
+            <a href="index.html">Définition</a>
+            <a href="index.html#showcase">Services</a>
+            <a href="index.html#timeline">Publication</a>
+            <a href="index.html#features">Propos</a>
+            <a href="index.html#footer">Nous</a>
+            <a href="javascript:void(0)" id="mobileAuthLink">Connect</a>
+        </div>
+    </header>
+
+    <!-- Spacer to avoid overlap with fixed glass navbar -->
+    <div style="height: 120px; width: 100%;"></div>
+
+    <!-- ===== BOUTIQUE DES EXPERTS SECTION ===== -->
+    <section class="boutique-section" id="boutique-experts">
+        <h2 class="section-title">Boutiques des Experts</h2>
+        <div class="boutique-container">
+            <div class="boutique-grid" id="boutiqueGrid">
+                <!-- Les boutiques seront générées ici par JavaScript -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Section Removed for boutiques page -->
+    <!--------------------------- Section 5: adress ------------------------------------------------------------------------------->
+
+    <footer>
+        <div class="footer-content">
+            <h3>Address</h3>
+            <span>Relizane, DZ</span>
+            <p>(+213)671771832<br>Agrosense2026@gmail.com</p>
+            <div class="footer-links">
+                <a href="#features">Définition</a>
+                <a href="#showcase">Service</a>
+                <a href="#timeline">Publication</a>
+                <a href="#features">à propos</a>
+                <a href="#">Nous</a>
+                <a href="login/login.html">connect</a>
+            </div>
+            <p>&copy; 2026 Site web de Agrosense</p>
+        </div>
+    </footer>
+
+    <!-- Side Panel -->
+    <div id="sidePanelConfig"
+        style="position:fixed; top:0; right:-400px; width:350px; height:100vh; background:rgba(10, 10, 20, 0.98); z-index:2000; transition: right 0.3s ease; border-left: 1px solid #00ffff; padding:20px; box-sizing:border-box; overflow-y:auto; box-shadow: -5px 0 15px rgba(0,0,0,0.5);">
+        <button id="closeSidePanel"
+            style="background:none; border:none; color:white; font-size:28px; position:absolute; right:20px; top:15px; cursor:pointer;">&times;</button>
+        <h3 id="sidePanelTitle" style="color:#00ffff; margin-bottom:20px; margin-top:10px; font-size: 1.2rem;">Liste
+        </h3>
+        <input type="text" id="sidePanelSearch" placeholder="Rechercher par nom ou ville..."
+            style="width:100%; padding:10px; margin-bottom:20px; border-radius:5px; border:1px solid #00ffff; background:rgba(0,0,0,0.5); color:white; box-sizing:border-box;">
+        <div id="sidePanelList" style="display:flex; flex-direction:column; gap:15px;">
+            <!-- Filled by JS -->
+        </div>
+    </div>
+
+    <script src="scripts.js"></script>
+
+</body>
+
+</html>

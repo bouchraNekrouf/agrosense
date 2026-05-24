@@ -1,0 +1,863 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Paramètres du Profil | Agriculteur Agrosence</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-green: #15803d;
+            --dark-green: #114c23;
+            --glass-bg: rgba(255, 255, 255, 0.9);
+            --glass-border: rgba(130, 233, 164, 0.4);
+            --text-light: #1a1a2e;
+            --danger: #ef4444;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #ffffff;
+            color: var(--text-light);
+            min-height: 100vh;
+        }
+
+        .profile-wrapper {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            padding: 120px 20px 40px;
+        }
+
+        .neural-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            background: radial-gradient(circle at 15% 85%, rgba(129, 243, 186, 0.05) 0%, transparent 50%),
+                radial-gradient(circle at 85% 15%, rgba(130, 233, 164, 0.08) 0%, transparent 50%),
+                linear-gradient(to bottom, #ffffff 0%, rgba(129, 243, 186, 0.25) 50%, #ffffff 100%);
+            animation: backgroundPulse 14s ease-in-out infinite;
+        }
+
+        @keyframes backgroundPulse {
+
+            0%,
+            100% {
+                filter: brightness(0.9) saturate(1.4) hue-rotate(0deg);
+            }
+
+            33% {
+                filter: brightness(1.1) saturate(1.7) hue-rotate(15deg);
+            }
+
+            66% {
+                filter: brightness(1.0) saturate(1.5) hue-rotate(-10deg);
+            }
+        }
+
+        .geometric-shapes {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .shape {
+            position: absolute;
+            border: 1px solid rgba(0, 255, 255, 0.3);
+            animation: floatShape 20s linear infinite;
+        }
+
+        .shape:nth-child(1) {
+            width: 100px;
+            height: 100px;
+            left: 10%;
+            animation-delay: 0s;
+            border-color: rgba(227, 236, 231, 0.4);
+        }
+
+        .shape:nth-child(2) {
+            width: 60px;
+            height: 60px;
+            left: 70%;
+            animation-delay: -5s;
+            border-radius: 50%;
+            border-color: rgba(147, 112, 219, 0.4);
+        }
+
+        .shape:nth-child(3) {
+            width: 80px;
+            height: 80px;
+            left: 30%;
+            animation-delay: -10s;
+            transform: rotate(45deg);
+            border-color: rgba(198, 221, 116, 0.4);
+        }
+
+        .shape:nth-child(4) {
+            width: 120px; height: 120px; left: 50%; animation-delay: -15s;
+            clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+            background: rgba(130, 233, 164, 0.05);
+        }
+        .shape:nth-child(5) { width: 90px; height: 90px; left: 85%; animation-delay: -2s; border-radius: 20%; border-color: rgba(130, 233, 164, 0.3); }
+        .shape:nth-child(6) { width: 50px; height: 50px; left: 25%; animation-delay: -8s; border-radius: 50%; border-color: rgba(130, 233, 164, 0.3); }
+
+        @keyframes floatShape {
+            from {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+
+            10%,
+            90% {
+                opacity: 1;
+            }
+
+            to {
+                transform: translateY(-100px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        .neural-lines {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+
+        .neural-line {
+            position: absolute;
+            background: linear-gradient(90deg, transparent, rgba(129, 243, 186, 0.4), transparent);
+            height: 2px; width: 100%;
+            animation: neuralPulse 3s ease-in-out infinite;
+        }
+
+        .neural-line:nth-child(1) { top: 20%; animation-delay: 0s; }
+        .neural-line:nth-child(2) { top: 60%; animation-delay: -1s; }
+        .neural-line:nth-child(3) { top: 40%; animation-delay: -2s; }
+
+        @keyframes neuralPulse {
+
+            0%,
+            100% {
+                opacity: 0.2;
+                transform: scaleX(0.5);
+            }
+
+            50% {
+                opacity: 1;
+                transform: scaleX(1);
+            }
+        }
+
+        .profile-container {
+            width: 100%;
+            max-width: 600px;
+            padding: 20px;
+        }
+
+        .glass-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(25px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+            animation: slideUp 0.6s ease-out forwards;
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        @keyframes slideUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .profile-img {
+            width: 120px;
+            height: 120px;
+            background: linear-gradient(135deg, #1e293b, #0f172a);
+            border-radius: 50%;
+            margin: -80px auto 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 50px;
+            font-weight: bold;
+            color: #fff;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            border: 5px solid #ffffff;
+        }
+
+        h2 {
+            text-align: center;
+            font-size: 2rem;
+            margin-bottom: 5px;
+            font-weight: 800;
+        }
+
+        p.subtitle {
+            text-align: center;
+            color: rgba(0, 0, 0, 0.5);
+            font-size: 1rem;
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--primary-green);
+            font-weight: 600;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 15px;
+            background: rgba(0, 0, 0, 0.04);
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            border-radius: 12px;
+            color: #1a1a2e;
+            font-size: 1.1rem;
+            font-family: inherit;
+            transition: all 0.3s ease;
+            box-sizing: border-box;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--primary-green);
+            background: rgba(0, 0, 0, 0.02);
+            box-shadow: 0 0 10px rgba(129, 243, 186, 0.2);
+        }
+
+        .actions {
+            display: flex;
+            gap: 15px;
+            margin-top: 35px;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 16px;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: inherit;
+            text-align: center;
+            text-decoration: none;
+        }
+
+        .btn-save {
+            background: var(--primary-green);
+            color: #fff;
+            box-shadow: 0 4px 15px rgba(129, 243, 186, 0.4);
+        }
+
+        .btn-save:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(129, 243, 186, 0.6);
+        }
+
+        .btn-back {
+            background: rgba(0, 0, 0, 0.05);
+            color: #1a1a2e;
+            border: 1px solid rgba(0, 0, 0, 0.15);
+        }
+
+        .btn-back:hover {
+            background: rgba(0, 0, 0, 0.1);
+        }
+
+        .alert-box {
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+            text-align: center;
+            display: none;
+            font-weight: bold;
+        }
+
+        .alert-success {
+            background: rgba(129, 243, 186, 0.2);
+            color: var(--primary-green);
+            border: 1px solid var(--primary-green);
+        }
+
+        .alert-error {
+            background: rgba(239, 68, 68, 0.2);
+            color: var(--danger);
+            border: 1px solid var(--danger);
+        }
+
+        .role-indicator {
+            display: inline-block;
+            padding: 4px 12px;
+            background: #1e293b;
+            color: white;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .settings-section {
+            margin-top: 30px;
+        }
+
+        .section-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--dark-green);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border-bottom: 2px solid var(--glass-border);
+            padding-bottom: 10px;
+        }
+
+        .toggle-group {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .toggle-group:last-child {
+            border-bottom: none;
+        }
+
+        .toggle-label {
+            font-weight: 500;
+            color: #4b5563;
+        }
+
+        /* Switch Styling */
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 26px;
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 34px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        input:checked + .slider {
+            background-color: var(--primary-green);
+        }
+
+        input:focus + .slider {
+            box-shadow: 0 0 1px var(--primary-green);
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(24px);
+        }
+
+        select.form-input {
+            width: 100%;
+            padding: 12px;
+            background: rgba(0, 0, 0, 0.04);
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            border-radius: 12px;
+            color: #1a1a2e;
+            font-size: 1rem;
+            font-family: inherit;
+            cursor: pointer;
+        }
+
+        .password-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        @media (max-width: 600px) {
+            .password-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* تصحيح الوضع المظلم الشامل للإعدادات */
+        body.dark-mode {
+            background-color: transparent !important;
+            color: #e2fff0 !important;
+        }
+
+        /* جعل خلفية الإعدادات مطابقة تماماً لخلفية Accueil */
+        body.dark-mode .neural-background {
+            background: radial-gradient(circle at 15% 85%, rgba(129, 243, 186, 0.1) 0%, transparent 50%),
+                        radial-gradient(circle at 85% 15%, rgba(130, 233, 164, 0.15) 0%, transparent 50%),
+                        linear-gradient(to bottom, #06130b 0%, #0a1910 100%) !important;
+            animation: accueilPulse 14s ease-in-out infinite !important;
+        }
+
+        @keyframes accueilPulse {
+            0%, 100% { filter: brightness(0.9) saturate(1.4) hue-rotate(0deg); }
+            33% { filter: brightness(1.1) saturate(1.7) hue-rotate(15deg); }
+            66% { filter: brightness(1.0) saturate(1.5) hue-rotate(-10deg); }
+        }
+
+        body.dark-mode .glass-card {
+            background: rgba(15, 35, 25, 0.95) !important;
+            border-color: rgba(129, 243, 186, 0.2) !important;
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.6) !important;
+        }
+
+        body.dark-mode h2, 
+        body.dark-mode .section-title, 
+        body.dark-mode label,
+        body.dark-mode .toggle-label {
+            color: #ffffff !important;
+        }
+
+        /* EPIC DARK MODE OVERRIDES (EXACTLY LIKE EXPERT) */
+        body.dark-mode {
+            background-color: transparent !important;
+            color: #ffffff !important;
+        }
+
+        /* جعل خلفية الإعدادات مطابقة تماماً لخلفية Accueil (الوضع المظلم) */
+        body.dark-mode .neural-background {
+            background: 
+                radial-gradient(circle at 50% -20%, rgba(255, 255, 255, 0.12) 0%, transparent 50%),
+                radial-gradient(circle at 15% 85%, rgba(129, 243, 186, 0.08) 0%, transparent 50%),
+                radial-gradient(circle at 85% 15%, rgba(130, 233, 164, 0.15) 0%, transparent 50%),
+                linear-gradient(to bottom, #06130b 0%, #020604 100%) !important;
+        }
+
+        @keyframes accueilPulse {
+            0%, 100% { filter: brightness(0.9) saturate(1.4) hue-rotate(0deg); }
+            33% { filter: brightness(1.1) saturate(1.7) hue-rotate(15deg); }
+            66% { filter: brightness(1.0) saturate(1.5) hue-rotate(-10deg); }
+        }
+
+        body.dark-mode .glass-card {
+            background: #0d1a12 !important; /* لون أخضر داكن (الخلفية التي طلبتها) */
+            border: none !important; /* إزالة الإطار الأزرق */
+            box-shadow: none !important; /* إزالة الظل الأزرق */
+            backdrop-filter: none !important; /* إزالة التمويه */
+        }
+
+        body.dark-mode h2, 
+        body.dark-mode label,
+        body.dark-mode .toggle-label {
+            color: #ffffff !important;
+        }
+
+        body.dark-mode .settings-section {
+            background: rgba(13, 26, 18, 0.6) !important; /* مستطيل أخضر داكن جداً وشفاف */
+            padding: 20px !important;
+            border-radius: 15px !important;
+            border: 1px solid rgba(129, 243, 186, 0.05) !important;
+            margin-bottom: 25px !important;
+        }
+
+        body.dark-mode .section-title {
+            background: none !important;
+            backdrop-filter: none !important;
+            color: #ffffff !important;
+            border: none !important; 
+            padding-bottom: 10px !important;
+            margin-top: 0 !important;
+        }
+
+        body.dark-mode input, 
+        body.dark-mode select {
+            background: #15251c !important; /* لون الخانات الداكن */
+            border: none !important;
+            color: #ffffff !important;
+            box-shadow: none !important;
+            outline: none !important;
+        }
+
+        body.dark-mode input:focus, 
+        body.dark-mode select:focus {
+            background: #1b2e23 !important;
+            border: none !important;
+            box-shadow: none !important;
+        }
+
+        body.dark-mode .btn-save,
+        body.dark-mode .btn-back {
+            background: var(--primary-green) !important;
+            color: #ffffff !important;
+            box-shadow: 0 4px 15px rgba(129, 243, 186, 0.4) !important;
+            border: none !important;
+            text-decoration: none !important;
+            display: inline-flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+        }
+
+        body.dark-mode .btn-save:hover,
+        body.dark-mode .btn-back:hover {
+            background: var(--dark-green) !important;
+            transform: translateY(-2px);
+        }
+
+        /* Transition for smooth switching */
+        .glass-card, .settings-section, input, select, body, .section-title {
+            transition: all 0.3s ease;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- ===== UNIVERSAL NAVBAR ===== -->
+    <div id="navbar-container"></div>
+
+    <!-- Epic Neural Background -->
+    <div class="neural-background"></div>
+
+    <!-- Floating Geometric Shapes -->
+    <div class="geometric-shapes">
+        <div class="shape"></div>
+        <div class="shape"></div>
+        <div class="shape"></div>
+        <div class="shape"></div>
+        <div class="shape"></div>
+        <div class="shape"></div>
+    </div>
+
+    <!-- Neural Network Lines -->
+    <div class="neural-lines">
+        <div class="neural-line"></div>
+        <div class="neural-line"></div>
+        <div class="neural-line"></div>
+    </div>
+    <div class="profile-wrapper">
+        <div class="profile-container">
+            <div class="glass-card">
+                <div class="profile-img" id="userInitial">A</div>
+                <div style="text-align: center;"><span class="role-indicator"data-i18n="Agriculteur">🌾 Agriculteur</span></div>
+<h2 data-i18n="param_title">Paramètres du Profil</h2>               <p class="subtitle" data-i18n="param_subtitle">Gestion des informations de l'agriculteur</p>
+                <div id="alertBox" class="alert-box"></div>
+                <form id="profileForm">
+                    <div class="settings-section">
+<h3 class="section-title" data-i18n="param_personal_info">👤 Informations Personnelles</h3>                        <div class="form-group"><label data-i18n="Nom de l'agriculteur">Nom de l'agriculteur</label><input type="text" id="nom" required
+                                placeholder="Chargement..."></div>
+                        <div class="form-group"><label data-i18n="Numéro de contact">Numéro de contact</label><input type="tel" id="phone" required
+                                placeholder="Chargement..."></div>
+                        <div class="form-group"><label data-i18n="E-mail système">E-mail système</label><input type="email" id="email" required
+                                placeholder="Chargement..."></div>
+                        <div class="form-group">
+                            <label data-i18n="Wilaya (Localisation)">Wilaya (Localisation)</label>
+                            <select id="localisation" class="form-input" required>
+                                <option value="" disabled selected >Choisissez votre wilaya...</option>
+                                <option value="01 - Adrar" data-i18n="Adrar">01 - Adrar</option>
+<option value="02 - Chlef" data-i18n="Chlef">02 - Chlef</option>
+<option value="03 - Laghouat" data-i18n="Laghouat">03 - Laghouat</option>
+<option value="04 - Oum El Bouaghi" data-i18n="Oum el bouaghi">04 - Oum El Bouaghi</option>
+<option value="05 - Batna" data-i18n="Batna">05 - Batna</option>
+<option value="06 - Béjaïa" data-i18n="Bejaia">06 - Béjaïa</option>
+<option value="07 - Biskra" data-i18n="Biskra">07 - Biskra</option>
+<option value="08 - Béchar" data-i18n="Bechar">08 - Béchar</option>
+<option value="09 - Blida" data-i18n="Blida">09 - Blida</option>
+<option value="10 - Bouira" data-i18n="Bouira">10 - Bouira</option>
+<option value="11 - Tamanrasset" data-i18n="Tamanrasset">11 - Tamanrasset</option>
+<option value="12 - Tébessa" data-i18n="Tebessa">12 - Tébessa</option>
+<option value="13 - Tlemcen" data-i18n="Tlemcen">13 - Tlemcen</option>
+<option value="14 - Tiaret" data-i18n="Tiaret">14 - Tiaret</option>
+<option value="15 - Tizi Ouzou" data-i18n="Tizi ouzou">15 - Tizi Ouzou</option>
+<option value="16 - Alger" data-i18n="Alger">16 - Alger</option>
+<option value="17 - Djelfa" data-i18n="Djelfa">17 - Djelfa</option>
+<option value="18 - Jijel" data-i18n="Jijel">18 - Jijel</option>
+<option value="19 - Sétif" data-i18n="Setif">19 - Sétif</option>
+<option value="20 - Saïda" data-i18n="Saida">20 - Saïda</option>
+<option value="21 - Skikda" data-i18n="Skikda">21 - Skikda</option>
+<option value="22 - Sidi Bel Abbès" data-i18n="Sidi bel abbes">22 - Sidi Bel Abbès</option>
+<option value="23 - Annaba" data-i18n="Annaba">23 - Annaba</option>
+<option value="24 - Guelma" data-i18n="Guelma">24 - Guelma</option>
+<option value="25 - Constantine" data-i18n="Constantine">25 - Constantine</option>
+<option value="26 - Médéa" data-i18n="Medea">26 - Médéa</option>
+<option value="27 - Mostaganem" data-i18n="Mostaganem">27 - Mostaganem</option>
+<option value="28 - M'Sila" data-i18n="Msila">28 - M'Sila</option>
+<option value="29 - Mascara" data-i18n="Mascara">29 - Mascara</option>
+<option value="30 - Ouargla" data-i18n="Ouargla">30 - Ouargla</option>
+<option value="31 - Oran" data-i18n="Oran">31 - Oran</option>
+<option value="32 - El Bayadh" data-i18n="El bayadh">32 - El Bayadh</option>
+<option value="33 - Illizi" data-i18n="Illizi">33 - Illizi</option>
+<option value="34 - Bordj Bou Arreridj" data-i18n="Bordj bou arreridj">34 - Bordj Bou Arreridj</option>
+<option value="35 - Boumerdès" data-i18n="Boumerdes">35 - Boumerdès</option>
+<option value="36 - El Tarf" data-i18n="El tarf">36 - El Tarf</option>
+<option value="37 - Tindouf" data-i18n="Tindouf">37 - Tindouf</option>
+<option value="38 - Tissemsilt" data-i18n="Tissemsilt">38 - Tissemsilt</option>
+<option value="39 - El Oued" data-i18n="El oued">39 - El Oued</option>
+<option value="40 - Khenchela" data-i18n="Khenchela">40 - Khenchela</option>
+<option value="41 - Souk Ahras" data-i18n="Souk ahras">41 - Souk Ahras</option>
+<option value="42 - Tipaza" data-i18n="Tipaza">42 - Tipaza</option>
+<option value="43 - Mila" data-i18n="Mila">43 - Mila</option>
+<option value="44 - Aïn Defla" data-i18n="In defla">44 - Aïn Defla</option>
+<option value="45 - Naâma" data-i18n="Naama">45 - Naâma</option>
+<option value="46 - Aïn Témouchent" data-i18n="Ain temouchent">46 - Aïn Témouchent</option>
+<option value="47 - Ghardaïa" data-i18n="Ghardaia">47 - Ghardaïa</option>
+<option value="48 - Relizane" data-i18n="Relizane">48 - Relizane</option>
+<option value="49 - Timimoun" data-i18n="Timimoun">49 - Timimoun</option>
+<option value="50 - Bordj Badji Mokhtar" data-i18n="Bordj badji mokhtar">50 - Bordj Badji Mokhtar</option>
+<option value="51 - Ouled Djellal" data-i18n="Ouled djellal">51 - Ouled Djellal</option>
+<option value="52 - Béni Abbès" data-i18n="Beni abbes">52 - Béni Abbès</option>
+<option value="53 - In Salah" data-i18n="In salah">53 - In Salah</option>
+<option value="54 - In Guezzam" data-i18n="In guezzam">54 - In Guezzam</option>
+<option value="55 - Touggourt" data-i18n="Touggourt">55 - Touggourt</option>
+<option value="56 - Djanet" data-i18n="Djanet">56 - Djanet</option>
+<option value="57 - El M'Ghair" data-i18n="El mghair">57 - El M'Ghair</option>
+<option value="58 - El Meniaa" data-i18n="El meniaa">58 - El Meniaa</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Password Section -->
+                    <div class="settings-section">
+                        <h3 class="section-title" data-i18n="Sécurité & Mot de passe">🔐 Sécurité & Mot de passe</h3>
+                        <div class="form-group">
+                            <label data-i18n="Ancien mot de passe">Ancien mot de passe</label>
+                            <input type="password" id="oldPassword" placeholder="••••••••">
+                        </div>
+                        <div class="password-grid">
+                            <div class="form-group">
+                                <label data-i18n="nouveau mot de passe">Nouveau mot de passe</label>
+                                <input type="password" id="newPassword" placeholder="••••••••">
+                            </div>
+                            <div class="form-group">
+                                <label data-i18n="Confirmer le mot de passe">Confirmer le mot de passe</label>
+                                <input type="password" id="confirmPassword" placeholder="••••••••">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Preferences Section -->
+                    <div class="settings-section">
+                        <h3 class="section-title" data-i18n="Préférences">⚙️ Préférences</h3>
+                        <div class="form-group">
+                            <label data-i18n="Langue de l'interface">Langue de l'interface</label>
+<select class="form-input" id="langSelector">
+                                <option value="fr" data-i18n="Français">Français</option>
+                                <option value="ar" data-i18n="Arabe"> Arabe</option>
+                                <option value="en" data-i18n="Anglais">Anglais </option>
+                            </select>
+                        </div>
+                        <div class="toggle-group">
+                            <span class="toggle-label" data-i18n="Mode Sombre ">Mode Sombre </span>
+                            <label class="switch">
+                                <input type="checkbox" id="darkModeToggle">
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Suggestions: Notifications & Support -->
+                    <div class="settings-section">
+                        <h3 class="section-title" data-i18n="Notifications">🔔 Notifications</h3>
+                        <div class="toggle-group">
+                            <span class="toggle-label" data-i18n="Alertes système par Email">Alertes système par Email</span>
+                            <label class="switch">
+                                <input type="checkbox" checked>
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                        <div class="toggle-group">
+                            <span class="toggle-label" data-i18n="Notifications de navigateur">Notifications de navigateur</span>
+                            <label class="switch">
+                                <input type="checkbox">
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="settings-section">
+                        <h3 class="section-title" data-i18n="Aide & Support">🤝 Aide & Support</h3>
+                        <div class="toggle-group">
+                            <span class="toggle-label" data-i18n="Envoyer des rapports d'erreurs">Envoyer des rapports d'erreurs</span>
+                            <label class="switch">
+                                <input type="checkbox" checked>
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                        <div style="margin-top: 15px;">
+                            <a href="#" style="color: var(--primary-green); text-decoration: none; font-size: 0.9rem; font-weight: 600;" data-i18n="Centre d'aide">📜 Centre d'aide</a>
+                            <span style="margin: 0 10px; color: #ccc;">|</span>
+                            <a href="#" style="color: var(--primary-green); text-decoration: none; font-size: 0.9rem; font-weight: 600;" data-i18n="Contacter le support">💬 Contacter le support</a>
+                        </div>
+                    </div>
+
+                    <div class="actions">
+                        <button type="submit" class="btn btn-save" id="saveBtn" data-i18n="Mettre à jour les paramètres">Mettre à jour les paramètres</button>
+                        <a href="../profil/index.html" class="btn btn-back" data-i18n="Annuler">Annuler</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script>
+        const token = localStorage.getItem('token');
+        const form = document.getElementById('profileForm');
+        const saveBtn = document.getElementById('saveBtn');
+        const alertBox = document.getElementById('alertBox');
+        if (!token) window.location.href = "../../../logsigin/sign.html";
+
+        function showAlert(msg, type) {
+            alertBox.innerText = msg;
+            alertBox.className = "alert-box " + (type === 'success' ? 'alert-success' : 'alert-error');
+            alertBox.style.display = 'block';
+            setTimeout(() => { alertBox.style.display = 'none'; }, 4000);
+        }
+
+        async function loadProfile() {
+            try {
+                const res = await fetch('/api/user/profile', { method: 'GET', headers: { 'x-auth-token': token } });
+                const data = await res.json();
+                if (res.ok) {
+                    document.getElementById('nom').value = data.nom || 'Agriculteur';
+                    document.getElementById('phone').value = data.phone || '';
+                    document.getElementById('email').value = data.email || 'agriculteur@agrosence.com';
+                    if (data.localisation) document.getElementById('localisation').value = data.localisation;
+                    document.getElementById('userInitial').innerText = (data.nom || 'Agriculteur').charAt(0).toUpperCase();
+                } else { 
+                    // Fallback to local storage
+                    document.getElementById('nom').value = localStorage.getItem('userName') || 'Agriculteur';
+                    document.getElementById('userInitial').innerText = (localStorage.getItem('userName') || 'Agriculteur').charAt(0).toUpperCase();
+                }
+            } catch (err) {
+                console.error(err);
+                document.getElementById('nom').value = localStorage.getItem('userName') || 'Agriculteur';
+            }
+        }
+        loadProfile();
+// --- كود تغيير اللغة ---
+const langSelector = document.getElementById('langSelector');
+const savedLang = localStorage.getItem('site_lang') || 'fr';
+
+// عرض اللغة المحفوظة حالياً في القائمة المنسدلة
+langSelector.value = savedLang;
+
+// عندما يقوم المستخدم باختيار لغة جديدة
+langSelector.addEventListener('change', function() {
+    const selectedLang = this.value;
+    localStorage.setItem('site_lang', selectedLang); // حفظ اللغة في المتصفح
+    window.location.reload(); // تحديث الصفحة فوراً لتطبيق التغيير
+});
+// ---------------------- // --- كود الوضع المظلم ---
+const darkModeToggle = document.getElementById('darkModeToggle');
+if (localStorage.getItem('theme') === 'dark') { darkModeToggle.checked = true; }
+
+darkModeToggle.addEventListener('change', () => {
+    if (darkModeToggle.checked) {
+        document.documentElement.classList.add('dark-mode');
+        document.body.classList.add('dark-mode');
+        localStorage.setItem('theme', 'dark');
+    } else {
+        document.documentElement.classList.remove('dark-mode');
+        document.body.classList.remove('dark-mode');
+        localStorage.setItem('theme', 'light');
+    }
+});
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const original = saveBtn.innerText;
+            saveBtn.innerText = 'Enregistrement...'; saveBtn.disabled = true;
+
+            const newPwd = document.getElementById('newPassword').value;
+            const confirmPwd = document.getElementById('confirmPassword').value;
+
+            if (newPwd && newPwd !== confirmPwd) {
+                showAlert('Les nouveaux mots de passe ne correspondent pas', 'error');
+                saveBtn.innerText = original; saveBtn.disabled = false;
+                return;
+            }
+
+            const updateData = { 
+                nom: document.getElementById('nom').value, 
+                phone: document.getElementById('phone').value, 
+                email: document.getElementById('email').value,
+                localisation: document.getElementById('localisation').value
+            };
+            try {
+                const res = await fetch('/api/user/profile', { 
+                    method: 'PUT', 
+                    headers: { 'Content-Type': 'application/json', 'x-auth-token': token }, 
+                    body: JSON.stringify(updateData) 
+                });
+                const data = await res.json();
+
+                localStorage.setItem('userName', updateData.nom);
+                localStorage.setItem('userLocation', updateData.localisation);
+                document.getElementById('userInitial').innerText = updateData.nom.charAt(0).toUpperCase();
+
+                if (res.ok) {
+                    showAlert(data.message || 'Paramètres mis à jour avec succès', 'success');
+                } else {
+                    showAlert('Modifié localement (Mode hors-ligne)', 'success');
+                }
+            } catch (err) {
+                showAlert('Erreur lors de l\'enregistrement, mais pris en compte localement', 'success');
+            }
+            finally { saveBtn.innerText = original; saveBtn.disabled = false; }
+        });
+    </script>
+    <script src="../../../components/translations.js"></script>
+<script src="../../../components/i18n.js"></script>
+
+    <script src="../theme-manager.js"></script>
+    <script src="/components/navbar.js"></script>
+</body>
+
+</html>

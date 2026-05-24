@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+
+    <!-- الترميز ودعم العربية -->
+    <meta charset="utf-8">
+
+    <!-- ضبط العرض للموبايل -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- عنوان الصفحة -->
+    <title>Login</title>
+
+    <!-- وصف الصفحة لمحركات البحث -->
+    <meta name="description" content="تسجيل الدخول إلى منصة Agrosense الذكية لتحديد المحصول المناسب حسب خصائص التربة والمناخ">
+
+    <!-- اسم الكاتب -->
+    <meta name="author" content="Agrosense Team">
+
+    <!-- منع اكتشاف الهاتف والإيميل تلقائيًا -->
+    <meta name="format-detection" content="telephone=no, address=no, email=no">
+
+    <!-- لون شريط المتصفح في الهاتف -->
+    <meta name="theme-color" content="#2d5016">
+
+    <!-- دعم PWA -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-title" content="Agrosense">
+    <link rel="manifest" href="/manifest.json">
+
+    <!-- أيقونات الموقع -->
+    <link rel="icon" href="/favicon.ico">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+
+    <!-- Open Graph (عند مشاركة الرابط في واتساب / فيسبوك) -->
+    <meta property="og:title" content="Agrosense - منصة الزراعة الذكية">
+    <meta property="og:description" content="منصة ذكية تساعد المزارعين على اختيار المحصول المناسب حسب نوع التربة">
+    <meta property="og:type" content="website">
+    <meta property="og:locale" content="ar_DZ">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Agrosense - منصة الزراعة الذكية">
+    <meta name="twitter:description" content="تطبيق ذكي لتحديد المحصول المناسب حسب خصائص التربة والمناخ">
+
+    <!-- ملف التنسيق -->
+    <link rel="stylesheet" href="login.css">
+
+</head>
+
+         <body class="__className_f367f3">
+             <div class="neural-background"></div>
+    
+    <!-- Floating Geometric Shapes -->
+    <div class="geometric-shapes">
+        <div class="shape"></div>
+        <div class="shape"></div>
+        <div class="shape"></div>
+        <div class="shape"></div>
+    </div>
+
+
+
+<div class="w-full max-w-md" >
+    <div class="text-center mb-8">
+        <div class="inline-flex ">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-user-check w-8 h-8 text-white" aria-hidden="true">
+                <path d="m16 11 2 2 4-4"></path>
+                <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
+                <circle cx="9" cy="7" r="4">
+
+                </circle>
+            </svg>
+        </div>
+        <h1 class="text-3xl" > BIENVENNU A TOUS</h1>
+        <p class="text-gray-400" >Commencez votre voyage dans le monde de l'agriculture intelligente.</p>
+
+
+
+        
+    </div>
+    <div class="bg-white/5 shadow-2xl" >
+        <form class="space-y-6">
+            <div class="space-y-2">
+                <label class="text-sm font-medium ">  Nom complet </label>
+                    <div class="relative">
+                        <svg xmlns="http://www.w3.org/2000/svg"  fill="none" stroke="currentColor" stroke-width="2" >
+                            <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                            <input class="w-full pl-12 pr-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500/50 focus:border-transparent transition-all duration-200" placeholder="entrez votre nom" required="" type="text" value=""></div></div><div class="space-y-2">
+                                                                   <label class="text-sm font-medium text-gray-300">Num Telephone</label><div class="relative"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-phone absolute right-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" aria-hidden="true"><path d="M13.832 16.568a1 1 0 0 0 1.213-.303l.355-.465A2 2 0 0 1 17 15h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2A18 18 0 0 1 2 4a2 2 0 0 1 2-2h3a2 2 0 0 1 2 2v3a2 2 0 0 1-.8 1.6l-.468.351a1 1 0 0 0-.292 1.233 14 14 0 0 0 6.392 6.384"></path></svg><input class="w-full pl-12 pr-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500/50 focus:border-transparent transition-all duration-200" placeholder="+213 123 456 789" required="" type="tel" value=""></div></div><div class="space-y-2">
+ <label class="text-sm font-medium text-gray-300">email</label><div class="relative"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-mail absolute right-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" aria-hidden="true"><path d="m22 7-8.991 5.727a2 2 0 0 1-2.009 0L2 7"></path><rect x="2" y="4" width="20" height="16" rx="2"></rect></svg><input class="w-full pl-12 pr-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500/50 focus:border-transparent transition-all duration-200" placeholder="example@email.com" required="" type="email" value=""></div></div><div class="space-y-2">
+                                        <label class="text-sm font-medium text-gray-300">Localisation</label><div class="relative"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-map-pin absolute right-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" aria-hidden="true"><path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                                            <input class="w-full pl-12 pr-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500/50 focus:border-transparent transition-all duration-200" placeholder="ville" required="" type="text" value=""></div></div><div class="space-y-2">
+                                                <label class="text-sm font-medium text-gray-300">Mot de pass</label>
+                                                <div class="relative">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-lock absolute right-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" aria-hidden="true">
+                                                        <rect width="18" height="11" x="3" y="11" rx="2" ry="2"></rect>
+                                                        <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                                                    </svg>
+                                                    <input class="w-full pl-12 pr-12 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500/50 focus:border-transparent transition-all duration-200" placeholder="mot de pass forte" required="" type="password" value="">
+                                                    <button type="button" class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-white transition-colors">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-eye w-5 h-5" aria-hidden="true">
+                                                            <path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"></path>
+                                                            <circle cx="12" cy="12" r="3"></circle>
+                                                        </svg></button>
+                                                    </div></div>
+                                                    <div class="space-y-2">
+                                                  
+                                                    
+                                                   <button type="submit" class="login-btn btn">
+                    <span class="btn-text">s'inscrire</span>
+                    <span class="btn-loader"></span>
+                </button>
+                 
+
+
+
+                                                    </div></div>
+                                                        
+                 <div class="social-login">
+                <button type="button" class="social-btn google-btn">
+                    <span class="social-icon google-icon"></span>
+vous etre un expert?   </button>
+               
+            </div>
+
+            <div class="signup-link">
+                <p> <a href="sign.html">j'ai un compte</a></p>
+                <br><br>
+            </div>
+
+                                    </form>
+
+                                                            <script src="login.js"></script>
+
+</body>
+
+</html>      
+

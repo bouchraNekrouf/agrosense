@@ -1,0 +1,994 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Les Commandes | Agrosence</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <script src="/socket.io/socket.io.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: transparent;
+            color: #1e293b;
+            padding-top: 100px;
+        }
+
+        .neural-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            background: radial-gradient(circle at 15% 85%, rgba(129, 243, 186, 0.05) 0%, transparent 50%),
+                radial-gradient(circle at 85% 15%, rgba(130, 233, 164, 0.08) 0%, transparent 50%),
+                linear-gradient(to bottom, #ffffff 0%, rgba(129, 243, 186, 0.25) 50%, #ffffff 100%);
+            animation: backgroundPulse 14s ease-in-out infinite;
+        }
+
+        @keyframes backgroundPulse {
+
+            0%,
+            100% {
+                filter: brightness(0.9) saturate(1.4) hue-rotate(0deg);
+            }
+
+            33% {
+                filter: brightness(1.1) saturate(1.7) hue-rotate(15deg);
+            }
+
+            66% {
+                filter: brightness(1.0) saturate(1.5) hue-rotate(-10deg);
+            }
+        }
+
+        .geometric-shapes {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .shape {
+            position: absolute;
+            border: 1px solid rgba(0, 255, 255, 0.3);
+            animation: floatShape 20s linear infinite;
+        }
+
+        .shape:nth-child(1) {
+            width: 100px;
+            height: 100px;
+            left: 10%;
+            animation-delay: 0s;
+            border-color: rgba(227, 236, 231, 0.4);
+        }
+
+        .shape:nth-child(2) {
+            width: 60px;
+            height: 60px;
+            left: 70%;
+            animation-delay: -5s;
+            border-radius: 50%;
+            border-color: rgba(147, 112, 219, 0.4);
+        }
+
+        .shape:nth-child(3) {
+            width: 80px;
+            height: 80px;
+            left: 30%;
+            animation-delay: -10s;
+            transform: rotate(45deg);
+            border-color: rgba(198, 221, 116, 0.4);
+        }
+
+        .shape:nth-child(4) {
+            width: 120px;
+            height: 120px;
+            left: 50%;
+            animation-delay: -15s;
+            clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+            background: linear-gradient(45deg, rgba(8, 66, 30, 0.1), transparent);
+        }
+
+        @keyframes floatShape {
+            from {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+
+            10%,
+            90% {
+                opacity: 1;
+            }
+
+            to {
+                transform: translateY(-100px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        .neural-lines {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+
+        .neural-line {
+            position: absolute;
+            background: linear-gradient(90deg, transparent, #fff, transparent);
+            height: 3px;
+            animation: neuralPulse 3s ease-in-out infinite;
+        }
+
+        .neural-line:nth-child(1) {
+            top: 20%;
+            left: 0;
+            width: 100%;
+            background: linear-gradient(90deg, transparent, #6de49f, transparent);
+            animation-delay: 0s;
+        }
+
+        .neural-line:nth-child(2) {
+            top: 60%;
+            left: 0;
+            width: 100%;
+            background: linear-gradient(90deg, transparent, #196633, transparent);
+            animation-delay: -1s;
+        }
+
+        .neural-line:nth-child(3) {
+            top: 40%;
+            left: 0;
+            width: 100%;
+            background: linear-gradient(90deg, transparent, #24a713, transparent);
+            animation-delay: -2s;
+        }
+
+        @keyframes neuralPulse {
+
+            0%,
+            100% {
+                opacity: 0.2;
+                transform: scaleX(0.5);
+            }
+
+            50% {
+                opacity: 1;
+                transform: scaleX(1);
+            }
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .header-title {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .header-title h1 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #0f172a, #10b981);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+        }
+
+        .header-title p {
+            color: #64748b;
+            font-size: 1.1rem;
+        }
+
+        .orders-container {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 25px;
+        }
+
+        .order-card {
+            background: white;
+            border-radius: 24px;
+            overflow: hidden;
+            border: 1px solid rgba(16, 185, 129, 0.1);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .order-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+            border-color: rgba(16, 185, 129, 0.3);
+        }
+
+        .card-header {
+            padding: 20px 30px;
+            background: #f8fafc;
+            border-bottom: 1px solid #f1f5f9;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .order-id {
+            font-weight: 700;
+            color: #64748b;
+            font-size: 0.85rem;
+            letter-spacing: 1px;
+        }
+
+        .card-body {
+            padding: 30px;
+            display: grid;
+            grid-template-columns: 1fr 1.5fr;
+            gap: 40px;
+        }
+
+        .farmer-profile {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .avatar-box {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .farmer-avatar {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #10b981, #059669);
+            border-radius: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            color: white;
+            box-shadow: 0 8px 20px rgba(16, 185, 129, 0.2);
+        }
+
+        .farmer-name {
+            font-size: 1.3rem;
+            font-weight: 800;
+            color: #0f172a;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #475569;
+            font-size: 0.95rem;
+            padding: 8px 15px;
+            background: #f1f5f9;
+            border-radius: 12px;
+            transition: all 0.2s;
+        }
+
+        .contact-item i {
+            color: #10b981;
+            width: 18px;
+        }
+
+        .items-box {
+            background: #f9fafb;
+            border-radius: 20px;
+            padding: 25px;
+            border: 1px solid #f1f5f9;
+        }
+
+        .items-title {
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: #1e293b;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .item-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px dashed #e2e8f0;
+        }
+
+        .item-row:last-child {
+            border: none;
+        }
+
+        .item-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .item-qty {
+            background: #10b981;
+            color: white;
+            padding: 2px 8px;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-weight: 700;
+        }
+
+        .card-footer {
+            padding: 20px 30px;
+            background: #fff;
+            border-top: 1px solid #f1f5f9;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .status-badge {
+            padding: 10px 22px;
+            border-radius: 50px;
+            font-weight: 800;
+            font-size: 0.8rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border: 1px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .status-new {
+            background: rgba(239, 68, 68, 0.08);
+            color: #ef4444;
+            border-color: rgba(239, 68, 68, 0.2);
+            box-shadow: 0 0 15px rgba(239, 68, 68, 0.05);
+        }
+
+        .status-confirmed {
+            background: rgba(16, 185, 129, 0.08);
+            color: #10b981;
+            border-color: rgba(16, 185, 129, 0.2);
+            box-shadow: 0 0 15px rgba(16, 185, 129, 0.05);
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+        }
+
+        .pulse {
+            animation: pulse-red 2s infinite;
+            background: #ef4444;
+        }
+
+        @keyframes pulse-red {
+            0% {
+                transform: scale(0.95);
+                box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7);
+            }
+
+            70% {
+                transform: scale(1);
+                box-shadow: 0 0 0 10px rgba(239, 68, 68, 0);
+            }
+
+            100% {
+                transform: scale(0.95);
+                box-shadow: 0 0 0 0 rgba(239, 68, 68, 0);
+            }
+        }
+
+        .btn-validate {
+            background: #10b981;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 50px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.2);
+        }
+
+        .btn-validate:hover {
+            background: #059669;
+            transform: scale(1.05);
+            box-shadow: 0 8px 25px rgba(16, 185, 129, 0.3);
+        }
+
+        /* ===== TABS NAVIGATION ===== */
+        .order-filters {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 40px;
+        }
+
+        .filter-btn {
+            padding: 10px 25px;
+            border-radius: 50px;
+            border: 1px solid #e2e8f0;
+            background: white;
+            color: #64748b;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .filter-btn.active {
+            background: #10b981;
+            color: white;
+            border-color: #10b981;
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2);
+        }
+
+        /* ===== FINANCIAL BLOCK ===== */
+        .financial-summary {
+            margin-top: 20px;
+            padding: 15px 20px;
+            background: rgba(16, 185, 129, 0.05);
+            border-radius: 16px;
+            border: 1px solid rgba(16, 185, 129, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .total-price {
+            font-size: 1.2rem;
+            font-weight: 800;
+            color: #15803d;
+        }
+
+        .payment-method {
+            font-size: 0.85rem;
+            color: #64748b;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        /* ===== ACTION BUTTONS ===== */
+        .action-group {
+            display: flex;
+            gap: 12px;
+        }
+
+        .btn-secondary {
+            background: #f1f5f9;
+            color: #475569;
+            border: 1px solid #e2e8f0;
+            padding: 10px 20px;
+            border-radius: 50px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9rem;
+        }
+
+        .btn-secondary:hover {
+            background: #e2e8f0;
+            color: #0f172a;
+        }
+
+        .btn-delivered {
+            background: #1e293b;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 50px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9rem;
+        }
+
+        .btn-delivered:hover {
+            background: #0f172a;
+            transform: translateY(-2px);
+        }
+
+        .status-delivered {
+            background: #f1f5f9;
+            color: #1e293b;
+            border-color: #e2e8f0;
+        }
+
+        @media (max-width: 768px) {
+            .card-body {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+        }
+
+        /* Real-time Pulsing Alert */
+        .reception-alert {
+            background: #f0fdf4;
+            border: 2px dashed #10b981;
+            border-radius: 12px;
+            padding: 12px;
+            margin: 10px 0;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            animation: softPulse 2s infinite;
+        }
+
+        @keyframes softPulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4);
+            }
+
+            70% {
+                box-shadow: 0 0 0 10px rgba(16, 185, 129, 0);
+            }
+
+            100% {
+                box-shadow: 0 0 0 0 rgba(16, 185, 129, 0);
+            }
+        }
+
+        .reception-alert i {
+            font-size: 1.5rem;
+            color: #10b981;
+        }
+
+        /* ===== SHIMMER SKELETON ANIMATIONS ===== */
+        .shimmer {
+            animation: shimmerEffect 1.5s infinite linear;
+            background: linear-gradient(to right, #f1f5f9 4%, #e2e8f0 25%, #f1f5f9 36%);
+            background-size: 1000px 100%;
+        }
+
+        @keyframes shimmerEffect {
+            0% {
+                background-position: -1000px 0;
+            }
+
+            100% {
+                background-position: 1000px 0;
+            }
+        }
+
+        /* EPIC DARK MODE OVERRIDES (DARK GREEN NEURAL) */
+        body.dark-mode {
+            background: radial-gradient(circle at 15% 85%, rgba(129, 243, 186, 0.1) 0%, transparent 50%),
+                        radial-gradient(circle at 85% 15%, rgba(130, 233, 164, 0.15) 0%, transparent 50%),
+                        linear-gradient(to bottom, #06130b 0%, #0a1910 100%) !important;
+            color: #ffffff !important;
+        }
+
+        body.dark-mode .neural-background {
+            background: radial-gradient(circle at 15% 85%, rgba(129, 243, 186, 0.1) 0%, transparent 50%),
+                        radial-gradient(circle at 85% 15%, rgba(130, 233, 164, 0.15) 0%, transparent 50%),
+                        linear-gradient(to bottom, #06130b 0%, #0a1910 100%) !important;
+        }
+
+        body.dark-mode .header-title p {
+            color: rgba(255, 255, 255, 0.7) !important;
+        }
+
+        body.dark-mode .item-row {
+            border-bottom-color: rgba(255, 255, 255, 0.1) !important;
+            color: #ffffff !important;
+        }
+
+        body.dark-mode .item-info span {
+            color: #ffffff !important;
+        }
+
+        body.dark-mode .order-card {
+            background: #0d2116 !important;
+            border-color: rgba(129, 243, 186, 0.2) !important;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5) !important;
+        }
+
+        body.dark-mode .card-header, 
+        body.dark-mode .card-footer {
+            background: rgba(15, 35, 25, 0.8) !important;
+            border-color: rgba(255, 255, 255, 0.1) !important;
+        }
+
+        body.dark-mode .items-box,
+        body.dark-mode .contact-item,
+        body.dark-mode .filter-btn,
+        body.dark-mode .btn-secondary,
+        body.dark-mode .financial-summary {
+            background: rgba(129, 243, 186, 0.05) !important;
+            border-color: rgba(255, 255, 255, 0.1) !important;
+            color: #ffffff !important;
+        }
+
+        body.dark-mode .farmer-name,
+        body.dark-mode .items-title,
+        body.dark-mode .order-id,
+        body.dark-mode .total-price,
+        body.dark-mode .payment-method {
+            color: #ffffff !important;
+        }
+
+        body.dark-mode .header-title h1 {
+            color: #81f3ba !important;
+            -webkit-text-fill-color: #81f3ba !important;
+        }
+
+        body.dark-mode .filter-btn.active {
+            background: #10b981 !important;
+            color: white !important;
+            border-color: #10b981 !important;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- ===== UNIVERSAL NAVBAR ===== -->
+    <div id="navbar-container"></div>
+    <!-- Epic Neural Background -->
+    <div class="neural-background"></div>
+
+    <!-- Floating Geometric Shapes -->
+    <div class="geometric-shapes">
+        <div class="shape"></div>
+        <div class="shape"></div>
+        <div class="shape"></div>
+        <div class="shape"></div>
+    </div>
+
+    <!-- Neural Network Lines -->
+    <div class="neural-lines">
+        <div class="neural-line"></div>
+        <div class="neural-line"></div>
+        <div class="neural-line"></div>
+    </div>
+
+
+    <div class="container">
+        <div class="header-title">
+            <h1 data-i18n="Commandes Reçues">Commandes Reçues</h1>
+            <p data-i18n="Gérez et validez vos commandes clients ">Gérez et validez vos commandes clients </p>
+        </div>
+
+        <!-- Filters Tabs -->
+        <div class="order-filters">
+            <button class="filter-btn active" onclick="filterByTab('Toutes', this)" data-i18n="Toutes">Toutes</button>
+            <button class="filter-btn" onclick="filterByTab('En attente', this)" data-i18n="En attente">En attente</button>
+            <button class="filter-btn" onclick="filterByTab('Livrée', this)" data-i18n="Terminées">Terminées</button>
+        </div>
+
+        <div id="orders-list" class="orders-container">
+            <!-- Orders injected via JS -->
+        </div>
+    </div>
+
+    <script>
+        // Theme sync
+        if (localStorage.getItem('theme') === 'dark') {
+            document.documentElement.classList.add('dark-mode');
+            document.body.classList.add('dark-mode');
+        }
+
+        document.addEventListener("DOMContentLoaded", () => {
+            // Global Data Store
+            let allOrders = [];
+            let currentFilter = 'Toutes';
+
+            // Extract Initials Robustly
+            function getInitials(name) {
+                if (!name) return '??';
+                const parts = name.trim().split(/\s+/);
+                if (parts.length >= 2) return (parts[0][0] + parts[1][0]).toUpperCase();
+                return name.substring(0, 2).toUpperCase();
+            }
+
+            // Global Filter function
+            window.filterByTab = function (filter, btn) {
+                currentFilter = filter;
+                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                renderOrdersList(); // Re-render from local storage of allOrders
+            };
+
+            // Main Fetch Function from Real API
+            async function fetchOrders() {
+                const container = document.getElementById('orders-list');
+                const token = localStorage.getItem('token');
+
+                if (!token) {
+                    container.innerHTML = `<div class="no-orders">🚫 Session expirée. Veuillez vous reconnecter.</div>`;
+                    return;
+                }
+
+                // Inject Skeleton Shimmer UI
+                container.innerHTML = Array(2).fill(`
+                    <div class="order-card" style="padding: 0; box-shadow: none;">
+                        <div class="card-header" style="height: 60px; background: #f8fafc; display: flex; align-items:center; justify-content: space-between;">
+                            <div class="shimmer" style="height: 16px; width: 150px; border-radius: 4px;"></div>
+                            <div class="shimmer" style="height: 16px; width: 100px; border-radius: 4px;"></div>
+                        </div>
+                        <div class="card-body">
+                            <div class="farmer-profile">
+                                <div class="shimmer" style="height: 50px; width: 50px; border-radius: 12px; margin-bottom: 5px;"></div>
+                                <div class="shimmer" style="height: 16px; width: 120px; border-radius: 4px; margin-bottom: 5px;"></div>
+                                <div class="shimmer" style="height: 12px; width: 100px; border-radius: 4px; margin-bottom: 5px;"></div>
+                                <div class="shimmer" style="height: 12px; width: 150px; border-radius: 4px;"></div>
+                            </div>
+                            <div class="items-box">
+                                <div class="shimmer" style="height: 18px; width: 150px; border-radius: 4px; margin-bottom: 20px;"></div>
+                                <div class="shimmer" style="height: 14px; width: 100%; border-radius: 4px; margin-bottom: 10px;"></div>
+                                <div class="shimmer" style="height: 14px; width: 80%; border-radius: 4px; margin-bottom: 25px;"></div>
+                                <div class="shimmer" style="height: 45px; width: 100%; border-radius: 16px;"></div>
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
+
+                try {
+                    console.log("🛰️ Fetching real orders from MongoDB...");
+                    const res = await fetch('/api/orders/expert', {
+                        method: 'GET',
+                        headers: { 'x-auth-token': token }
+                    });
+
+                    if (res.status === 403) {
+                        container.innerHTML = `<div class="no-orders">⚠️ Accès refusé : Seuls les experts peuvent accéder à cette page.</div>`;
+                        return;
+                    }
+
+                    if (!res.ok) throw new Error(`HTTP Error: ${res.status}`);
+
+                    allOrders = await res.json();
+                    console.log(`✅ ${allOrders.length} orders retrieved successfully.`);
+                    renderOrdersList();
+
+                } catch (e) {
+                    console.error("🔴 API Fetch Error:", e);
+                    container.innerHTML = `<div class="no-orders" style="color: #ef4444; border-color: #ef4444;">
+                        <i class="fas fa-exclamation-triangle" style="font-size: 2rem; margin-bottom: 10px;"></i><br>
+                        Impossible de charger les données. Erreur : ${e.message}
+                    </div>`;
+                }
+            }
+
+            // Render Function (Logic Only)
+            function renderOrdersList() {
+                const container = document.getElementById('orders-list');
+                if (!container) return;
+
+                // 1. Filtering
+                let filtered = allOrders;
+                if (currentFilter === 'En attente') {
+                    filtered = allOrders.filter(o => o.status === 'En attente' || o.status === 'Nouvelle');
+                } else if (currentFilter === 'Livrée') {
+                    filtered = allOrders.filter(o => o.status === 'Livrée' || o.status === 'Terminée');
+                }
+
+                container.innerHTML = '';
+
+                if (filtered.length === 0) {
+                    container.innerHTML = `
+                        <div class="no-orders">
+                            <i class="fas fa-search" style="font-size: 3rem; color: #cbd5e1; margin-bottom: 15px; display: block;"></i>
+                            Aucune commande trouvée dans la catégorie "${currentFilter}".
+                        </div>`;
+                    return;
+                }
+
+                // 2. Map and Render
+                filtered.forEach(order => {
+                    const isValidee = order.status === 'Validée';
+                    const isLivree = order.status === 'Livrée' || order.status === 'Terminée';
+
+                    // Date & Financials
+                    const d = new Date(order.createdAt);
+                    const dateStr = !isNaN(d) ? d.toLocaleDateString('fr-FR', { day: 'numeric', month: 'short', year: 'numeric' }) : 'Date inconnue';
+
+                    // Use root-level totalPrice from DB or fallback to calculation for legacy orders
+                    let total = order.totalPrice;
+                    if (!total || total === 0) {
+                        if (order.items && Array.isArray(order.items)) {
+                            total = order.items.reduce((sum, item) => sum + (parseFloat(item.price) * parseInt(item.quantity)), 0);
+                        } else if (order.product && order.product.includes('DA')) {
+                            const match = order.product.match(/(\d+)\s*DA/);
+                            if (match) total = parseFloat(match[1]);
+                        }
+                    }
+
+                    // Dynamic Status UI
+                    let statusText = 'En Attente';
+                    let statusClass = 'status-new';
+                    if (isValidee) {
+                        statusText = 'Confirmée';
+                        statusClass = 'status-confirmed';
+                    } else if (isLivree) {
+                        statusText = 'Livrée & Terminée';
+                        statusClass = 'status-delivered';
+                    }
+
+                    const card = document.createElement('div');
+                    card.className = 'order-card';
+                    card.innerHTML = `
+                        <div class="card-header">
+                            <span class="order-id">COMMANDE #${(order._id).substring(order._id.length - 8).toUpperCase()}</span>
+                            <span style="font-size: 0.85rem; color: #94a3b8; font-weight: 600;"><i class="fas fa-calendar-alt"></i> ${dateStr}</span>
+                        </div>
+                        <div class="card-body">
+                            <div class="farmer-profile">
+                                <div class="avatar-box">
+                                    <div class="farmer-avatar" style="font-size: 1.2rem; font-weight: 800; border-radius: 12px; height: 50px; width: 50px;">${getInitials(order.farmerName)}</div>
+                                    <div class="farmer-name" style="font-size: 1.1rem; color: #0f172a;">${order.farmerName}</div>
+                                </div>
+                                <div class="contact-item"><i class="fas fa-phone-alt"></i> ${order.farmerPhone}</div>
+                                <div class="contact-item"><i class="fas fa-map-marker-alt"></i> ${order.location}</div>
+                                ${order.exactAddress ? `<div class="contact-item" style="font-size: 0.8rem;"><i class="fas fa-location-dot"></i> ${order.exactAddress}</div>` : ''}
+                            </div>
+                            <div class="items-box">
+                                <div class="items-title"><i class="fas fa-shopping-basket"></i> Détails de l'Achat</div>
+                                ${order.items && Array.isArray(order.items) && order.items.length > 0 ?
+                            order.items.map(item => `
+                                        <div class="item-row">
+                                            <div class="item-info">
+                                                <span class="item-qty">${item.quantity}x</span>
+                                                <span style="color: #334155;">${item.name}</span>
+                                            </div>
+                                            <span style="font-size:0.75rem; color:#10b981; font-weight:700;">${item.category}</span>
+                                        </div>
+                                    `).join('') :
+                            `<p style="color:#64748b; font-size: 0.9rem;">${order.product}</p>`
+                        }
+                                <div class="financial-summary">
+                                    <div class="payment-method"><i class="fas fa-truck-fast"></i> Paiement Cash</div>
+                                    <div class="total-price">${total.toLocaleString()} DZD</div>
+                                </div>
+                            </div>
+
+                            <!-- Real-time Double Handshake Alert -->
+                            ${order.farmerReceived && !isLivree ? `
+                                <div class="reception-alert">
+                                    <i class="fas fa-bell"></i>
+                                    <span>ALERTE: Le client a confirmé la réception du colis ! 🔥</span>
+                                </div>
+                            ` : ''}
+                        </div>
+                        <div class="card-footer">
+                            <div class="status-badge ${statusClass}">
+                                ${!isValidee && !isLivree ? '<span class="status-dot pulse"></span>' : '<i class="fas fa-check-circle"></i>'}
+                                <span>${statusText}</span>
+                            </div>
+                            <div class="action-group">
+                                <a href="https://wa.me/${order.farmerPhone.replace(/\s+/g, '')}" target="_blank" class="btn-secondary">
+                                    <i class="fab fa-whatsapp"></i> Contacter
+                                </a>
+                                ${!isValidee && !isLivree ? `
+                                    <button class="btn-validate" onclick="window.validerCommande('${order._id}', 'Validée')">
+                                        <i class="fas fa-check"></i> Valider
+                                    </button>
+                                ` : ''}
+                                ${isValidee && !isLivree ? `
+                                    <button class="btn-delivered" onclick="window.validerCommande('${order._id}', 'Livrée')">
+                                        <i class="fas fa-shipping-fast"></i> Marquer Livrée
+                                    </button>
+                                ` : ''}
+                            </div>
+                        </div>
+                    `;
+                    container.appendChild(card);
+                });
+            }
+
+            fetchOrders();
+
+            // Expose globally for the onclick event
+            window.validerCommande = async function (orderId, newStatus = 'Validée') {
+                const token = localStorage.getItem('token');
+                try {
+                    const res = await fetch(`/api/orders/${orderId}/status`, {
+                        method: 'PUT',
+                        headers: { 'Content-Type': 'application/json', 'x-auth-token': token },
+                        body: JSON.stringify({ status: newStatus })
+                    });
+                    if (res.ok) {
+                        fetchOrders(); // Refresh all data from server
+                        updateExpertOrdersBadge();
+                    }
+                } catch (e) {
+                    console.error(e);
+                }
+            };
+
+            // ================== EXPERT ORDERS NOTIFICATION ==================
+            async function updateExpertOrdersBadge() {
+                const token = localStorage.getItem('token');
+                if (!token) return;
+                try {
+                    const res = await fetch('/api/orders/expert', { headers: { 'x-auth-token': token } });
+                    if (res.ok) {
+                        const allOrders = await res.json();
+                        const myNewOrders = allOrders.filter(o => o.status === 'En attente' || o.status === 'Nouvelle');
+
+                        const badge = document.getElementById('expert-orders-badge');
+                        if (badge) {
+                            if (myNewOrders.length > 0) {
+                                badge.textContent = myNewOrders.length;
+                                badge.style.display = 'flex';
+                            } else {
+                                badge.style.display = 'none';
+                            }
+                        }
+                    }
+                } catch (e) { }
+            }
+
+            setInterval(updateExpertOrdersBadge, 30000);
+            updateExpertOrdersBadge();
+
+            // ================== REAL-TIME SOCKET LISTENERS ==================
+            function initExpertSockets() {
+                const checkSocket = setInterval(() => {
+                    if (window.io) {
+                        const socket = io();
+                        const user = JSON.parse(localStorage.getItem('user')) || {};
+                        const userId = user.id || localStorage.getItem('userId');
+                        if (userId) socket.emit('join', userId);
+
+                        socket.on('new_order', (order) => {
+                            console.log('📡 Expert Socket: New Order!', order);
+                            // Visual cue: add notification count and refresh
+                            fetchOrders();
+                            updateExpertOrdersBadge();
+                            if (typeof window.updateNavBadges === 'function') {
+                                // Already handled by navbar globally, but we can force UI update
+                            }
+                        });
+
+                        socket.on('farmer_received_order', (order) => {
+                            console.log('📡 Expert Socket: Farmer received package!', order);
+                            // Refresh specific card or entire list
+                            fetchOrders();
+                        });
+
+                        clearInterval(checkSocket);
+                    }
+                }, 1000);
+            }
+            initExpertSockets();
+        });
+    </script>
+    <script src="/components/navbar.js"></script>
+</body>
+
+</html>
