@@ -139,7 +139,8 @@ io.on('connection', (socket) => {
 app.post('/api/predict', async (req, res) => {
     try {
         const bodyData = req.body;
-        const response = await fetch('http://127.0.0.1:5000/predict', {
+        const pythonBackendUrl = process.env.PYTHON_BACKEND_URL || 'http://127.0.0.1:5000';
+        const response = await fetch(`${pythonBackendUrl}/predict`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
@@ -170,7 +171,7 @@ app.post('/api/predict', async (req, res) => {
             res.status(500).json({ error: "Erreur Model Python: " + pythonData.error });
         }
     } catch (error) {
-        res.status(500).json({ error: "Le serveur Python (Port 5000) n'est pas allumé!" });
+        res.status(500).json({ error: "Le serveur Python n'est pas disponible !" });
     }
 });
 

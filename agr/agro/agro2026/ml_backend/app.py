@@ -194,11 +194,11 @@ def estimate_yield(data, crop_type):
 # ══════════════════════════════════════════════════════════════════
 #  ENTRY POINT
 # ══════════════════════════════════════════════════════════════════
+# Load models at module level so they are available when imported (e.g. by gunicorn)
+load_models()
+
 if __name__ == "__main__":
     print("=" * 58)
     print("  Starting Agricultural API (Dual-Model Version)")
     print("=" * 58)
-    if load_models():
-        app.run(debug=True, host="0.0.0.0", port=5000)
-    else:
-        print("\nRun 'python main.py' first to generate the model files.\n")
+    app.run(debug=True, host="0.0.0.0", port=5000)
