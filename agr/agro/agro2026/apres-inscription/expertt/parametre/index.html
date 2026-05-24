@@ -678,6 +678,30 @@
         }
         loadProfile();
 
+        // --- كود الوضع المظلم ---
+        const darkModeToggle = document.getElementById('darkModeToggle');
+        const activeTheme = localStorage.getItem('agro_theme') || localStorage.getItem('theme') || 'light';
+        if (activeTheme === 'dark') { 
+            darkModeToggle.checked = true; 
+        }
+
+        darkModeToggle.addEventListener('change', () => {
+            if (darkModeToggle.checked) {
+                document.documentElement.classList.add('dark-mode');
+                document.body.classList.add('dark-mode');
+                document.documentElement.setAttribute('data-theme', 'dark');
+                localStorage.setItem('theme', 'dark');
+                localStorage.setItem('agro_theme', 'dark');
+            } else {
+                document.documentElement.classList.remove('dark-mode');
+                document.body.classList.remove('dark-mode');
+                document.documentElement.setAttribute('data-theme', 'light');
+                localStorage.setItem('theme', 'light');
+                localStorage.setItem('agro_theme', 'light');
+            }
+        });
+        // -----------------------
+
         form.addEventListener('submit', async (e) => {
             e.preventDefault();
             const original = saveBtn.innerText;
