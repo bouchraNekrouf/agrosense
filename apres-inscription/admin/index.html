@@ -175,7 +175,25 @@
             .s-row{grid-template-columns:1fr 1fr;gap:10px}
             .s-card{padding:16px 14px}.s-card .nm{font-size:1.3rem}.quick-links{grid-template-columns:1fr}
         }
-        @media(max-width:480px){.s-row{grid-template-columns:1fr}}        /* وضع مظلم فاخر (Dark Green Neural Theme) */
+        @media(max-width:480px){.s-row{grid-template-columns:1fr}}
+
+        /* Force background to be white in light mode */
+        html:not(.dark-mode) body,
+        html[data-theme="light"] body,
+        body:not(.dark-mode) {
+            background: #ffffff !important;
+            background-color: #ffffff !important;
+            color: #1a1a2e !important;
+        }
+        html:not(.dark-mode) .neural-background,
+        html[data-theme="light"] .neural-background,
+        body:not(.dark-mode) .neural-background {
+            background: #ffffff !important;
+            background-image: none !important;
+            display: block !important;
+        }
+
+        /* وضع مظلم فاخر (Dark Green Neural Theme) */
         body.dark-mode {
             background: radial-gradient(circle at 15% 85%, rgba(129, 243, 186, 0.08) 0%, transparent 50%),
                         radial-gradient(circle at 85% 15%, rgba(130, 233, 164, 0.15) 0%, transparent 50%),
