@@ -265,13 +265,21 @@
                 '  100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(239,68,68,0); }',
                 '}',
 
-                /* Responsive */
+                /* Responsive and shrinking navbar to prevent overlapping */
+                '@media (max-width: 1250px) {',
+                '  .nav-link { font-size: 0.82rem; padding: 4px clamp(5px, 1vw, 12px); gap: 4px; }',
+                '  .brand-name { font-size: 1.15rem; }',
+                '  .brand-icon { width: 35px; height: 35px; }',
+                '  .nav-links { gap: 3px; }',
+                '}',
+                '@media (max-width: 1080px) {',
+                '  .nav-links { display: none !important; }',
+                '}',
                 '@media (max-width: 768px) {',
                 '  .top-bar { padding: 14px 20px; }',
                 '  .top-bar.scrolled { padding: 10px 20px; }',
                 '  .dropdown-menu { right: 20px; top: 70px; }',
                 '  .user-pill .uname { display: none; }',
-                '  .nav-links { display: none; }',
                 '}',
                 'body.dark-mode { background: #06130b !important; color: #ffffff !important; }',
                 'body.dark-mode .neural-background { background: radial-gradient(circle at 50% -20%, rgba(255, 255, 255, 0.12) 0%, transparent 50%), radial-gradient(circle at 15% 85%, rgba(129, 243, 186, 0.08) 0%, transparent 50%), radial-gradient(circle at 85% 15%, rgba(130, 233, 164, 0.15) 0%, transparent 50%), linear-gradient(to bottom, #06130b 0%, #020604 100%) !important; }',

@@ -31,6 +31,20 @@
             overflow-x: hidden;
         }
 
+        /* Force background to be white in light mode */
+        html:not(.dark-mode) body,
+        html[data-theme="light"] body,
+        body:not(.dark-mode) {
+            background: #ffffff !important;
+            background-color: #ffffff !important;
+        }
+        html:not(.dark-mode) .neural-background,
+        html[data-theme="light"] .neural-background,
+        body:not(.dark-mode) .neural-background {
+            background: #ffffff !important;
+            background-image: none !important;
+        }
+
         .profile-wrapper {
             display: flex;
             align-items: center;

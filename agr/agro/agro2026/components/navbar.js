@@ -265,8 +265,16 @@
                 '  100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(239,68,68,0); }',
                 '}',
 
-                /* Responsive */
-                '@media (max-width: 1000px) { .nav-links { display: none !important; } }',
+                /* Responsive and shrinking navbar to prevent overlapping */
+                '@media (max-width: 1250px) {',
+                '  .nav-link { font-size: 0.82rem; padding: 4px clamp(5px, 1vw, 12px); gap: 4px; }',
+                '  .brand-name { font-size: 1.15rem; }',
+                '  .brand-icon { width: 35px; height: 35px; }',
+                '  .nav-links { gap: 3px; }',
+                '}',
+                '@media (max-width: 1080px) {',
+                '  .nav-links { display: none !important; }',
+                '}',
                 '@media (max-width: 768px) {',
                 '  .top-bar { padding: 14px 20px; }',
                 '  .top-bar.scrolled { padding: 10px 20px; }',
