@@ -528,10 +528,46 @@
         }
 
         @media (max-width: 768px) {
+            body { padding-top: 80px !important; }
+
+            .container { padding: 0 12px !important; margin: 20px auto !important; }
+
+            .header-title { margin-bottom: 25px !important; }
+            .header-title h1 { font-size: 1.6rem !important; }
+            .header-title p { font-size: 0.9rem !important; }
+
+            .order-filters { gap: 8px !important; margin-bottom: 20px !important; flex-wrap: wrap; }
+            .filter-btn { padding: 8px 16px !important; font-size: 0.8rem !important; }
+
+            .orders-container { gap: 15px !important; }
+
+            .order-card { border-radius: 16px !important; }
+            .card-header { padding: 14px 16px !important; }
             .card-body {
                 grid-template-columns: 1fr;
-                gap: 20px;
+                gap: 15px !important;
+                padding: 16px !important;
             }
+
+            .farmer-avatar { width: 44px !important; height: 44px !important; font-size: 1.3rem !important; border-radius: 12px !important; }
+            .farmer-name { font-size: 1.1rem !important; }
+
+            .contact-item { padding: 6px 12px !important; font-size: 0.82rem !important; border-radius: 10px !important; }
+
+            .items-box { padding: 16px !important; border-radius: 14px !important; }
+            .items-title { font-size: 0.8rem !important; margin-bottom: 12px !important; }
+            .item-row { padding: 10px 0 !important; }
+
+            .card-footer { padding: 14px 16px !important; flex-wrap: wrap; gap: 10px; }
+
+            .status-badge { padding: 8px 16px !important; font-size: 0.72rem !important; }
+            .btn-validate { padding: 10px 18px !important; font-size: 0.82rem !important; }
+            .btn-secondary, .btn-delivered { padding: 8px 14px !important; font-size: 0.82rem !important; }
+
+            .financial-summary { padding: 12px 14px !important; border-radius: 12px !important; flex-wrap: wrap; gap: 8px; }
+            .total-price { font-size: 1rem !important; }
+
+            .action-group { flex-wrap: wrap !important; gap: 8px !important; }
         }
 
         /* Real-time Pulsing Alert */
@@ -988,7 +1024,7 @@
     <script src="../../../components/translations.js"></script>
 <script src="../../../components/i18n.js"></script>
 
-    <script src="/components/navbar.js"></script>
+    <script src="/components/navbar.js?v=5"></script>
 </body>
 
 </html>

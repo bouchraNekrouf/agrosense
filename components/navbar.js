@@ -149,13 +149,24 @@
                 '  font-size: clamp(0.75rem, 1vw, 0.9rem); font-weight: 500;',
                 '  color: rgba(255,255,255,0.9);',
                 '}',
+                '.user-pill .dropdown-caret {',
+                '  margin-left: 4px;',
+                '  transition: transform 0.3s ease;',
+                '  opacity: 0.8;',
+                '  color: #81f3ba;',
+                '  flex-shrink: 0;',
+                '}',
+                '.user-pill.active .dropdown-caret {',
+                '  transform: rotate(180deg);',
+                '}',
 
                 /* Hamburger toggle */
                 '.menu-toggle {',
+                '  display: none;',
                 '  width: 44px; height: 44px; border-radius: 12px;',
                 '  background: rgba(130,233,164,0.08);',
                 '  border: 1px solid rgba(130,233,164,0.2);',
-                '  display: flex; flex-direction: column;',
+                '  flex-direction: column;',
                 '  align-items: center; justify-content: center; gap: 5px;',
                 '  cursor: pointer; transition: all 0.3s ease;',
                 '}',
@@ -274,12 +285,58 @@
                 '}',
                 '@media (max-width: 1080px) {',
                 '  .nav-links { display: none !important; }',
+                '  .menu-toggle { display: flex !important; }',
                 '}',
                 '@media (max-width: 768px) {',
-                '  .top-bar { padding: 14px 20px; }',
-                '  .top-bar.scrolled { padding: 10px 20px; }',
-                '  .dropdown-menu { right: 20px; top: 70px; }',
+                '  .top-bar { padding: 10px 15px; }',
+                '  .top-bar.scrolled { padding: 8px 15px; }',
+                '  .brand-icon { width: 32px !important; height: 32px !important; }',
+                '  .brand-name { font-size: 1rem !important; }',
+                '  .dropdown-menu { right: 15px; top: 60px; width: 230px !important; padding: 8px !important; border-radius: 12px !important; }',
                 '  .user-pill .uname { display: none; }',
+                '  .dropdown-header { display: flex !important; flex-direction: column !important; align-items: center !important; text-align: center !important; padding: 8px 8px 6px !important; border-bottom: 1px solid rgba(130, 233, 164, 0.15) !important; margin-bottom: 4px !important; }',
+                '  .dropdown-header .user-avatar { width: 36px !important; height: 36px !important; font-size: 16px !important; margin-bottom: 6px !important; border-radius: 8px !important; }',
+                '  .dropdown-header .user-info-name { font-size: 0.85rem !important; color: #ffffff !important; }',
+                '  .dropdown-header .user-info-type { font-size: 0.72rem !important; color: #81f3ba !important; font-weight: 600 !important; margin-top: 1px !important; }',
+                '  .menu-item { padding: 8px 10px !important; gap: 8px !important; border-radius: 8px !important; font-size: 0.8rem !important; }',
+                '  .menu-item .item-icon { width: 28px !important; height: 28px !important; font-size: 0.95rem !important; border-radius: 6px !important; }',
+                '  .menu-item .item-label { font-size: 0.8rem !important; }',
+                '  .menu-item .item-desc { font-size: 0.65rem !important; margin-top: 1px !important; }',
+                '  .menu-divider { margin: 4px 6px !important; }',
+                '}',
+                /* Mobile Drawer */
+                '.mobile-drawer {',
+                '  position: fixed; top: 80px; right: 50px; width: 260px;',
+                '  background: rgba(10, 45, 20, 0.95);',
+                '  backdrop-filter: blur(30px); -webkit-backdrop-filter: blur(30px);',
+                '  border: 1px solid rgba(130, 233, 164, 0.2);',
+                '  border-radius: 18px; padding: 12px;',
+                '  display: flex; flex-direction: column; gap: 4px; z-index: 1001;',
+                '  opacity: 0; visibility: hidden;',
+                '  transform: translateY(-15px) scale(0.95);',
+                '  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);',
+                '  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);',
+                '}',
+                '.mobile-drawer.show {',
+                '  opacity: 1; visibility: visible;',
+                '  transform: translateY(0) scale(1);',
+                '}',
+                '.mobile-drawer-link {',
+                '  display: flex; align-items: center; gap: 12px;',
+                '  color: rgba(255, 255, 255, 0.85); text-decoration: none;',
+                '  font-size: 0.95rem; font-weight: 500; padding: 12px 16px;',
+                '  border-radius: 12px; transition: all 0.25s ease;',
+                '  border: none; background: none; width: 100%; text-align: left; font-family: inherit;',
+                '}',
+                '.mobile-drawer-link:hover {',
+                '  background: rgba(130, 233, 164, 0.12); color: #81f3ba;',
+                '  transform: translateX(4px);',
+                '}',
+                '.mobile-drawer-link.active {',
+                '  background: rgba(130, 233, 164, 0.18); color: #81f3ba;',
+                '}',
+                '@media (max-width: 768px) {',
+                '  .mobile-drawer { top: 70px; right: 15px; width: 240px; }',
                 '}',
                 'body.dark-mode { background: #06130b !important; color: #ffffff !important; }',
                 'body.dark-mode .neural-background { background: radial-gradient(circle at 50% -20%, rgba(255, 255, 255, 0.12) 0%, transparent 50%), radial-gradient(circle at 15% 85%, rgba(129, 243, 186, 0.08) 0%, transparent 50%), radial-gradient(circle at 85% 15%, rgba(130, 233, 164, 0.15) 0%, transparent 50%), linear-gradient(to bottom, #06130b 0%, #020604 100%) !important; }',
@@ -425,6 +482,9 @@
 
         // ── 3. openSidePanel — always on window ───────────────────────
         window.openSidePanel = async function (title, type) {
+            var token = localStorage.getItem('token');
+            var hideActions = !token;
+            window._sidePanelHideActions = hideActions;
             var p = document.getElementById('sidePanelConfig');
             var o = document.getElementById('sidePanelOverlay');
             if (!p) return;
@@ -439,17 +499,21 @@
 
             try {
                 var endpoint = '';
-                if (type === 'expert' || type === 'agriculteur') {
-                    endpoint = '/api/user/all/' + type;
-                } else if (type === 'notifications') {
-                    // Render from our live notification buffer instead of fetching invitations
-                    window._navbarPanelType = 'notifications';
-                    window._renderNotificationPanel();
-                    return;
+                if (!token) {
+                    endpoint = '/api/user/public/experts';
+                } else {
+                    if (type === 'expert' || type === 'agriculteur') {
+                        endpoint = '/api/user/all/' + type;
+                    } else if (type === 'notifications') {
+                        // Render from our live notification buffer instead of fetching invitations
+                        window._navbarPanelType = 'notifications';
+                        window._renderNotificationPanel();
+                        return;
+                    }
                 }
 
                 var res = await fetch(endpoint, {
-                    headers: { 'x-auth-token': localStorage.getItem('token') || '' }
+                    headers: { 'x-auth-token': token || '' }
                 });
                 if (res.ok) {
                     var data = await res.json();
@@ -576,6 +640,7 @@
             }
 
             var isNotif = (window._navbarPanelType === 'notifications');
+            var hideActions = window._sidePanelHideActions;
 
             items.forEach(function (item) {
                 var div = document.createElement('div');
@@ -610,45 +675,48 @@
                     '</div>';
                 topRow.appendChild(info);
 
-                // Action Button Container
-                var actions = document.createElement('div');
-                actions.style.cssText = 'display:flex; gap:8px;';
+                if (!hideActions) {
+                    // Action Button Container
+                    var actions = document.createElement('div');
+                    actions.style.cssText = 'display:flex; gap:8px;';
 
-                if (isNotif) {
-                    var acceptBtn = document.createElement('button');
-                    acceptBtn.style.cssText = 'background:linear-gradient(135deg,#81f3ba,#2c5a36);color:#0d1f12;border:none;padding:8px 16px;border-radius:50px;cursor:pointer;font-size:0.85rem;font-weight:700;transition:0.3s;box-shadow:0 4px 15px rgba(129,243,186,0.2);';
-                    acceptBtn.textContent = 'Accepter';
-                    acceptBtn.onclick = function (e) {
-                        e.stopPropagation();
-                        window.acceptInvite(item._id, acceptBtn);
-                    };
-                    actions.appendChild(acceptBtn);
-                } else if (item.isPending) {
-                    var pendingLabel = document.createElement('div');
-                    pendingLabel.style.cssText = 'color:rgba(255,255,255,0.5);font-size:0.8rem;align-self:center;margin-right:6px;font-style:italic;';
-                    pendingLabel.innerHTML = '⏳ En attente...';
+                    if (isNotif) {
+                        var acceptBtn = document.createElement('button');
+                        acceptBtn.style.cssText = 'background:linear-gradient(135deg,#81f3ba,#2c5a36);color:#0d1f12;border:none;padding:8px 16px;border-radius:50px;cursor:pointer;font-size:0.85rem;font-weight:700;transition:0.3s;box-shadow:0 4px 15px rgba(129,243,186,0.2);';
+                        acceptBtn.textContent = 'Accepter';
+                        acceptBtn.onclick = function (e) {
+                            e.stopPropagation();
+                            window.acceptInvite(item._id, acceptBtn);
+                        };
+                        actions.appendChild(acceptBtn);
+                    } else if (item.isPending) {
+                        var pendingLabel = document.createElement('div');
+                        pendingLabel.style.cssText = 'color:rgba(255,255,255,0.5);font-size:0.8rem;align-self:center;margin-right:6px;font-style:italic;';
+                        pendingLabel.innerHTML = '⏳ En attente...';
 
-                    var cancelBtn = document.createElement('button');
-                    cancelBtn.style.cssText = 'background:rgba(239,68,68,0.1);color:#ef4444;border:1px solid rgba(239,68,68,0.3);padding:8px 16px;border-radius:50px;cursor:pointer;font-size:0.85rem;font-weight:600;transition:0.3s;';
-                    cancelBtn.textContent = 'Annuler';
-                    cancelBtn.onclick = function (e) {
-                        e.stopPropagation();
-                        window.cancelInvite(item._id, cancelBtn);
-                    };
-                    actions.appendChild(pendingLabel);
-                    actions.appendChild(cancelBtn);
-                } else {
-                    var inviteBtn = document.createElement('button');
-                    inviteBtn.style.cssText = 'background:rgba(255,255,255,0.05);color:#81f3ba;border:1px solid rgba(129,243,186,0.3);padding:8px 16px;border-radius:50px;cursor:pointer;font-size:0.85rem;font-weight:600;transition:0.3s;';
-                    inviteBtn.textContent = 'Inviter';
-                    inviteBtn.onclick = function (e) {
-                        e.stopPropagation();
-                        window.sendInvite(item._id, inviteBtn);
-                    };
-                    actions.appendChild(inviteBtn);
+                        var cancelBtn = document.createElement('button');
+                        cancelBtn.style.cssText = 'background:rgba(239,68,68,0.1);color:#ef4444;border:1px solid rgba(239,68,68,0.3);padding:8px 16px;border-radius:50px;cursor:pointer;font-size:0.85rem;font-weight:600;transition:0.3s;';
+                        cancelBtn.textContent = 'Annuler';
+                        cancelBtn.onclick = function (e) {
+                            e.stopPropagation();
+                            window.cancelInvite(item._id, cancelBtn);
+                        };
+                        actions.appendChild(pendingLabel);
+                        actions.appendChild(cancelBtn);
+                    } else {
+                        var inviteBtn = document.createElement('button');
+                        inviteBtn.style.cssText = 'background:rgba(255,255,255,0.05);color:#81f3ba;border:1px solid rgba(129,243,186,0.3);padding:8px 16px;border-radius:50px;cursor:pointer;font-size:0.85rem;font-weight:600;transition:0.3s;';
+                        inviteBtn.textContent = 'Inviter';
+                        inviteBtn.onclick = function (e) {
+                            e.stopPropagation();
+                            window.sendInvite(item._id, inviteBtn);
+                        };
+                        actions.appendChild(inviteBtn);
+                    }
+
+                    topRow.appendChild(actions);
                 }
 
-                topRow.appendChild(actions);
                 div.appendChild(topRow);
                 container.appendChild(div);
             });
@@ -826,12 +894,12 @@
     const PROFILE_PAGE = {
         agriculteur: '/apres-inscription/agriculteur/profil/index.html',
         expert: '/apres-inscription/expertt/profil/index.html',
-        admin: '/apres-inscription/admin/index.html',
+        admin: '/apres-inscription/admin/profil/index.html',
     };
 
     const PARAMETRE_PAGE = {
-        agriculteur: '/apres-inscription/agriculteur/profil/index.html',
-        expert: '/apres-inscription/expertt/profil/index.html',
+        agriculteur: '/apres-inscription/agriculteur/parametre/index.html',
+        expert: '/apres-inscription/expertt/parametre/index.html',
         admin: '/apres-inscription/admin/parametre/index.html',
     };
 
@@ -843,16 +911,21 @@
     var PUBLIC_MENU = [
         {
             href: DASHBOARD[ROLE],
-            icon: '🏠',
+            icon: '👤',
             label: 'Mon profil',
             desc: 'Voir mon tableau de bord',
         },
         {
-
-            href: '/apres-inscription/' + (ROLE === 'admin' ? 'admin' : (isExpert ? 'expertt' : 'agriculteur')) + '/profil/index.html',
+            href: PARAMETRE_PAGE[ROLE],
             icon: '⚙️',
             label: 'Paramètres',
             desc: 'Modifier mes informations',
+        },
+        {
+            href: (ROLE === 'expert' ? PROFILE_PAGE.expert : PROFILE_PAGE.agriculteur) + '#paiements',
+            icon: '💳',
+            label: 'Paiements',
+            desc: 'Historique des paiements',
         },
         { divider: true },
         {
@@ -899,6 +972,25 @@
             },
             { divider: true },
             {
+                href: DASHBOARD.agriculteur,
+                icon: '👤',
+                label: 'Mon profil',
+                desc: 'Voir mon tableau de bord',
+            },
+            {
+                href: PARAMETRE_PAGE.agriculteur,
+                icon: '⚙️',
+                label: 'Paramètres',
+                desc: 'Modifier mes informations',
+            },
+            {
+                href: PROFILE_PAGE.agriculteur + '#paiements',
+                icon: '💳',
+                label: 'Paiements',
+                desc: 'Historique des paiements',
+            },
+            { divider: true },
+            {
                 href: '#',
                 icon: '🚪',
                 label: 'Déconnexion',
@@ -911,7 +1003,7 @@
                 href: '/apres-inscription/expertt/discussion/index.html',
                 icon: '💬',
                 label: 'Mes clients',
-                desc: 'Discuter avec les agriculteurs',
+                desc: 'Discuter with les agriculteurs',
             },
             {
                 href: '/apres-inscription/expertt/boutique/index.html',
@@ -936,6 +1028,25 @@
                 label: 'Tous les agriculteurs',
                 desc: 'Rechercher et contacter des agriculteurs',
                 sidePanel: { title: 'Tout les agriculteurs', type: 'agriculteur' },
+            },
+            { divider: true },
+            {
+                href: DASHBOARD.expert,
+                icon: '👤',
+                label: 'Mon profil',
+                desc: 'Voir mon tableau de bord',
+            },
+            {
+                href: PARAMETRE_PAGE.expert,
+                icon: '⚙️',
+                label: 'Paramètres',
+                desc: 'Modifier mes informations',
+            },
+            {
+                href: PROFILE_PAGE.expert + '#paiements',
+                icon: '💳',
+                label: 'Paiements',
+                desc: 'Historique des paiements',
             },
             { divider: true },
             {
@@ -974,6 +1085,19 @@
             },
             { divider: true },
             {
+                href: DASHBOARD.admin,
+                icon: '👤',
+                label: 'Mon profil',
+                desc: 'Voir mon tableau de bord',
+            },
+            {
+                href: PARAMETRE_PAGE.admin,
+                icon: '⚙️',
+                label: 'Paramètres',
+                desc: 'Modifier les paramètres',
+            },
+            { divider: true },
+            {
                 href: '#',
                 icon: '🚪',
                 label: 'Déconnexion',
@@ -995,7 +1119,7 @@
             return;
         }
 
-        fetch('/components/navbar.html')
+        fetch('/components/navbar.html?v=' + Date.now())
             .then(function (res) {
                 if (!res.ok) throw new Error('navbar.html not found (' + res.status + ')');
                 return res.text();
@@ -1015,37 +1139,23 @@
 
     // ── 4. INIT AFTER HTML IS INJECTED ───────────────────────────────
     function initNavbar() {
-        setDashboardLink();
         setMessagesLink();
         injectDropdownItems();
         setUserInfo();
         setupDashboardContext(); // Handle dashboard icons vs marketing links
         setActiveLink();
+        populateMobileDrawer();
         initScrollEffect();
         initUserPillClick();
+        initMobileMenuClick();
     }
 
     // ── 4a. Set nav-links hrefs dynamically ─────────────────────────
-    function setDashboardLink() {
-        var profilLink = document.getElementById('nav-accueil');
-        if (profilLink) {
-            // For admin, "Profil" in navbar should go to profile page, dashboard is in the menu
-            profilLink.href = PROFILE_PAGE[ROLE] || '/';
-
-            // Verifi ida raki f l'accueil (barra) n-khebi l'bouton profil
-            var isOnDashboard = window.location.pathname.includes('/apres-inscription/');
-            if (!isOnDashboard) {
-                profilLink.style.setProperty('display', 'none', 'important');
-            } else {
-                profilLink.style.setProperty('display', 'flex', 'important');
-            }
-        }
-    }
 
     function setMessagesLink() {
         var msgLink = document.getElementById('nav-messages');
         if (msgLink) {
-            var chatUrl = (ROLE === 'expertt') ? '/apres-inscription/expertt/discussion/index.html' : '/apres-inscription/agriculteur/discussion/index.html';
+            var chatUrl = (ROLE === 'expert') ? '/apres-inscription/expertt/discussion/index.html' : '/apres-inscription/agriculteur/discussion/index.html';
             msgLink.href = chatUrl;
 
             // Afficher seulement si connecté
@@ -1072,7 +1182,8 @@
         // Detect if we are exactly on the MAIN dashboard (not a subpage like boutique or commandes)
         var isMainDashboard =
             path.endsWith('/expertt/index.html') || path.endsWith('/expertt/') ||
-            path.endsWith('/agriculteur/index.html') || path.endsWith('/agriculteur/');
+            path.endsWith('/agriculteur/index.html') || path.endsWith('/agriculteur/') ||
+            path.endsWith('/admin/index.html') || path.endsWith('/admin/');
 
         // 1. Rewrite nav-links to use dash-root anchors
         var linkMap = {
@@ -1163,6 +1274,9 @@
         container.innerHTML = '';
 
         var items = ACTIVE_MENU;
+
+        // No mobile-specific overrides
+
         container.innerHTML = items.map(function (item) {
             // ── Divider ──
             if (item.divider) {
@@ -1273,28 +1387,39 @@
         var guestBtns = document.getElementById('navbar-guest-actions');
         if (guestBtns) guestBtns.remove();
 
+        // No mobile profile/settings updates
+
     } else {
         // ── GUEST: hide pill + dropdown, inject Connexion/Inscription ──
         if (userPill) { userPill.style.display = 'none'; }
-        if (menuToggle) { menuToggle.style.display = 'none'; }
+        if (menuToggle) { menuToggle.style.display = ''; }
         if (dropdownMenu) { dropdownMenu.style.display = 'none'; }
+
+        // No mobile profile/settings updates
 
         // Only inject once
         if (!document.getElementById('navbar-guest-actions') && navRight) {
             var guestDiv = document.createElement('div');
             guestDiv.id = 'navbar-guest-actions';
-            guestDiv.style.cssText = 'display:flex;align-items:center;gap:10px;';
+            
+            // Shrink buttons dynamically on mobile to prevent overflow
+            var isMobile = (window.innerWidth <= 768);
+            var paddingVal = isMobile ? '5px 12px' : '8px 20px';
+            var fontSizeVal = isMobile ? '0.74rem' : '0.9rem';
+            var gapVal = isMobile ? '6px' : '10px';
+            
+            guestDiv.style.cssText = 'display:flex;align-items:center;gap:' + gapVal + ';';
 
             // ── Connexion button ── opens authModal (login view)
             var btnLogin = document.createElement('button');
             btnLogin.textContent = 'Connexion';
             btnLogin.style.cssText = [
-                'padding:8px 20px',
+                'padding:' + paddingVal,
                 'border-radius:50px',
                 'border:1px solid rgba(129,243,186,0.5)',
                 'background:transparent',
                 'color:#81f3ba',
-                'font-size:0.9rem',
+                'font-size:' + fontSizeVal,
                 'font-weight:600',
                 'cursor:pointer',
                 'transition:all 0.25s ease',
@@ -1320,7 +1445,7 @@
                     modal.style.display = 'flex';
                 } else {
                     // Fallback: navigate to login page if modal absent (subpages)
-                    window.location.href = '/logsigin/index.html';
+                    window.location.href = '/index.html?login=true';
                 }
             };
 
@@ -1328,12 +1453,12 @@
             var btnReg = document.createElement('button');
             btnReg.textContent = 'Inscription';
             btnReg.style.cssText = [
-                'padding:8px 20px',
+                'padding:' + paddingVal,
                 'border-radius:50px',
                 'border:none',
                 'background:linear-gradient(135deg,#81f3ba,#2c5a36)',
                 'color:#0d1f12',
-                'font-size:0.9rem',
+                'font-size:' + fontSizeVal,
                 'font-weight:700',
                 'cursor:pointer',
                 'transition:all 0.25s ease',
@@ -1359,7 +1484,7 @@
                     if (regView) regView.style.display = '';
                     modal.style.display = 'flex';
                 } else {
-                    window.location.href = '/logsigin/index.html';
+                    window.location.href = '/index.html?register=true';
                 }
             };
 
@@ -1374,24 +1499,18 @@
 
 // ── 4d. Add `.active` to the matching nav-link ────────────────────
 function setActiveLink() {
-    // Check if we're on the dashboard itself
-    var isDashboard = (
-        path === DASHBOARD[ROLE] ||
-        path === DASHBOARD[ROLE].replace('index.html', '') ||
-        path.endsWith('/agriculteur/') ||
-        path.endsWith('/expertt/')
-    );
-
-    var accueilLink = document.getElementById('nav-accueil');
-    if (accueilLink && isDashboard) {
-        accueilLink.classList.add('active');
-        return; // done, no need to check others
-    }
-
-    // Match other static links by their href
     var links = document.querySelectorAll('#mainNavLinks .nav-link');
     links.forEach(function (link) {
         link.classList.remove('active');
+    });
+
+    // If we are anywhere inside the dashboard pages, do not activate any horizontal marketing links
+    if (path.includes('/apres-inscription/')) {
+        return;
+    }
+
+    // Match other static links by their href on public pages
+    links.forEach(function (link) {
         var href = link.getAttribute('href') || '';
         // Extract path part from href
         var hrefPath = href.split('#')[0]; // ignore fragment
@@ -1419,37 +1538,129 @@ function initScrollEffect() {
 function initUserPillClick() {
     var pill = document.getElementById('userPill');
     if (pill) {
-        pill.addEventListener('click', function () {
-            toggleNavMenu();
+        pill.removeAttribute('onclick');
+        pill.addEventListener('click', function (e) {
+            e.stopPropagation();
+            toggleUserMenu();
         });
     }
 }
 
-// ── 5. GLOBAL HELPERS (called by inline onclick in navbar.html) ───
-window.toggleNavMenu = function () {
-    var menu = document.getElementById('dropdownMenu');
-    var toggle = document.getElementById('menuToggle');
-    var overlay = document.getElementById('menuOverlay');
-    if (!menu) return;
+// ── 4g. Populate mobile drawer links dynamically ──────────────────
+function populateMobileDrawer() {
+    var drawerContainer = document.getElementById('mobileDrawerLinks');
+    var mainLinks = document.querySelectorAll('#mainNavLinks .nav-link');
+    if (!drawerContainer || mainLinks.length === 0) return;
 
-    var isOpen = menu.classList.contains('show');
-    if (isOpen) {
-        menu.classList.remove('show');
-        if (toggle) toggle.classList.remove('active');
-        if (overlay) overlay.classList.remove('show');
-    } else {
-        menu.classList.add('show');
-        if (toggle) toggle.classList.add('active');
-        if (overlay) overlay.classList.add('show');
+    drawerContainer.innerHTML = '';
+
+    mainLinks.forEach(function (link) {
+        if (link.style.display === 'none') return;
+
+        var copy = document.createElement('a');
+        copy.className = 'mobile-drawer-link';
+        copy.href = link.href;
+        copy.innerHTML = link.innerHTML;
+
+        var pathAttr = link.getAttribute('data-path');
+        if (pathAttr) copy.setAttribute('data-path', pathAttr);
+
+        if (link.classList.contains('active')) {
+            copy.classList.add('active');
+        }
+
+        copy.addEventListener('click', function () {
+            closeMobileMenu();
+        });
+
+        drawerContainer.appendChild(copy);
+    });
+}
+
+// ── 4h. Mobile Menu click event binding ──────────────────────────
+function initMobileMenuClick() {
+    var toggleBtn = document.getElementById('menuToggle');
+    if (toggleBtn) {
+        toggleBtn.addEventListener('click', function (e) {
+            e.stopPropagation();
+            toggleMobileMenu();
+        });
+    }
+}
+
+// ── 5. GLOBAL HELPERS ─────────────────────────────────────────────
+window.toggleMobileMenu = function () {
+    var drawer = document.getElementById('mobileDrawer');
+    var toggleBtn = document.getElementById('menuToggle');
+    var overlay = document.getElementById('menuOverlay');
+
+    if (drawer) {
+        var isOpen = drawer.classList.contains('show');
+        if (isOpen) {
+            closeMobileMenu();
+        } else {
+            // Close dropdown menu first
+            var userMenu = document.getElementById('dropdownMenu');
+            var pill = document.getElementById('userPill');
+            if (userMenu) userMenu.classList.remove('show');
+            if (pill) pill.classList.remove('active');
+
+            drawer.classList.add('show');
+            if (toggleBtn) toggleBtn.classList.add('active');
+            if (overlay) overlay.classList.add('show');
+        }
+    }
+};
+
+window.closeMobileMenu = function () {
+    var drawer = document.getElementById('mobileDrawer');
+    var toggleBtn = document.getElementById('menuToggle');
+    var overlay = document.getElementById('menuOverlay');
+
+    if (drawer) drawer.classList.remove('show');
+    if (toggleBtn) toggleBtn.classList.remove('active');
+
+    // Only hide overlay if user dropdown is also closed
+    var userMenu = document.getElementById('dropdownMenu');
+    var userMenuOpen = userMenu && userMenu.classList.contains('show');
+    if (overlay && !userMenuOpen) overlay.classList.remove('show');
+};
+
+window.toggleUserMenu = function () {
+    var userMenu = document.getElementById('dropdownMenu');
+    var overlay = document.getElementById('menuOverlay');
+    var pill = document.getElementById('userPill');
+    
+    if (userMenu) {
+        var isOpen = userMenu.classList.contains('show');
+        if (isOpen) {
+            userMenu.classList.remove('show');
+            if (pill) pill.classList.remove('active');
+            
+            // Only hide overlay if mobile menu is also closed
+            var drawer = document.getElementById('mobileDrawer');
+            var mobileOpen = drawer && drawer.classList.contains('show');
+            if (overlay && !mobileOpen) overlay.classList.remove('show');
+        } else {
+            // Close mobile menu first
+            closeMobileMenu();
+
+            userMenu.classList.add('show');
+            if (overlay) overlay.classList.add('show');
+            if (pill) pill.classList.add('active');
+        }
     }
 };
 
 window.closeNavMenu = function () {
-    var menu = document.getElementById('dropdownMenu');
-    var toggle = document.getElementById('menuToggle');
+    var userMenu = document.getElementById('dropdownMenu');
     var overlay = document.getElementById('menuOverlay');
-    if (menu) menu.classList.remove('show');
-    if (toggle) toggle.classList.remove('active');
+    var pill = document.getElementById('userPill');
+    
+    if (userMenu) userMenu.classList.remove('show');
+    if (pill) pill.classList.remove('active');
+    
+    closeMobileMenu();
     if (overlay) overlay.classList.remove('show');
 };
 

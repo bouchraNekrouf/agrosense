@@ -247,6 +247,28 @@ https://templatemo.com/tm-597-neural-glass
         </div>
     </section>
 
+    <!-------------------------- Section 2.5: Boutiques Promo ----------------------------------------------------------- -->
+
+    <section id="boutique-promo" style="padding: 100px 20px; background: linear-gradient(135deg, rgba(129, 243, 186, 0.03), rgba(74, 222, 128, 0.01)); display: flex; justify-content: center; align-items: center; width: 100%;">
+        <div style="max-width: 900px; width: 100%; text-align: center;">
+            <h2 class="section-title" data-i18n="Nos Boutiques Agricoles" style="margin-bottom: 50px;">Nos Boutiques Agricoles</h2>
+            <div class="glass" style="padding: 50px 40px; border-radius: 24px; border: 1px solid rgba(130, 233, 164, 0.2); box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3); background: rgba(10, 31, 14, 0.85); backdrop-filter: blur(20px);">
+                <h3 style="color: #ffffff; font-size: 2.2rem; margin-bottom: 20px; font-weight: 700;" data-i18n="Découvrez les Boutiques de nos Experts">🏪 Découvrez les Boutiques de nos Experts</h3>
+                <p style="color: rgba(255, 255, 255, 0.85); font-size: 1.15rem; line-height: 1.8; margin-bottom: 35px; text-align: center; max-width: 800px; margin-left: auto; margin-right: auto;" data-i18n="Accédez à un espace commercial unique où nos experts agronomes agréés proposent des intrants, des semences de qualité supérieure, des engrais sélectionnés et des équipements agricoles professionnels. Agrosence assure la mise en relation directe pour vous garantir les meilleurs prix et une qualité certifiée pour vos cultures.">
+                    Accédez à un espace commercial unique où nos experts agronomes agréés proposent des intrants, des semences de qualité supérieure, des engrais sélectionnés et des équipements agricoles professionnels. Agrosence assure la mise en relation directe pour vous garantir les meilleurs prix et une qualité certifiée pour vos cultures.
+                </p>
+                <div style="display: flex; justify-content: center; gap: 20px; flex-wrap: wrap;">
+                    <a href="boutiques.html" class="btn" style="display: inline-block; background: linear-gradient(135deg, #81f3ba 0%, #2c5a36 100%); border-radius: 12px; padding: 16px 48px; color: white; font-size: 16px; font-weight: 600; text-decoration: none; box-shadow: 0 4px 15px rgba(11, 194, 41, 0.4); transition: all 0.3s ease;" onmouseover="this.style.transform='translateY(-3px)'; this.style.boxShadow='0 8px 25px rgba(99, 241, 153, 0.6)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 15px rgba(11, 194, 41, 0.4)';" data-i18n="Voir les Boutiques">
+                        Voir les Boutiques
+                    </a>
+                    <button onclick="handleVoirExperts()" class="btn" style="display: inline-block; background: transparent; border: 2px solid #81f3ba; border-radius: 12px; padding: 16px 48px; color: #81f3ba; font-size: 16px; font-weight: 600; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(11, 194, 41, 0.1);" onmouseover="this.style.transform='translateY(-3px)'; this.style.background='rgba(129, 243, 186, 0.1)'; this.style.boxShadow='0 8px 25px rgba(99, 241, 153, 0.3)';" onmouseout="this.style.transform='translateY(0)'; this.style.background='transparent'; this.style.boxShadow='0 4px 15px rgba(11, 194, 41, 0.1)';" data-i18n="Voir les Experts">
+                        Voir les Experts
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-------------------------- Section 3: publicite------------------------------------------------------------------- -->
 
     <section class="timeline" id="timeline">
@@ -296,6 +318,10 @@ https://templatemo.com/tm-597-neural-glass
 
             </div>
 
+        </div>
+        
+        <div style="text-align: center; margin-top: 40px; margin-bottom: 20px;">
+            <a href="publicite.html" class="btn" style="display: inline-block; background: linear-gradient(135deg, #81f3ba 0%, #2c5a36 100%); border-radius: 12px; padding: 14px 40px; color: white; font-size: 16px; font-weight: 600; text-decoration: none; box-shadow: 0 4px 15px rgba(11, 194, 41, 0.4); transition: all 0.3s ease;" onmouseover="this.style.transform='translateY(-3px)'; this.style.boxShadow='0 8px 25px rgba(99, 241, 153, 0.6)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 15px rgba(11, 194, 41, 0.4)';">Voir plus</a>
         </div>
     </section>
 
@@ -374,10 +400,10 @@ https://templatemo.com/tm-597-neural-glass
             <div class="footer-links">
                 <a href="#features" data-i18n="Accueil">Accueil</a>
                 <a href="#showcase" data-i18n="Services">Services</a>
-                <a href="#timeline" data-i18n="Publication">Publication</a>
+                <a href="#timeline" data-i18n="Publicité">Publicité</a>
                 <a href="#features" data-i18n="À propos">À propos</a>
                 <a href="#" data-i18n="Contact">Contact</a>
-                <a href="login/login.html" data-i18n="Connexion">Connexion </a>
+                <a href="#" onclick="event.preventDefault(); const modal = document.getElementById('authModal'); if (modal) { document.getElementById('modalLoginView').style.display = ''; document.getElementById('modalRegisterView').style.display = 'none'; modal.style.display = 'flex'; }" data-i18n="Connexion">Connexion </a>
             </div>
             <p data-i18n="&copy; 2026 Site web de Agrosense">&copy; 2026 Site web de Agrosense</p>
         </div>
@@ -772,7 +798,7 @@ https://templatemo.com/tm-597-neural-glass
     <script src="components/translations.js"></script>
     <script src="components/i18n.js"></script>
     <!-- ===== NAVBAR LOADER ===== -->
-    <script src="/components/navbar.js"></script>
+    <script src="/components/navbar.js?v=16"></script>
 
 </body>
 

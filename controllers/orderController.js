@@ -1,5 +1,6 @@
 const Order = require('../models/Order');
 const User = require('../models/User');
+const Payment = require('../models/Payment');
 
 // Create a new order
 exports.createOrder = async (req, res) => {
@@ -26,6 +27,25 @@ exports.createOrder = async (req, res) => {
         });
 
         const savedOrder = await newOrder.save();
+
+        try {
+            const expertUser = await User.findOne({ nom: expert });
+            const payment = new Payment({
+                farmer: req.user ? req.user.id : null,
+                expert: expertUser ? expertUser._id : null,
+                order: savedOrder._id,
+                type: 'boutique',
+                amount: calculatedTotal,
+                method: req.body.paymentMethod || 'Cash',
+                status: 'En attente',
+                details: {
+                    itemsCount: Array.isArray(items) ? items.length : 0,
+                    location,
+                    exactAddress
+                }
+            });
+            await payment.save();
+        } catch (e) {}
 
         // REAL-TIME: Notify the Expert using Rooms
         const io = req.app.get('io');
@@ -115,6 +135,15 @@ exports.updateOrderStatus = async (req, res) => {
             return res.status(404).json({ message: "Commande non trouvée" });
         }
 
+        try {
+            const payment = await Payment.findOne({ order: updatedOrder._id }).sort({ createdAt: -1 });
+            if (payment) {
+                if (status === 'Livrée') payment.status = 'Payé';
+                if (status === 'Échoué') payment.status = 'Échoué';
+                await payment.save();
+            }
+        } catch (e) {}
+
         // REAL-TIME: Notify the Farmer using Rooms
         const io = req.app.get('io');
         if (io) {
@@ -145,6 +174,14 @@ exports.confirmFarmerReception = async (req, res) => {
         );
 
         if (!updatedOrder) return res.status(404).json({ message: "Commande non trouvée" });
+
+        try {
+            const payment = await Payment.findOne({ order: updatedOrder._id }).sort({ createdAt: -1 });
+            if (payment && payment.status !== 'Payé') {
+                payment.status = 'Payé';
+                await payment.save();
+            }
+        } catch (e) {}
 
         // REAL-TIME: Notify the Expert using Rooms
         const io = req.app.get('io');

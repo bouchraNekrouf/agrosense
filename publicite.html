@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Publicités d'entreprises agricoles - Agrosence</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="style.css" rel="stylesheet">
+    <style>
+        /* Base (Light) Theme Styles */
+        .publicite-header {
+            text-align: center;
+            padding: 120px 20px 40px;
+            position: relative;
+            z-index: 10;
+        }
+        .publicite-header h1 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            color: #81f3ba;
+        }
+        .publicite-header p {
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin: 0 auto;
+            line-height: 1.6;
+            color: #ffffff;
+            font-weight: 500;
+        }
+        
+        .companies-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 30px;
+            padding: 40px 5%;
+            max-width: 1400px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 10;
+            margin-bottom: 60px;
+        }
+
+        .company-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(44, 90, 54, 0.3);
+            border-radius: 20px;
+            overflow: hidden;
+            transition: all 0.4s ease;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+        }
+
+        .company-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(11, 194, 41, 0.2);
+            border-color: rgba(11, 194, 41, 0.6);
+        }
+
+        .img-container {
+            overflow: hidden;
+            border-bottom: 2px solid rgba(44, 90, 54, 0.2);
+        }
+
+        .company-image {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .company-card:hover .company-image {
+            transform: scale(1.05);
+        }
+
+        .company-content {
+            padding: 25px;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+        }
+
+        .company-title {
+            font-size: 1.5rem;
+            color: #0a4f26; /* Dark green for light mode */
+            margin-bottom: 12px;
+            font-weight: 800;
+        }
+
+        .company-info {
+            background: rgba(129, 243, 186, 0.15);
+            padding: 15px;
+            border-radius: 12px;
+            margin-bottom: 15px;
+            border: 1px solid rgba(44, 90, 54, 0.1);
+        }
+
+        .company-info p {
+            margin-bottom: 5px;
+            font-size: 0.9rem;
+            color: #1a1a2e; /* Black/Dark blue for light mode */
+            font-weight: 600;
+        }
+
+        .company-info p:last-child {
+            margin-bottom: 0;
+        }
+
+        .company-desc {
+            color: #333333; /* Dark gray for light mode */
+            font-size: 0.95rem;
+            line-height: 1.6;
+            margin-bottom: 25px;
+            flex-grow: 1;
+            font-weight: 500;
+        }
+
+        .company-link {
+            display: inline-block;
+            background: linear-gradient(135deg, #187a38 0%, #0a4f26 100%);
+            color: white !important;
+            text-decoration: none;
+            padding: 14px 24px;
+            border-radius: 12px;
+            font-weight: 600;
+            text-align: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(11, 194, 41, 0.3);
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            letter-spacing: 0.5px;
+        }
+
+        .company-link:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(10, 79, 38, 0.6);
+        }
+        
+        /* ------------------------------------- */
+        /* Dark Mode Overrides                   */
+        /* ------------------------------------- */
+        body.dark-mode .publicite-header h1 {
+            color: #81f3ba;
+        }
+        body.dark-mode .publicite-header p {
+            color: #ffffff;
+            font-weight: 400;
+        }
+        body.dark-mode .company-card {
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(129, 243, 186, 0.3);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+        }
+        body.dark-mode .img-container {
+            border-bottom: 1px solid rgba(129, 243, 186, 0.3);
+        }
+        body.dark-mode .company-title {
+            color: #81f3ba;
+        }
+        body.dark-mode .company-info {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        body.dark-mode .company-info p {
+            color: rgba(255, 255, 255, 0.9);
+            font-weight: 400;
+        }
+        body.dark-mode .company-desc {
+            color: rgba(255, 255, 255, 0.7);
+            font-weight: 400;
+        }
+        body.dark-mode .company-link {
+            background: linear-gradient(135deg, #81f3ba 0%, #2c5a36 100%);
+        }
+
+        @media (max-width: 768px) {
+            .publicite-header {
+                padding: 85px 12px 20px;
+            }
+            .publicite-header h1 {
+                font-size: 1.5rem;
+                line-height: 1.3;
+            }
+            .publicite-header p {
+                font-size: 0.85rem;
+            }
+            .companies-grid {
+                grid-template-columns: repeat(2, 1fr) !important;
+                padding: 10px 5px !important;
+                gap: 8px !important;
+            }
+            .company-card {
+                border-radius: 10px !important;
+            }
+            .company-image {
+                height: 100px !important;
+            }
+            .company-content {
+                padding: 8px !important;
+            }
+            .company-title {
+                font-size: 0.85rem !important;
+                margin-bottom: 8px !important;
+            }
+            .company-info {
+                padding: 5px !important;
+                border-radius: 6px !important;
+                margin-bottom: 6px !important;
+            }
+            .company-info p {
+                font-size: 0.65rem !important;
+            }
+            .company-desc {
+                font-size: 0.65rem !important;
+                line-height: 1.25 !important;
+                margin-bottom: 8px !important;
+            }
+            .company-link {
+                padding: 6px 10px !important;
+                font-size: 0.65rem !important;
+                border-radius: 6px !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Epic Neural Background -->
+    <div class="neural-background"></div>
+
+    <!-- Floating Geometric Shapes -->
+    <div class="geometric-shapes">
+        <div class="shape"></div>
+        <div class="shape"></div>
+        <div class="shape"></div>
+        <div class="shape"></div>
+    </div>
+
+    <!-- Neural Network Lines -->
+    <div class="neural-lines">
+        <div class="neural-line"></div>
+        <div class="neural-line"></div>
+        <div class="neural-line"></div>
+    </div>
+
+    <!-- ===== GLOBAL NAVBAR ===== -->
+    <div id="navbar-container"></div>
+
+    <header class="publicite-header">
+        <h1 data-i18n="Nos Partenaires et Entreprises Agricoles">Nos Partenaires et Entreprises Agricoles</h1>
+        <p data-i18n="Découvrez les leaders de l'industrie agricole qui innovent et fournissent les meilleurs équipements, semences, engrais et solutions technologiques.">Découvrez les leaders de l'industrie agricole qui innovent et fournissent les meilleurs équipements, semences, engrais et solutions technologiques pour l'agriculture moderne.</p>
+    </header>
+
+    <main class="companies-grid">
+        <!-- Company 1 -->
+        <article class="company-card">
+            <div class="img-container">
+                <!-- Using local images to avoid loading issues -->
+                <img src="images/agro_image1.png" alt="Agrimatco" class="company-image">
+            </div>
+            <div class="company-content">
+                <h3 class="company-title">🌿 Agrimatco</h3>
+                <div class="company-info">
+                    <p><strong>📍 Localisation:</strong> Alger, Algérie</p>
+                    <p><strong>📞 Téléphone:</strong> +213 23 85 96 74</p>
+                    <p><strong>✉️ Email:</strong> info@agrimatco-dz.com</p>
+                </div>
+                <p class="company-desc" data-i18n="Fournisseur de référence en Algérie, distribuant des semences de haute qualité, des engrais, des pesticides et des équipements agricoles à la pointe de la technologie pour optimiser vos rendements.">Fournisseur de référence en Algérie, distribuant des semences de haute qualité, des engrais, des pesticides et des équipements agricoles à la pointe de la technologie pour optimiser vos rendements.</p>
+                <a href="https://www.agrimatcolimited-algeria.dz/" target="_blank" class="company-link" data-i18n="Visiter le site">Visiter le site</a>
+            </div>
+        </article>
+
+        <!-- Company 2 -->
+        <article class="company-card">
+            <div class="img-container">
+                <img src="images/agro_image2.png" alt="Profert" class="company-image">
+            </div>
+            <div class="company-content">
+                <h3 class="company-title">🌱 Profert</h3>
+                <div class="company-info">
+                    <p><strong>📍 Localisation:</strong> Oran, Algérie</p>
+                    <p><strong>📞 Téléphone:</strong> +213 41 33 22 11</p>
+                    <p><strong>✉️ Email:</strong> contact@profert.dz</p>
+                </div>
+                <p class="company-desc" data-i18n="Leader dans la production et la distribution d'engrais, de pesticides et de semences. Profert accompagne les agriculteurs avec des solutions nutritionnelles complètes pour toutes les cultures.">Leader dans la production et la distribution d'engrais, de pesticides et de semences. Profert accompagne les agriculteurs avec des solutions nutritionnelles complètes pour toutes les cultures.</p>
+                <a href="https://profert.dz/fr/" target="_blank" class="company-link" data-i18n="Visiter le site">Visiter le site</a>
+            </div>
+        </article>
+
+        <!-- Company 3 -->
+        <article class="company-card">
+            <div class="img-container">
+                <img src="images/agro_image3.png" alt="CPH Agriculture" class="company-image">
+            </div>
+            <div class="company-content">
+                <h3 class="company-title">🚜 CPH Agriculture</h3>
+                <div class="company-info">
+                    <p><strong>📍 Localisation:</strong> Blida, Algérie</p>
+                    <p><strong>📞 Téléphone:</strong> +213 25 41 55 66</p>
+                    <p><strong>✉️ Email:</strong> support@cph-agro.com</p>
+                </div>
+                <p class="company-desc" data-i18n="Spécialiste du matériel agricole et des systèmes d'irrigation innovants. CPH fournit également des semences sélectionnées pour répondre aux défis climatiques et améliorer la productivité.">Spécialiste du matériel agricole et des systèmes d'irrigation innovants. CPH fournit également des semences sélectionnées pour répondre aux défis climatiques et améliorer la productivité.</p>
+                <a href="https://www.cph-agro.com/" target="_blank" class="company-link" data-i18n="Visiter le site">Visiter le site</a>
+            </div>
+        </article>
+
+        <!-- Company 4 -->
+        <article class="company-card">
+            <div class="img-container">
+                <img src="images/agro_image4.png" alt="ECO FERTI" class="company-image">
+            </div>
+            <div class="company-content">
+                <h3 class="company-title">🌾 ECO FERTI</h3>
+                <div class="company-info">
+                    <p><strong>📍 Localisation:</strong> Sétif, Algérie</p>
+                    <p><strong>📞 Téléphone:</strong> +213 36 84 99 10</p>
+                    <p><strong>✉️ Email:</strong> infos@ecoferti.dz</p>
+                </div>
+                <p class="company-desc" data-i18n="Expert en nutrition végétale, fournissant des engrais organiques, des biostimulants et des équipements pour une agriculture durable, respectueuse de l'environnement et performante.">Expert en nutrition végétale, fournissant des engrais organiques, des biostimulants et des équipements pour une agriculture durable, respectueuse de l'environnement et performante.</p>
+                <a href="https://ecoferti.dz/" target="_blank" class="company-link" data-i18n="Visiter le site">Visiter le site</a>
+            </div>
+        </article>
+
+        <!-- Company 5 -->
+        <article class="company-card">
+            <div class="img-container">
+                <img src="images/terrains.png" alt="Bayer CropScience" class="company-image">
+            </div>
+            <div class="company-content">
+                <h3 class="company-title">🔬 Bayer CropScience</h3>
+                <div class="company-info">
+                    <p><strong>📍 Localisation:</strong> International (Filiale DZ)</p>
+                    <p><strong>📞 Téléphone:</strong> +213 21 99 88 77</p>
+                    <p><strong>✉️ Email:</strong> cropscience.dz@bayer.com</p>
+                </div>
+                <p class="company-desc" data-i18n="Un leader mondial en innovation agricole, offrant des solutions avancées de protection des cultures, des semences hybrides et des technologies d'agriculture numérique de précision.">Un leader mondial en innovation agricole, offrant des solutions avancées de protection des cultures, des semences hybrides et des technologies d'agriculture numérique de précision.</p>
+                <a href="https://www.cropscience.bayer.com/" target="_blank" class="company-link" data-i18n="Visiter le site">Visiter le site</a>
+            </div>
+        </article>
+
+        <!-- Company 6 -->
+        <article class="company-card">
+            <div class="img-container">
+                <img src="images/prediction.png" alt="John Deere" class="company-image">
+            </div>
+            <div class="company-content">
+                <h3 class="company-title">⚙️ John Deere</h3>
+                <div class="company-info">
+                    <p><strong>📍 Localisation:</strong> PMAT (Représentant Local)</p>
+                    <p><strong>📞 Téléphone:</strong> +213 23 11 22 33</p>
+                    <p><strong>✉️ Email:</strong> contact@johndeere.dz</p>
+                </div>
+                <p class="company-desc" data-i18n="Le pionnier de la machinerie agricole mondiale. Tracteurs intelligents, moissonneuses connectées et équipements de pointe pour une productivité et une efficacité sans précédent.">Le pionnier de la machinerie agricole mondiale. Tracteurs intelligents, moissonneuses connectées et équipements de pointe pour une productivité et une efficacité sans précédent.</p>
+                <a href="https://www.deere.com/" target="_blank" class="company-link" data-i18n="Visiter le site">Visiter le site</a>
+            </div>
+        </article>
+        
+        <!-- Company 7 -->
+        <article class="company-card">
+            <div class="img-container">
+                <img src="images/statistiques.png" alt="Syngenta" class="company-image">
+            </div>
+            <div class="company-content">
+                <h3 class="company-title">🧬 Syngenta</h3>
+                <div class="company-info">
+                    <p><strong>📍 Localisation:</strong> Alger, Algérie</p>
+                    <p><strong>📞 Téléphone:</strong> +213 21 55 66 77</p>
+                    <p><strong>✉️ Email:</strong> syngenta.algerie@syngenta.com</p>
+                </div>
+                <p class="company-desc" data-i18n="Entreprise mondiale dédiée à la sécurité alimentaire grâce à des technologies agricoles de classe mondiale. Spécialisée dans la sélection génétique et la protection des plantes.">Entreprise mondiale dédiée à la sécurité alimentaire grâce à des technologies agricoles de classe mondiale. Spécialisée dans la sélection génétique et la protection des plantes.</p>
+                <a href="https://www.syngenta.com/" target="_blank" class="company-link" data-i18n="Visiter le site">Visiter le site</a>
+            </div>
+        </article>
+
+        <!-- Company 8 -->
+        <article class="company-card">
+            <div class="img-container">
+                <img src="images/livraison.png" alt="Yara International" class="company-image">
+            </div>
+            <div class="company-content">
+                <h3 class="company-title">💧 Yara International</h3>
+                <div class="company-info">
+                    <p><strong>📍 Localisation:</strong> International</p>
+                    <p><strong>📞 Téléphone:</strong> +47 24 15 70 00</p>
+                    <p><strong>✉️ Email:</strong> yara.support@yara.com</p>
+                </div>
+                <p class="company-desc" data-i18n="Premier fournisseur mondial de solutions de nutrition des cultures et d'agriculture numérique, promouvant une production alimentaire durable avec une empreinte carbone minimale.">Premier fournisseur mondial de solutions de nutrition des cultures et d'agriculture numérique, promouvant une production alimentaire durable avec une empreinte carbone minimale.</p>
+                <a href="https://www.yara.com/" target="_blank" class="company-link" data-i18n="Visiter le site">Visiter le site</a>
+            </div>
+        </article>
+    </main>
+
+    <!-- ===== STATS SECTION ===== -->
+    <div class="stats-section" style="margin-bottom: 50px;">
+        <div class="stats-header" data-animate>
+            <h2 data-i18n="Une Croissance Continue">Une Croissance Continue</h2>
+            <p data-i18n="Nos partenaires contribuent à l'amélioration du rendement agricole à l'échelle nationale">Nos partenaires contribuent à l'amélioration du rendement agricole à l'échelle nationale</p>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer id="footer">
+        <div class="footer-content">
+            <h3 data-i18n="Adresse">Adresse</h3>
+            <span data-i18n="Relizane, DZ">Relizane, DZ</span>
+            <p>(+213)671771832<br>Agrosense2026@gmail.com</p>
+            <div class="footer-links">
+                <a href="index.html" data-i18n="Accueil">Accueil</a>
+                <a href="index.html#showcase" data-i18n="Services">Services</a>
+            </div>
+            <p data-i18n="&copy; 2026 Site web de Agrosense">&copy; 2026 Site web de Agrosense</p>
+        </div>
+    </footer>
+
+    <script src="scripts.js"></script>
+    <script src="components/translations.js"></script>
+    <script src="components/i18n.js"></script>
+    <script src="/components/navbar.js?v=16"></script>
+</body>
+</html>

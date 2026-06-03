@@ -21,9 +21,8 @@ app.set('userSocketMap', userSocketMap);
 
 // Middleware
 app.use(cors());
-app.use(express.json({ limit: '10mb' }));
-app.use(express.urlencoded({ extended: true, limit: '10mb' }));
-app.use(express.urlencoded({ extended: true }));
+app.use(express.json({ limit: '50mb' }));
+app.use(express.urlencoded({ extended: true, limit: '50mb' }));
 
 // Connexion DB
 connectDB();
@@ -36,6 +35,8 @@ app.use('/api/user', require('./routes/userRoutes'));
 app.use('/api/chat', require('./routes/chatRoutes'));
 app.use('/api/products', require('./routes/productRoutes'));
 app.use('/api/orders', require('./routes/orderRoutes'));
+app.use('/api/reports', require('./routes/reportRoutes'));
+app.use('/api/payments', require('./routes/paymentRoutes'));
 
 // =============== GESTION DES SOCKETS (REAL-TIME) ===================
 
@@ -63,6 +64,36 @@ io.on('connection', (socket) => {
         const { senderId, receiverId, content } = data;
         
         try {
+            if (!senderId || !receiverId || !content) {
+                socket.emit('error', 'Données manquantes');
+                return;
+            }
+
+            try {
+                const User = require('./models/User');
+                const [senderUser, receiverUser] = await Promise.all([
+                    User.findById(senderId).select('friends nom'),
+                    User.findById(receiverId).select('friends')
+                ]);
+
+                if (!senderUser || !receiverUser) {
+                    socket.emit('error', 'Utilisateur introuvable');
+                    return;
+                }
+
+                const senderFriends = (senderUser.friends || []).map(id => id.toString());
+                const receiverFriends = (receiverUser.friends || []).map(id => id.toString());
+                const isFriends = senderFriends.includes(receiverId.toString()) && receiverFriends.includes(senderId.toString());
+
+                if (!isFriends) {
+                    socket.emit('error', 'Vous devez d\'abord envoyer une invitation et attendre son acceptation pour discuter.');
+                    return;
+                }
+            } catch (e) {
+                socket.emit('error', 'Erreur de vérification de connexion');
+                return;
+            }
+
             // 1. Sauvegarder dans MongoDB
             const newMessage = new Message({
                 sender: senderId,

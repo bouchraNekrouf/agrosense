@@ -7,7 +7,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <script src="/components/navbar.js"></script>
+    <script src="/components/navbar.js?v=5"></script>
     <link rel="stylesheet" href="../../style.css">
     <style>
         .page-wrapper { max-width: 1300px; margin: 0 auto; padding: 30px 40px; font-family: 'Inter', sans-serif; }
@@ -98,6 +98,81 @@
         }
         body.dark-mode .b-table tbody tr:hover {
             background: rgba(129, 243, 186, 0.04) !important;
+        }
+
+        /* Mobile fixes for Boutiques Page */
+        @media (max-width: 768px) {
+            .page-wrapper {
+                padding: 10px 10px !important;
+                margin-top: 10px !important;
+            }
+            .page-header {
+                margin-bottom: 15px !important;
+            }
+            .page-header h1 {
+                font-size: 1.4rem !important;
+                margin-bottom: 4px !important;
+            }
+            .page-header p {
+                font-size: 0.8rem !important;
+            }
+            
+            /* Enforce 2 boxes per row and make them much smaller */
+            .stats-grid {
+                display: grid !important;
+                grid-template-columns: repeat(2, 1fr) !important;
+                gap: 8px !important;
+                margin-bottom: 15px !important;
+            }
+            .stat-box {
+                padding: 10px 8px !important;
+                border-radius: 10px !important;
+                border-width: 1px !important; /* Thinner border */
+                text-align: center;
+            }
+            .stat-box h3 {
+                font-size: 1.1rem !important;
+                margin-bottom: 2px !important;
+            }
+            .stat-box p {
+                font-size: 0.7rem !important;
+            }
+
+            .toolbar {
+                margin-bottom: 10px !important;
+            }
+            .search-input {
+                padding: 8px 12px !important;
+                font-size: 0.85rem !important;
+                border-radius: 8px !important;
+                border-width: 1px !important;
+                height: 38px !important;
+            }
+            .table-container {
+                overflow-x: auto !important;
+                border-radius: 10px !important;
+                border-width: 1px !important;
+            }
+            .b-table th {
+                padding: 10px 10px !important;
+                font-size: 0.75rem !important;
+            }
+            .b-table td {
+                padding: 10px 10px !important;
+                font-size: 0.8rem !important;
+                white-space: nowrap !important;
+            }
+            
+            .owner-info .avatar {
+                width: 24px !important;
+                height: 24px !important;
+                font-size: 0.65rem !important;
+                border-radius: 6px !important;
+            }
+            .tag {
+                padding: 3px 8px !important;
+                font-size: 0.7rem !important;
+            }
         }
     </style>
 </head>

@@ -12,6 +12,7 @@ const {
     cancelInvitation,
     getFriends,
     getPublicExperts,
+    getPublicExpertsDirectory,
     updateBoutique,
     getModelMetrics,
     updateModelMetrics
@@ -19,6 +20,7 @@ const {
 
 // --- Route publique pour l'accueil ---
 router.get('/public/experts', getPublicExperts);
+router.get('/public/experts-directory', getPublicExpertsDirectory);
 
 // GET /api/user/profile
 router.get('/profile', auth, getUserProfile);

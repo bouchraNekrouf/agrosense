@@ -80,6 +80,7 @@ https://templatemo.com/tm-597-neural-glass
             <ul class="nav-links">
                 <li><a href="index.html">Définition</a></li>
                 <li><a href="index.html#showcase">Services</a></li>
+                <li><a href="boutiques.html" class="active">Boutiques</a></li>
                 <li><a href="index.html#timeline">Publication</a></li>
                 <li><a href="index.html#features">Propos</a></li>
                 <li><a href="index.html#footer">Nous</a></li>
@@ -106,7 +107,7 @@ https://templatemo.com/tm-597-neural-glass
                         <!-- Links injected by JS depending on role -->
                     </div>
                 </li>
-                <li id="authLinkContainer"><a href="logsigin/login.html" id="navAuthLink">Connect</a></li>
+                <li id="authLinkContainer"><a href="/index.html?login=true" id="navAuthLink">Connect</a></li>
             </ul>
             <div class="mobile-menu-toggle">
                 <div class="hamburger-line"></div>
@@ -117,10 +118,11 @@ https://templatemo.com/tm-597-neural-glass
         <div class="mobile-nav">
             <a href="index.html">Définition</a>
             <a href="index.html#showcase">Services</a>
+            <a href="boutiques.html" class="active">Boutiques</a>
             <a href="index.html#timeline">Publication</a>
             <a href="index.html#features">Propos</a>
             <a href="index.html#footer">Nous</a>
-            <a href="javascript:void(0)" id="mobileAuthLink">Connect</a>
+            <a href="/index.html?login=true" id="mobileAuthLink">Connect</a>
         </div>
     </header>
 
@@ -130,6 +132,9 @@ https://templatemo.com/tm-597-neural-glass
     <!-- ===== BOUTIQUE DES EXPERTS SECTION ===== -->
     <section class="boutique-section" id="boutique-experts">
         <h2 class="section-title">Boutiques des Experts</h2>
+        <div style="text-align: center; margin-bottom: 40px;">
+            <button onclick="handleVoirExperts()" class="btn" style="display: inline-block; background: linear-gradient(135deg, #81f3ba 0%, #2c5a36 100%); border-radius: 12px; padding: 14px 40px; color: white; font-size: 16px; font-weight: 600; border: none; cursor: pointer; box-shadow: 0 4px 15px rgba(11, 194, 41, 0.4); transition: all 0.3s ease;">Voir les Experts</button>
+        </div>
         <div class="boutique-container">
             <div class="boutique-grid" id="boutiqueGrid">
                 <!-- Les boutiques seront générées ici par JavaScript -->
@@ -151,7 +156,7 @@ https://templatemo.com/tm-597-neural-glass
                 <a href="#timeline">Publication</a>
                 <a href="#features">à propos</a>
                 <a href="#">Nous</a>
-                <a href="login/login.html">connect</a>
+                <a href="/index.html?login=true">connect</a>
             </div>
             <p>&copy; 2026 Site web de Agrosense</p>
         </div>

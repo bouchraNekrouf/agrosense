@@ -596,6 +596,11 @@ function toggleCart() {
 }
 
 window.addToCart = function(id) {
+    const token = localStorage.getItem('token');
+    if (!token) {
+        showLoginRequiredAlert();
+        return;
+    }
     const prod = products.find(p => p._id === id || p.id === id);
     if (!prod) {
         console.error("Produit introuvable pour l'id:", id);
@@ -710,3 +715,91 @@ function saveData(overrideKey) {
     localStorage.setItem(key, JSON.stringify(products));
     localStorage.setItem('agriCart', JSON.stringify(cart));
 }
+
+// ===== CUSTOM LOGIN REQUIRED ALERT MODAL =====
+function showLoginRequiredAlert() {
+    let modal = document.getElementById('loginRequiredModal');
+    if (!modal) {
+        modal = document.createElement('div');
+        modal.id = 'loginRequiredModal';
+        modal.style.cssText = `
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(10px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10000;
+            font-family: 'Inter', sans-serif;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        `;
+        
+        const card = document.createElement('div');
+        card.style.cssText = `
+            max-width: 420px;
+            width: 90%;
+            padding: 35px;
+            text-align: center;
+            background: rgba(10, 31, 14, 0.95);
+            backdrop-filter: blur(25px);
+            border: 1px solid rgba(130, 233, 164, 0.3);
+            border-radius: 24px;
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.7), 0 0 40px rgba(129, 243, 186, 0.15);
+            transform: scale(0.9);
+            transition: transform 0.3s ease;
+        `;
+        
+        card.innerHTML = `
+            <div style="font-size: 3.5rem; margin-bottom: 20px; filter: drop-shadow(0 0 10px rgba(129, 243, 186, 0.5));">🔒</div>
+            <h3 style="color: #81f3ba; font-size: 1.6rem; font-weight: 700; margin-bottom: 12px;" data-i18n="Connexion Requise">Connexion Requise</h3>
+            <p style="color: rgba(255, 255, 255, 0.85); font-size: 0.95rem; line-height: 1.6; margin-bottom: 28px;" data-i18n="Vous devez vous connecter à votre compte pour effectuer des achats.">
+                Vous devez vous connecter à votre compte pour effectuer des achats.
+            </p>
+            <div style="display: flex; flex-direction: column; gap: 12px;">
+                <button id="loginRequiredBtn" style="padding: 14px 24px; background: linear-gradient(135deg, #81f3ba 0%, #2c5a36 100%); border: none; border-radius: 12px; color: white; font-size: 16px; font-weight: 600; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(11, 194, 41, 0.4);" data-i18n="Se connecter">
+                    Se connecter
+                </button>
+                <button id="closeRequiredBtn" style="padding: 14px 24px; background: transparent; border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 12px; color: rgba(255, 255, 255, 0.8); font-size: 16px; font-weight: 500; cursor: pointer; transition: all 0.3s ease;" data-i18n="Fermer">
+                    Fermer
+                </button>
+            </div>
+        `;
+        
+        modal.appendChild(card);
+        document.body.appendChild(modal);
+        
+        // Button actions
+        document.getElementById('closeRequiredBtn').onclick = () => {
+            modal.style.opacity = '0';
+            card.style.transform = 'scale(0.9)';
+            setTimeout(() => { modal.style.display = 'none'; }, 300);
+        };
+        
+        document.getElementById('loginRequiredBtn').onclick = () => {
+            modal.style.opacity = '0';
+            card.style.transform = 'scale(0.9)';
+            setTimeout(() => {
+                modal.style.display = 'none';
+                window.location.href = '../../../logsigin/sign.html?redirect=' + encodeURIComponent(window.location.href);
+            }, 300);
+        };
+    }
+    
+    // Show modal with animation
+    modal.style.display = 'flex';
+    // Trigger reflow
+    modal.offsetHeight;
+    modal.style.opacity = '1';
+    modal.querySelector('div').style.transform = 'scale(1)';
+    
+    // Support translation for dynamic contents if translation engine is available
+    if (typeof window.translatePage === 'function') {
+        window.translatePage();
+    }
+}
+window.showLoginRequiredAlert = showLoginRequiredAlert;

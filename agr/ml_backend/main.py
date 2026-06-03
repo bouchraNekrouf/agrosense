@@ -56,13 +56,22 @@ y_crop = crop_encoder.fit_transform(y_crop_raw)
 crop_scaler = StandardScaler()
 X_crop_scaled = crop_scaler.fit_transform(X_crop)
 
-# ── Train / Test split ────────────────────────────────────────────
-Xc_train, Xc_test, yc_train, yc_test = train_test_split(
+# ── Train / Val / Test split  (80 / 5 / 15) ───────────────────────
+Xc_trainval, Xc_test, yc_trainval, yc_test = train_test_split(
     X_crop_scaled, y_crop,
-    test_size=0.2, random_state=42, stratify=y_crop
+    test_size=0.15, random_state=42, stratify=y_crop
 )
 
-print(f"  Train: {len(Xc_train):,} samples  |  Test: {len(Xc_test):,} samples")
+Xc_train, Xc_val, yc_train, yc_val = train_test_split(
+    Xc_trainval, yc_trainval,
+    test_size=(5 / 85), random_state=42, stratify=yc_trainval
+)
+
+print(
+    f"  Train: {len(Xc_train):,} samples  |  "
+    f"Val: {len(Xc_val):,} samples  |  "
+    f"Test: {len(Xc_test):,} samples"
+)
 
 # ── Train ─────────────────────────────────────────────────────────
 print("  Training RandomForest for crops...")
@@ -125,13 +134,22 @@ y_fert = fert_encoder.fit_transform(y_fert_raw)
 fert_scaler = StandardScaler()
 X_fert_scaled = fert_scaler.fit_transform(X_fert_raw.values)
 
-# ── Train / Test split ────────────────────────────────────────────
-Xf_train, Xf_test, yf_train, yf_test = train_test_split(
+# ── Train / Val / Test split  (80 / 5 / 15) ───────────────────────
+Xf_trainval, Xf_test, yf_trainval, yf_test = train_test_split(
     X_fert_scaled, y_fert,
-    test_size=0.2, random_state=42, stratify=y_fert
+    test_size=0.15, random_state=42, stratify=y_fert
 )
 
-print(f"  Train: {len(Xf_train):,} samples  |  Test: {len(Xf_test):,} samples")
+Xf_train, Xf_val, yf_train, yf_val = train_test_split(
+    Xf_trainval, yf_trainval,
+    test_size=(5 / 85), random_state=42, stratify=yf_trainval
+)
+
+print(
+    f"  Train: {len(Xf_train):,} samples  |  "
+    f"Val: {len(Xf_val):,} samples  |  "
+    f"Test: {len(Xf_test):,} samples"
+)
 
 # ── Train ─────────────────────────────────────────────────────────
 print("  Training RandomForest for fertilizers...")

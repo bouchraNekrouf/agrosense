@@ -364,6 +364,134 @@
             50% { opacity: 0.4; transform: scaleX(1); }
         }
 
+        .section-wrapper {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            padding: 0 20px 40px;
+        }
+
+        .payments-card {
+            max-width: 900px;
+        }
+
+        .payments-header {
+            padding: 18px 22px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            border-bottom: 1px solid rgba(0,0,0,0.06);
+            background: rgba(0,0,0,0.02);
+        }
+
+        .payments-header h3 {
+            margin: 0;
+            font-size: 1.1rem;
+            font-weight: 800;
+            color: #1e293b;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .payments-body {
+            padding: 18px 22px 22px;
+        }
+
+        .payment-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 14px;
+            padding: 14px;
+            border: 1px solid rgba(0,0,0,0.08);
+            border-radius: 16px;
+            background: rgba(255,255,255,0.8);
+        }
+
+        .payment-item + .payment-item {
+            margin-top: 12px;
+        }
+
+        .payment-title {
+            font-weight: 800;
+            color: #1e293b;
+            margin-bottom: 6px;
+        }
+
+        .payment-meta {
+            display: grid;
+            gap: 6px;
+            font-size: 0.88rem;
+            color: rgba(0,0,0,0.6);
+        }
+
+        .payment-actions {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+            justify-content: flex-end;
+        }
+
+        .pill {
+            padding: 6px 10px;
+            border-radius: 999px;
+            font-size: 0.8rem;
+            font-weight: 800;
+            border: 1px solid rgba(0,0,0,0.1);
+            background: rgba(255,255,255,0.8);
+            white-space: nowrap;
+        }
+
+        .pill.paid { background: rgba(21, 128, 61, 0.12); color: #15803d; border-color: rgba(21, 128, 61, 0.25); }
+        .pill.pending { background: rgba(245, 158, 11, 0.12); color: #92400e; border-color: rgba(245, 158, 11, 0.25); }
+        .pill.failed { background: rgba(239, 68, 68, 0.12); color: #b91c1c; border-color: rgba(239, 68, 68, 0.25); }
+
+        .refresh-btn {
+            padding: 10px 14px;
+            border-radius: 14px;
+            border: 1px solid rgba(0,0,0,0.12);
+            background: #fff;
+            cursor: pointer;
+            font-weight: 800;
+            transition: all 0.2s ease;
+        }
+
+        .refresh-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        body.dark-mode .payments-header {
+            border-bottom-color: rgba(255,255,255,0.08) !important;
+            background: rgba(255,255,255,0.03) !important;
+        }
+
+        body.dark-mode .payments-header h3 {
+            color: #ffffff !important;
+        }
+
+        body.dark-mode .payment-item {
+            background: rgba(255,255,255,0.03) !important;
+            border-color: rgba(255,255,255,0.1) !important;
+        }
+
+        body.dark-mode .payment-title {
+            color: #ffffff !important;
+        }
+
+        body.dark-mode .payment-meta {
+            color: rgba(255,255,255,0.65) !important;
+        }
+
+        body.dark-mode .refresh-btn {
+            background: rgba(255,255,255,0.05) !important;
+            border-color: rgba(255,255,255,0.12) !important;
+            color: #ffffff !important;
+        }
+
     </style>
 </head>
 
@@ -437,8 +565,21 @@
                     <a href="../parametre/index.html" class="btn btn-edit" data-i18n="Paramètres">
                         <i class="fas fa-cog"></i> Paramètres
                     </a>
+                    <a href="#paiements" class="btn btn-dash">
+                        <i class="fas fa-credit-card"></i> Paiements
+                    </a>
                 </div>
             </div>
+        </div>
+    </div>
+
+    <div class="section-wrapper">
+        <div class="profile-card payments-card" id="paiements">
+            <div class="payments-header">
+                <h3><i class="fas fa-credit-card"></i> Paiements</h3>
+                <button class="refresh-btn" id="refreshPaymentsBtn" type="button">Actualiser</button>
+            </div>
+            <div class="payments-body" id="paymentsContainer"></div>
         </div>
     </div>
 
@@ -472,10 +613,83 @@
             }
         }
         loadProfile();
+
+        function safeText(v) { return String(v == null ? '' : v).trim(); }
+        function formatDateFR(d) {
+            try {
+                return new Date(d).toLocaleString('fr-FR', { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' });
+            } catch (e) { return ''; }
+        }
+        function formatMoney(amount, currency) {
+            const n = Number(amount || 0);
+            const cur = safeText(currency) || 'DZD';
+            try {
+                return new Intl.NumberFormat('fr-FR', { style: 'currency', currency: cur, maximumFractionDigits: 2 }).format(n);
+            } catch (e) {
+                return n.toFixed(2) + ' ' + cur;
+            }
+        }
+        function statusClass(status) {
+            if (status === 'Payé') return 'paid';
+            if (status === 'Échoué') return 'failed';
+            return 'pending';
+        }
+
+        async function loadPayments() {
+            const container = document.getElementById('paymentsContainer');
+            if (!container) return;
+            container.innerHTML = '<p style="text-align:center; opacity:0.7; padding:20px 0; font-weight:700;">Chargement...</p>';
+            try {
+                const res = await fetch('/api/payments/mine', { headers: { 'x-auth-token': token } });
+                const data = await res.json();
+                if (!res.ok) {
+                    container.innerHTML = '<p style="text-align:center; color:#ef4444; padding:20px 0; font-weight:800;">Erreur lors du chargement.</p>';
+                    return;
+                }
+                if (!Array.isArray(data) || data.length === 0) {
+                    container.innerHTML = '<p style="text-align:center; opacity:0.7; padding:20px 0; font-weight:700;">Aucun paiement pour le moment.</p>';
+                    return;
+                }
+                container.innerHTML = '';
+                data.forEach(p => {
+                    const title = (p.type === 'consultation') ? 'Revenu consultation' : 'Revenu boutique';
+                    const amt = formatMoney(p.amount, p.currency);
+                    const date = p.createdAt ? formatDateFR(p.createdAt) : '';
+                    const method = safeText(p.method) || '—';
+                    const status = safeText(p.status) || 'En attente';
+                    const farmerName = p.farmer && p.farmer.nom ? safeText(p.farmer.nom) : '';
+                    const details = p.order ? ('Commande: ' + safeText(p.order._id) + (p.order.status ? ' • ' + safeText(p.order.status) : '')) : '';
+
+                    const item = document.createElement('div');
+                    item.className = 'payment-item';
+                    item.innerHTML = `
+                        <div style="flex:1; min-width:0;">
+                            <div class="payment-title">${title} — ${amt}</div>
+                            <div class="payment-meta">
+                                ${date ? `<div><strong>Date :</strong> ${date}</div>` : ''}
+                                ${farmerName ? `<div><strong>Agriculteur :</strong> ${farmerName}</div>` : ''}
+                                <div><strong>Mode :</strong> ${method}</div>
+                                ${details ? `<div><strong>Détails :</strong> ${details}</div>` : ''}
+                            </div>
+                        </div>
+                        <div class="payment-actions">
+                            <span class="pill ${statusClass(status)}">${status}</span>
+                        </div>
+                    `;
+                    container.appendChild(item);
+                });
+            } catch (e) {
+                container.innerHTML = '<p style="text-align:center; color:#ef4444; padding:20px 0; font-weight:800;">Erreur de connexion au serveur.</p>';
+            }
+        }
+
+        const refreshBtn = document.getElementById('refreshPaymentsBtn');
+        if (refreshBtn) refreshBtn.addEventListener('click', loadPayments);
+        loadPayments();
     </script>
     <script src="../../../components/translations.js"></script>
 <script src="../../../components/i18n.js"></script>
 
-    <script src="/components/navbar.js"></script>
+    <script src="/components/navbar.js?v=5"></script>
 </body>
 </html>

@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Paramètres du Profil | Agriculteur Agrosence</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
             --primary-green: #15803d;
@@ -178,11 +179,12 @@
             backdrop-filter: blur(25px);
             border: 1px solid var(--glass-border);
             border-radius: 20px;
-            padding: 40px;
+            padding: 0;
             box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
             animation: slideUp 0.6s ease-out forwards;
             opacity: 0;
             transform: translateY(30px);
+            overflow: hidden;
         }
 
         @keyframes slideUp {
@@ -192,20 +194,56 @@
             }
         }
 
-        .profile-img {
-            width: 120px;
-            height: 120px;
+        .card-header {
+            height: 140px;
             background: linear-gradient(135deg, #1e293b, #0f172a);
+            position: relative;
+        }
+
+        .profile-main {
+            padding: 0 40px 40px;
+            text-align: center;
+            position: relative;
+        }
+
+        .profile-img-container {
+            width: 130px;
+            height: 130px;
+            background: #fff;
             border-radius: 50%;
-            margin: -80px auto 30px;
+            margin: -65px auto 20px;
+            padding: 6px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            position: relative;
+            z-index: 2;
+        }
+
+        .profile-img {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, var(--primary-green), var(--dark-green));
+            border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 50px;
-            font-weight: bold;
+            font-size: 54px;
+            font-weight: 800;
             color: #fff;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-            border: 5px solid #ffffff;
+            margin: 0;
+        }
+
+        .role-badge {
+            display: inline-block;
+            padding: 6px 16px;
+            background: rgba(21, 128, 61, 0.1);
+            color: var(--primary-green);
+            border: 1px solid rgba(21, 128, 61, 0.2);
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
         h2 {
@@ -213,6 +251,14 @@
             font-size: 2rem;
             margin-bottom: 5px;
             font-weight: 800;
+            color: #1e293b;
+        }
+
+        .username-id {
+            color: rgba(0,0,0,0.4);
+            font-size: 0.9rem;
+            margin-bottom: 25px;
+            text-align: center;
         }
 
         p.subtitle {
@@ -494,6 +540,26 @@
             border: none !important; /* إزالة الإطار الأزرق */
             box-shadow: none !important; /* إزالة الظل الأزرق */
             backdrop-filter: none !important; /* إزالة التمويه */
+            padding: 0 !important;
+        }
+
+        body.dark-mode .profile-main {
+            padding: 0 40px 40px !important;
+        }
+
+        body.dark-mode .username-id {
+            color: rgba(255, 255, 255, 0.5) !important;
+        }
+
+        body.dark-mode .role-badge {
+            background: rgba(129, 243, 186, 0.15) !important;
+            color: #81f3ba !important;
+            border-color: rgba(129, 243, 186, 0.3) !important;
+        }
+
+        body.dark-mode .profile-img-container {
+            background: rgba(15, 35, 25, 0.8) !important;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5) !important;
         }
 
         body.dark-mode h2, 
@@ -557,6 +623,84 @@
         .glass-card, .settings-section, input, select, body, .section-title {
             transition: all 0.3s ease;
         }
+
+        /* Responsive Mobile Styles */
+        @media (max-width: 768px) {
+            .profile-wrapper {
+                padding: 90px 12px 25px !important;
+            }
+            .profile-container {
+                padding: 8px !important;
+            }
+            .profile-main {
+                padding: 0 20px 20px !important;
+            }
+            body.dark-mode .profile-main {
+                padding: 0 20px 20px !important;
+            }
+            .profile-img-container {
+                width: 90px !important;
+                height: 90px !important;
+                margin: -45px auto 15px !important;
+                padding: 4px !important;
+            }
+            .profile-img {
+                font-size: 36px !important;
+            }
+            h2 {
+                font-size: 1.3rem !important;
+            }
+            h2[data-i18n="param_title"] {
+                font-size: 1.2rem !important;
+                margin-top: 10px !important;
+            }
+            p.subtitle {
+                font-size: 0.85rem !important;
+                margin-bottom: 20px !important;
+            }
+            .role-badge, .role-indicator {
+                font-size: 0.75rem !important;
+                padding: 4px 10px !important;
+                margin-bottom: 8px !important;
+            }
+            .form-group {
+                margin-bottom: 15px !important;
+            }
+            .form-group label {
+                font-size: 0.85rem !important;
+                margin-bottom: 6px !important;
+            }
+            .form-group input, select.form-input {
+                padding: 10px 12px !important;
+                font-size: 0.9rem !important;
+                border-radius: 8px !important;
+            }
+            body.dark-mode .settings-section {
+                padding: 15px !important;
+                border-radius: 12px !important;
+                margin-bottom: 20px !important;
+            }
+            .settings-section {
+                margin-top: 20px !important;
+            }
+            .section-title {
+                font-size: 0.95rem !important;
+                margin-bottom: 12px !important;
+                padding-bottom: 8px !important;
+            }
+            .toggle-label {
+                font-size: 0.82rem !important;
+            }
+            .actions {
+                margin-top: 20px !important;
+                gap: 10px !important;
+            }
+            .btn {
+                padding: 10px 14px !important;
+                font-size: 0.9rem !important;
+                border-radius: 8px !important;
+            }
+        }
     </style>
 </head>
 
@@ -586,11 +730,21 @@
     <div class="profile-wrapper">
         <div class="profile-container">
             <div class="glass-card">
-                <div class="profile-img" id="userInitial">A</div>
-                <div style="text-align: center;"><span class="role-indicator"data-i18n="Agriculteur">🌾 Agriculteur</span></div>
-<h2 data-i18n="param_title">Paramètres du Profil</h2>               <p class="subtitle" data-i18n="param_subtitle">Gestion des informations de l'agriculteur</p>
-                <div id="alertBox" class="alert-box"></div>
-                <form id="profileForm">
+                <div class="card-header">
+                    <div class="header-decoration"></div>
+                </div>
+                <div class="profile-main">
+                    <div class="profile-img-container">
+                        <div class="profile-img" id="userInitial">A</div>
+                    </div>
+                    <div class="role-badge" data-i18n="Agriculteur"><i class="fas fa-leaf"></i> Agriculteur</div>
+                    <h2 id="displayName" data-i18n="chargement">Chargement...</h2>
+                    <div class="username-id" id="userId" data-i18n="agriculteur agrosence">Agriculteur Agrosence</div>
+                    
+                    <h2 data-i18n="param_title" style="margin-top: 15px; font-size: 1.5rem;">Paramètres du Profil</h2>
+                    <p class="subtitle" data-i18n="param_subtitle" style="margin-bottom: 20px;">Gestion des informations de l'agriculteur</p>
+                    <div id="alertBox" class="alert-box"></div>
+                    <form id="profileForm">
                     <div class="settings-section">
 <h3 class="section-title" data-i18n="param_personal_info">👤 Informations Personnelles</h3>                        <div class="form-group"><label data-i18n="Nom de l'agriculteur">Nom de l'agriculteur</label><input type="text" id="nom" required
                                 placeholder="Chargement..."></div>
@@ -743,6 +897,7 @@
                         <a href="../profil/index.html" class="btn btn-back" data-i18n="Annuler">Annuler</a>
                     </div>
                 </form>
+                </div> <!-- End profile-main -->
             </div>
         </div>
     </div>
@@ -770,14 +925,25 @@
                     document.getElementById('email').value = data.email || 'agriculteur@agrosence.com';
                     if (data.localisation) document.getElementById('localisation').value = data.localisation;
                     document.getElementById('userInitial').innerText = (data.nom || 'Agriculteur').charAt(0).toUpperCase();
+                    if (document.getElementById('displayName')) {
+                        document.getElementById('displayName').textContent = data.nom || localStorage.getItem('userName') || 'Agriculteur';
+                    }
                 } else { 
                     // Fallback to local storage
-                    document.getElementById('nom').value = localStorage.getItem('userName') || 'Agriculteur';
-                    document.getElementById('userInitial').innerText = (localStorage.getItem('userName') || 'Agriculteur').charAt(0).toUpperCase();
+                    const localName = localStorage.getItem('userName') || 'Agriculteur';
+                    document.getElementById('nom').value = localName;
+                    document.getElementById('userInitial').innerText = localName.charAt(0).toUpperCase();
+                    if (document.getElementById('displayName')) {
+                        document.getElementById('displayName').textContent = localName;
+                    }
                 }
             } catch (err) {
                 console.error(err);
-                document.getElementById('nom').value = localStorage.getItem('userName') || 'Agriculteur';
+                const localName = localStorage.getItem('userName') || 'Agriculteur';
+                document.getElementById('nom').value = localName;
+                if (document.getElementById('displayName')) {
+                    document.getElementById('displayName').textContent = localName;
+                }
             }
         }
         loadProfile();
@@ -841,6 +1007,9 @@ darkModeToggle.addEventListener('change', () => {
                 localStorage.setItem('userName', updateData.nom);
                 localStorage.setItem('userLocation', updateData.localisation);
                 document.getElementById('userInitial').innerText = updateData.nom.charAt(0).toUpperCase();
+                if (document.getElementById('displayName')) {
+                    document.getElementById('displayName').innerText = updateData.nom;
+                }
 
                 if (res.ok) {
                     showAlert(data.message || 'Paramètres mis à jour avec succès', 'success');
@@ -857,7 +1026,7 @@ darkModeToggle.addEventListener('change', () => {
 <script src="../../../components/i18n.js"></script>
 
     <script src="../theme-manager.js"></script>
-    <script src="/components/navbar.js"></script>
+    <script src="/components/navbar.js?v=16"></script>
 </body>
 
 </html>

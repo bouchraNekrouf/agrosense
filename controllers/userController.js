@@ -99,6 +99,17 @@ const getPublicExperts = async (req, res) => {
     }
 };
 
+// Récupérer tous les experts (public, annuaire simple nom + wilaya)
+const getPublicExpertsDirectory = async (req, res) => {
+    try {
+        const experts = await User.find({ role: 'expert' }).select('nom localisation boutique.wilaya role');
+        res.json(experts);
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send('Erreur serveur');
+    }
+};
+
 // Envoyer une invitation (demande d'ami)
 const sendInvitation = async (req, res) => {
     try {
@@ -271,12 +282,66 @@ const updateBoutique = async (req, res) => {
 // Récupérer et mettre à jour les métriques du modèle
 const getModelMetrics = async (req, res) => {
     try {
-        let metrics = await ModelMetrics.findOne();
-        if (!metrics) {
-            metrics = new ModelMetrics();
-            await metrics.save();
+        const pythonBackendUrl = process.env.PYTHON_BACKEND_URL || 'http://127.0.0.1:5000';
+
+        const existing = await ModelMetrics.findOne();
+        const needsRefresh = !existing || !existing.confusionMatrix || existing.confusionMatrix.length === 0;
+
+        if (needsRefresh) {
+            try {
+                const r = await fetch(`${pythonBackendUrl}/metrics`, { method: 'GET' });
+                if (r.ok) {
+                    const data = await r.json();
+                    if (data && data.success) {
+                        const core = data.metrics || {};
+                        await ModelMetrics.findOneAndUpdate(
+                            {},
+                            {
+                                algorithmName: data.algorithm || existing?.algorithmName || 'Random Forest',
+                                trainProportion: data.split?.train ?? existing?.trainProportion ?? 80,
+                                validationProportion: existing?.validationProportion ?? 0,
+                                testProportion: data.split?.test ?? existing?.testProportion ?? 20,
+                                accuracy: core.accuracy ?? 0,
+                                precision: core.precision ?? 0,
+                                recall: core.recall ?? 0,
+                                f1: core.f1 ?? 0,
+                                confusionMatrix: data.confusion_matrix || [],
+                                labels: data.labels || [],
+                                updatedAt: new Date()
+                            },
+                            { upsert: true, new: true, setDefaultsOnInsert: true }
+                        );
+                    }
+                }
+            } catch (e) {
+            }
         }
-        res.json(metrics);
+
+        const saved = await ModelMetrics.findOne();
+        if (!saved) {
+            return res.json({
+                success: true,
+                algorithm: '—',
+                split: { train: 0, test: 0, random_state: 42 },
+                metrics: { accuracy: 0, precision: 0, recall: 0, f1: 0 },
+                confusion_matrix: [[0]],
+                labels: ['N/A']
+            });
+        }
+
+        res.json({
+            success: true,
+            algorithm: saved.algorithmName || '—',
+            split: { train: saved.trainProportion ?? 0, test: saved.testProportion ?? 0, random_state: 42 },
+            metrics: {
+                accuracy: saved.accuracy ?? 0,
+                precision: saved.precision ?? 0,
+                recall: saved.recall ?? 0,
+                f1: saved.f1 ?? 0
+            },
+            confusion_matrix: (saved.confusionMatrix && saved.confusionMatrix.length) ? saved.confusionMatrix : [[0]],
+            labels: (saved.labels && saved.labels.length) ? saved.labels : ['N/A']
+        });
     } catch (err) {
         console.error(err.message);
         res.status(500).send('Erreur serveur lors de la récupération des métriques');
@@ -285,7 +350,7 @@ const getModelMetrics = async (req, res) => {
 
 const updateModelMetrics = async (req, res) => {
     try {
-        const { algorithmName, trainProportion, validationProportion, testProportion, accuracy, sensitivity, specificity, tp, tn, fp, fn } = req.body;
+        const { algorithmName, trainProportion, validationProportion, testProportion, accuracy, precision, recall, f1, confusion_matrix, labels } = req.body;
         let metrics = await ModelMetrics.findOne();
         if (!metrics) {
             metrics = new ModelMetrics();
@@ -295,12 +360,11 @@ const updateModelMetrics = async (req, res) => {
         if (validationProportion !== undefined) metrics.validationProportion = validationProportion;
         if (testProportion !== undefined) metrics.testProportion = testProportion;
         if (accuracy !== undefined) metrics.accuracy = accuracy;
-        if (sensitivity !== undefined) metrics.sensitivity = sensitivity;
-        if (specificity !== undefined) metrics.specificity = specificity;
-        if (tp !== undefined) metrics.tp = tp;
-        if (tn !== undefined) metrics.tn = tn;
-        if (fp !== undefined) metrics.fp = fp;
-        if (fn !== undefined) metrics.fn = fn;
+        if (precision !== undefined) metrics.precision = precision;
+        if (recall !== undefined) metrics.recall = recall;
+        if (f1 !== undefined) metrics.f1 = f1;
+        if (confusion_matrix !== undefined) metrics.confusionMatrix = confusion_matrix;
+        if (labels !== undefined) metrics.labels = labels;
         metrics.updatedAt = new Date();
         
         await metrics.save();
@@ -309,15 +373,10 @@ const updateModelMetrics = async (req, res) => {
         console.log('✅ Métriques du modèle d\'IA mises à jour (API Post) !');
         console.log('======================================================');
         console.log(`Proportion de test (Test %) : ${metrics.testProportion}%`);
-        console.log(`Accuracy                    : ${metrics.accuracy}%`);
-        console.log(`Sensitivity                 : ${metrics.sensitivity}%`);
-        console.log(`Specificity                 : ${metrics.specificity}%`);
-        console.log('------------------------------------------------------');
-        console.log('Matrice de confusion :');
-        console.log(`  TP (True Positive)  : ${metrics.tp}`);
-        console.log(`  TN (True Negative)  : ${metrics.tn}`);
-        console.log(`  FP (False Positive) : ${metrics.fp}`);
-        console.log(`  FN (False Negative) : ${metrics.fn}`);
+        console.log(`Accuracy                    : ${metrics.accuracy}`);
+        console.log(`Precision                   : ${metrics.precision}`);
+        console.log(`Recall                      : ${metrics.recall}`);
+        console.log(`F1-Score                    : ${metrics.f1}`);
         console.log('======================================================\n');
 
         res.json({ message: 'Métriques mises à jour avec succès! 🚀', metrics });
@@ -332,6 +391,7 @@ module.exports = {
     updateUserProfile,
     getUsersByRole,
     getPublicExperts,
+    getPublicExpertsDirectory,
     sendInvitation,
     getInvitations,
     acceptInvitation,

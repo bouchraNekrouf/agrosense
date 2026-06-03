@@ -22,15 +22,10 @@
             <!-- Had le bouton jdid yedik toujours l page d'accueil principale -->
             <a href="/" class="nav-link">🏠 <span data-i18n="Accueil">Accueil</span></a>
 
-            <!-- Had le bouton howa li khalinah bech ib9a f profil w bedelnalo ghir l'esm -->
-            <a id="nav-accueil" data-path="dashboard" class="nav-link" style="position: relative;">
-                👤 <span data-i18n="Accueil profil">Profil</span>
-                <span id="invitation-badge" class="notification-badge"></span>
-            </a>
-
 
             <a id="nav-services" data-path="showcase" href="/#showcase" class="nav-link"> 🌿 <span data-i18n="Services">Services</span></a>
-            <a id="nav-publication" data-path="timeline" href="/#timeline" class="nav-link"> 📢 <span data-i18n="Publication">Publication</span></a>
+            <a id="nav-boutiques" data-path="boutiques" href="/boutiques.html" class="nav-link"> 🏪 <span data-i18n="Boutiques">Boutiques</span></a>
+            <a id="nav-publication" data-path="timeline" href="/#timeline" class="nav-link"> 📢 <span data-i18n="Publicité">Publicité</span></a>
             <a id="nav-propos" data-path="features" href="/#features" class="nav-link"> 💡 <span data-i18n="À propos">À propos</span></a>
             <a id="nav-nous" data-path="footer" href="/#footer" class="nav-link"> 📞 <span data-i18n="Contact">Contact</span></a>
         </nav>
@@ -38,9 +33,10 @@
         <div class="user-pill" id="userPill">
             <div class="avatar" id="navAvatar">?</div>
             <span class="uname" id="navUserName">Utilisateur</span>
+            <svg class="dropdown-caret" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
         </div>
 
-        <div class="menu-toggle" id="menuToggle" onclick="toggleNavMenu()">
+        <div class="menu-toggle" id="menuToggle">
             <div class="menu-line"></div>
             <div class="menu-line"></div>
             <div class="menu-line"></div>
@@ -57,6 +53,11 @@
 
         <!-- Items are injected dynamically by navbar.js based on role -->
         <div id="dropdown-items"></div>
+    </div>
+
+    <!-- Mobile Drawer -->
+    <div class="mobile-drawer" id="mobileDrawer">
+        <div class="mobile-drawer-links" id="mobileDrawerLinks"></div>
     </div>
 </div>
 
