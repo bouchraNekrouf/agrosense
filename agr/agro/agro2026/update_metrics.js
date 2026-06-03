@@ -25,12 +25,11 @@ async function run() {
         }
 
         if (args.accuracy !== undefined) metrics.accuracy = args.accuracy;
-        if (args.sensitivity !== undefined) metrics.sensitivity = args.sensitivity;
-        if (args.specificity !== undefined) metrics.specificity = args.specificity;
-        if (args.tp !== undefined) metrics.tp = args.tp;
-        if (args.tn !== undefined) metrics.tn = args.tn;
-        if (args.fp !== undefined) metrics.fp = args.fp;
-        if (args.fn !== undefined) metrics.fn = args.fn;
+        if (args.precision !== undefined) metrics.precision = args.precision;
+        if (args.recall !== undefined) metrics.recall = args.recall;
+        if (args.f1 !== undefined) metrics.f1 = args.f1;
+        if (args.train !== undefined) metrics.trainProportion = args.train;
+        if (args.validation !== undefined) metrics.validationProportion = args.validation;
         if (args.test !== undefined) metrics.testProportion = args.test;
 
         metrics.updatedAt = new Date();
@@ -39,16 +38,11 @@ async function run() {
         console.log('\n======================================================');
         console.log('✅ Métriques du modèle d\'IA mises à jour avec succès !');
         console.log('======================================================');
-        console.log(`Proportion de test (Test %) : ${metrics.testProportion}%`);
-        console.log(`Accuracy                    : ${metrics.accuracy}%`);
-        console.log(`Sensitivity                 : ${metrics.sensitivity}%`);
-        console.log(`Specificity                 : ${metrics.specificity}%`);
-        console.log('------------------------------------------------------');
-        console.log('Matrice de confusion :');
-        console.log(`  TP (True Positive)  : ${metrics.tp}`);
-        console.log(`  TN (True Negative)  : ${metrics.tn}`);
-        console.log(`  FP (False Positive) : ${metrics.fp}`);
-        console.log(`  FN (False Negative) : ${metrics.fn}`);
+        console.log(`Répartition : Train ${metrics.trainProportion}% | Val ${metrics.validationProportion}% | Test ${metrics.testProportion}%`);
+        console.log(`Accuracy    : ${metrics.accuracy}`);
+        console.log(`Precision   : ${metrics.precision}`);
+        console.log(`Recall      : ${metrics.recall}`);
+        console.log(`F1-Score    : ${metrics.f1}`);
         console.log('======================================================\n');
 
         mongoose.connection.close();

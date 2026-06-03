@@ -63,47 +63,26 @@ document.addEventListener("DOMContentLoaded", () => {
         const result = await response.json();
 
         if (response.ok) {
-          // Afficher le message de succès masqué
           const successMsg = document.getElementById('successMessage');
           if (successMsg) {
-            successMsg.querySelector('h3').innerText = "Compte créé!";
-            successMsg.querySelector('p').innerText = "Succès: " + result.message;
+            successMsg.querySelector('h3').innerText = "Vérification email requise";
+            successMsg.querySelector('p').innerText = result.message || "Un email de vérification a été envoyé. Veuillez vérifier votre boîte mail.";
             successMsg.classList.add('show');
             form.style.display = 'none'; // Masquer le formulaire
           } else {
-            alert("Créé avec succès! 🎉\n" + result.message);
+            alert(result.message || "Un email de vérification a été envoyé. Veuillez vérifier votre boîte mail.");
           }
 
-          // EAGER LOCALSTORAGE UPDATE - Ensures name is set before redirect
-          localStorage.setItem('token', result.token || 'auto-login-token');
-          localStorage.setItem('userName', data.nom || 'Utilisateur');
-          localStorage.setItem('userRole', data.role || 'agriculteur');
-if (result.userId) {
-    localStorage.setItem('userId', result.userId);
-}
-          // Rediriger vers l'accueil ou vers une redirection
           setTimeout(() => {
-            const urlParams = new URLSearchParams(window.location.search);
-            const redirect = urlParams.get('redirect') || "../index.html";
-            window.location.href = redirect;
-          }, 1500);
+            window.location.href = "sign.html";
+          }, 2500);
         } else {
           alert("Erreur: " + result.message);
           submitBtn.classList.remove('loading');
         }
       } catch (error) {
         console.error("Error:", error);
-        // FALLBACK HORS LIGNE: Fonctionne même si le serveur est éteint
-        localStorage.setItem('token', 'offline-token-fake');
-        localStorage.setItem('userName', data.nom || 'Utilisateur');
-        localStorage.setItem('userRole', data.role || 'agriculteur');
-
-        alert("Mode local (Hors Ligne): Création validée ! Bienvenue " + data.nom);
-        setTimeout(() => {
-          const urlParams = new URLSearchParams(window.location.search);
-          const redirect = urlParams.get('redirect') || "../index.html";
-          window.location.href = redirect;
-        }, 1500);
+        alert("Erreur: Impossible de créer le compte pour le moment. Réessayez plus tard.");
         submitBtn.classList.remove('loading');
       }
     });

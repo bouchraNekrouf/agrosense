@@ -21,29 +21,25 @@ const ModelMetricsSchema = new mongoose.Schema({
         type: Number,
         default: 99.50
     },
-    sensitivity: {
+    precision: {
         type: Number,
-        default: 99.71
+        default: 0
     },
-    specificity: {
+    recall: {
         type: Number,
-        default: 99.01
+        default: 0
     },
-    tp: {
+    f1: {
         type: Number,
-        default: 695.0
+        default: 0
     },
-    tn: {
-        type: Number,
-        default: 300.0
+    confusionMatrix: {
+        type: [[Number]],
+        default: []
     },
-    fp: {
-        type: Number,
-        default: 3.0
-    },
-    fn: {
-        type: Number,
-        default: 2.0
+    labels: {
+        type: [String],
+        default: []
     },
     updatedAt: {
         type: Date,

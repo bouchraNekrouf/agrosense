@@ -1577,3 +1577,54 @@ footer {
         radial-gradient(circle at 85% 15%, rgba(130, 233, 164, 0.15) 0%, transparent 50%),
         linear-gradient(to bottom, #06130b 0%, #020604 100%) !important;
 }
+
+/* Custom Login Required Alert Modal */
+#loginRequiredModal {
+    transition: opacity 0.3s ease;
+}
+
+#loginRequiredModal .glass-strong {
+    background: rgba(10, 31, 14, 0.95) !important;
+    backdrop-filter: blur(25px) !important;
+    border: 1px solid rgba(130, 233, 164, 0.3) !important;
+    border-radius: 24px !important;
+    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.7), 0 0 40px rgba(129, 243, 186, 0.15) !important;
+    transform: scale(0.9);
+    transition: transform 0.3s ease;
+}
+
+#loginRequiredModal .login-required-btn {
+    background: linear-gradient(135deg, #81f3ba 0%, #2c5a36 100%) !important;
+    border: none !important;
+    border-radius: 12px !important;
+    padding: 14px 24px !important;
+    color: white !important;
+    font-size: 16px !important;
+    font-weight: 600 !important;
+    cursor: pointer !important;
+    transition: all 0.3s ease !important;
+    box-shadow: 0 4px 15px rgba(11, 194, 41, 0.4) !important;
+}
+
+#loginRequiredModal .login-required-btn:hover {
+    transform: translateY(-2px) !important;
+    box-shadow: 0 8px 25px rgba(99, 241, 153, 0.6) !important;
+}
+
+#loginRequiredModal .close-required-btn {
+    background: transparent !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+    border-radius: 12px !important;
+    padding: 14px 24px !important;
+    color: rgba(255, 255, 255, 0.8) !important;
+    font-size: 16px !important;
+    font-weight: 500 !important;
+    cursor: pointer !important;
+    transition: all 0.3s ease !important;
+}
+
+#loginRequiredModal .close-required-btn:hover {
+    background: rgba(255, 255, 255, 0.05) !important;
+    border-color: rgba(255, 255, 255, 0.4) !important;
+    color: white !important;
+}

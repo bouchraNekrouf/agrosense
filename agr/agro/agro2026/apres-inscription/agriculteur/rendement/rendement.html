@@ -286,38 +286,7 @@
       
       <!-- Liste des historiques -->
       <div class="p-6">
-        
-        <!-- Un élément d'historique (Rapport) -->
-        <div class="flex flex-col md:flex-row md:items-center justify-between bg-white border border-gray-200 rounded-2xl p-4 hover:shadow-md transition-all gap-4">
-          
-          <!-- Infos ta3 l'analyse -->
-          <div class="flex items-center gap-4">
-            <div class="bg-green-100 text-green-700 w-12 h-12 rounded-xl flex items-center justify-center font-bold text-lg flex-shrink-0">
-              <i class="fas fa-seedling"></i>
-            </div>
-            <div>
-              <h3 class="font-bold text-gray-800 text-sm md:text-base" data-i18n="analyse_agronomique" >Analyse Agronomique - Parcelle A</h3>
-              <p class="text-xs text-gray-500 mt-1 font-medium" data-i18n="today_time"><i class="far fa-calendar-alt"></i> Aujourd'hui à 10:30</p>
-            </div>
-          </div>
-          
-          <!-- Les 2 Boutons -->
-          <div class="flex items-center gap-2 w-full md:w-auto">
-            
-            <!-- Bouton 1 : Voir PDF -->
-            <button class="flex-1 md:flex-none justify-center bg-blue-50 text-blue-700 hover:bg-blue-600 hover:text-white px-4 py-2.5 rounded-xl font-bold text-xs md:text-sm transition-all flex items-center gap-2 border border-blue-100 shadow-sm active:scale-95">
-              <i class="fas fa-file-pdf text-lg"></i> <span data-i18n="Voir PDF">Voir PDF</span>
-            </button>
-            
-            <!-- Bouton 2 : Envoyer -->
-            <button class="flex-1 md:flex-none justify-center bg-green-50 text-green-700 hover:bg-green-700 hover:text-white px-4 py-2.5 rounded-xl font-bold text-xs md:text-sm transition-all flex items-center gap-2 border border-green-100 shadow-sm active:scale-95">
-              <i class="fas fa-paper-plane text-lg"></i> <span data-i18n="send_expert">Envoyer à l'expert</span>
-            </button>
-            
-          </div>
-        </div>
-        <!-- T9der tzid d'autres éléments d'historique hna b nafs la façon -->
-        
+        <div id="report-history-container"></div>
       </div>
     </div>
   </div>
@@ -336,45 +305,7 @@
         <p class="text-sm text-gray-600 mb-4 font-medium" data-i18n="choose_expert">À qui voulez-vous envoyer ce rapport agronomique ?</p>
         
         <!-- Liste scrollable ta3 les experts -->
-        <div class="space-y-3 max-h-[300px] overflow-y-auto custom-scrollbar pr-2">
-          
-          <!-- Expert 1 -->
-          <div onclick="confirmerEnvoi('Dr. Ahmed (Agronome)')" class="flex items-center justify-between p-3 border border-gray-100 rounded-2xl hover:bg-green-50 hover:border-green-300 cursor-pointer transition-all group shadow-sm">
-            <div class="flex items-center gap-3">
-              <img src="https://ui-avatars.com/api/?name=Dr+Ahmed&background=15803d&color=fff&rounded=true&bold=true" alt="Expert" class="w-12 h-12 rounded-full shadow-md border-2 border-white">
-              <div>
-                <h4 class="font-bold text-gray-800 text-sm group-hover:text-green-700"  data-i18n="expert_ahmed">Dr. Ahmed</h4>
-                <p class="text-[11px] text-gray-500 font-medium" data-i18n="expert_ahmed_desc">Expert en santé des sols</p>
-              </div>
-            </div>
-            <i class="fas fa-paper-plane text-gray-300 group-hover:text-green-600"></i>
-          </div>
-          
-          <!-- Expert 2 -->
-          <div onclick="confirmerEnvoi('Ing. Karim (Irrigation)')" class="flex items-center justify-between p-3 border border-gray-100 rounded-2xl hover:bg-green-50 hover:border-green-300 cursor-pointer transition-all group shadow-sm">
-            <div class="flex items-center gap-3">
-              <img src="https://ui-avatars.com/api/?name=Ing+Karim&background=0284c7&color=fff&rounded=true&bold=true" alt="Expert" class="w-12 h-12 rounded-full shadow-md border-2 border-white">
-              <div>
-                <h4 class="font-bold text-gray-800 text-sm group-hover:text-green-700" data-i18n="expert_karim">Ing. Karim</h4>
-                <p class="text-[11px] text-gray-500 font-medium" data-i18n="expert_karim_desc">Spécialiste en Irrigation</p>
-              </div>
-            </div>
-            <i class="fas fa-paper-plane text-gray-300 group-hover:text-green-600"></i>
-          </div>
-          
-          <!-- Expert 3 -->
-          <div onclick="confirmerEnvoi('Dr. Fatima (Phytopathologie)')" class="flex items-center justify-between p-3 border border-gray-100 rounded-2xl hover:bg-green-50 hover:border-green-300 cursor-pointer transition-all group shadow-sm">
-            <div class="flex items-center gap-3">
-              <img src="https://ui-avatars.com/api/?name=Dr+Fatima&background=d97706&color=fff&rounded=true&bold=true" alt="Expert" class="w-12 h-12 rounded-full shadow-md border-2 border-white">
-              <div>
-                <h4 class="font-bold text-gray-800 text-sm group-hover:text-green-700" data-i18n="expert_fatima">Dr. Fatima</h4>
-                <p class="text-[11px] text-gray-500 font-medium" data-i18n="expert_fatima_desc">Protection des cultures</p>
-              </div>
-            </div>
-            <i class="fas fa-paper-plane text-gray-300 group-hover:text-green-600"></i>
-          </div>
-          
-        </div>
+        <div id="experts-list-container" class="space-y-3 max-h-[300px] overflow-y-auto custom-scrollbar pr-2"></div>
       </div>
     </div>
   </div>       
@@ -389,6 +320,42 @@
  
   <!-- La logique ta3 l'PDF w l'Historique (COMPRESSÉ + Nom ta3 l'm7ssoul) -->
   <script>
+    function safeText(v) {
+      return String(v == null ? '' : v).trim();
+    }
+
+    function formatDateFR(d) {
+      try {
+        return new Date(d).toLocaleString('fr-FR', { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' });
+      } catch (e) {
+        return '';
+      }
+    }
+
+    function guessCropName() {
+      let v = safeText(document.getElementById('result-crops')?.innerText);
+      if (!v || v.toLowerCase().includes('attente')) {
+        const season = safeText(document.getElementById('season')?.value);
+        return season ? ('Saison ' + season.toUpperCase()) : '';
+      }
+      return v.toUpperCase();
+    }
+
+    function getInputsSnapshot() {
+      return {
+        season: safeText(document.getElementById('season')?.value),
+        temp: safeText(document.getElementById('temp')?.value),
+        humidity: safeText(document.getElementById('air')?.value),
+        moisture: safeText(document.getElementById('moisture')?.value),
+        soil_type: safeText(document.getElementById('soil_type')?.value),
+        nitrogen: safeText(document.getElementById('nitrogen')?.value),
+        potassium: safeText(document.getElementById('potassium')?.value),
+        phosphorus: safeText(document.getElementById('phosphorus')?.value),
+        ph: safeText(document.getElementById('ph')?.value),
+        rainfall: safeText(document.getElementById('rainfall')?.value),
+      };
+    }
+
     function telechargerPDF() {
       const laBarre = document.querySelector('.bg-white > div[style*="linear-gradient"]'); 
       if(laBarre) laBarre.style.display = 'none';
@@ -421,7 +388,7 @@
       const textOriginalBtn = btnTelecharger.innerHTML;
       btnTelecharger.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Traitement en cours...';
 
-      html2canvas(interfaceACapturer, { scale: 1.5, useCORS: true }).then(function(canvas) {
+      html2canvas(interfaceACapturer, { scale: 1.5, useCORS: true }).then(async function(canvas) {
           
           if(laBarre) laBarre.style.display = 'flex';
           replacements.forEach(item => {
@@ -449,107 +416,187 @@
           pdf.save('rapport_agronomique.pdf');
 
           const pdfDataUri = pdf.output('datauristring');
-          let historique = JSON.parse(localStorage.getItem('agro_historique') || '[]');
-          
-          const dateActuelle = new Date();
-          const dateStr = dateActuelle.toLocaleDateString('fr-FR') + ' à ' + dateActuelle.toLocaleTimeString('fr-FR', {hour: '2-digit', minute:'2-digit'});
-          
-          // ===== L'astuce ta3 ism l'm7ssoul raha hna =====
-          let nomM7ssol = document.getElementById('result-crops').innerText.trim();
-          if(nomM7ssol.toLowerCase().includes("attente") || nomM7ssol === "") {
-              // Ida mazal ma lanca prédiction
-              nomM7ssol = "Saison " + document.getElementById('season').value.toUpperCase();
-          } else {
-              // Yjib l'esm (par ex: WATERMELON (100%)) w yektbou b majuscule
-              nomM7ssol = nomM7ssol.toUpperCase();
-          }
 
-          historique.unshift({
-              id: Date.now().toString(),
-              titre: "CULTURE : " + nomM7ssol,
-              date: dateStr,
-              pdfData: pdfDataUri
-          });
-          
-          if(historique.length > 4) {
-              historique = historique.slice(0, 4);
-          }
-          
           try {
-              localStorage.setItem('agro_historique', JSON.stringify(historique));
-              chargerHistorique(); 
-          } catch(e) {
-              localStorage.removeItem('agro_historique');
-              localStorage.setItem('agro_historique', JSON.stringify([historique[0]]));
-              chargerHistorique();
+            const token = localStorage.getItem('token');
+            if (!token) {
+              alert("Erreur: Vous devez être connecté.");
+              return;
+            }
+
+            const crop = guessCropName();
+            const fertilizer = safeText(document.getElementById('result-fertilizer')?.innerText);
+            const yieldEstimate = safeText(document.getElementById('result-yield')?.innerText);
+            const title = crop ? ('CULTURE : ' + crop) : 'Rapport agronomique';
+
+            const response = await fetch('/api/reports', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json', 'x-auth-token': token },
+              body: JSON.stringify({
+                title,
+                crop,
+                fertilizer,
+                yieldEstimate,
+                inputs: getInputsSnapshot(),
+                pdfData: pdfDataUri,
+                fileName: 'rapport_agronomique.pdf'
+              })
+            });
+
+            const data = await response.json().catch(() => ({}));
+            if (!response.ok) {
+              alert(data && data.message ? data.message : "Erreur lors de l'enregistrement du rapport.");
+              return;
+            }
+
+            await chargerHistorique();
+          } catch (e) {
+            alert("Erreur de connexion au serveur.");
+          } finally {
+            btnTelecharger.innerHTML = textOriginalBtn;
           }
-          
-          btnTelecharger.innerHTML = textOriginalBtn;
       });
     }
 
-    function chargerHistorique() {
-        const conteneur = document.querySelector('.fa-history').closest('.bg-white').querySelector('.p-6');
-        if(!conteneur) return;
-        
-        let historique = JSON.parse(localStorage.getItem('agro_historique') || '[]');
-        
-        if(historique.length === 0) {
-            conteneur.innerHTML = '<p class="text-center text-gray-400 py-6 font-medium">Aucun rapport pour le moment.</p>';
-            return;
+    async function chargerHistorique() {
+      const conteneur = document.getElementById('report-history-container');
+      if (!conteneur) return;
+
+      const token = localStorage.getItem('token');
+      if (!token) {
+        conteneur.innerHTML = '<p class="text-center text-gray-400 py-6 font-medium">Veuillez vous connecter.</p>';
+        return;
+      }
+
+      conteneur.innerHTML = '<div class="text-center py-8 text-green-700"><i class="fas fa-circle-notch fa-spin text-3xl mb-3"></i><p class="text-sm font-bold">Chargement de l\'historique...</p></div>';
+
+      try {
+        const res = await fetch('/api/reports/mine', { headers: { 'x-auth-token': token } });
+        const reports = await res.json();
+        if (!res.ok) {
+          conteneur.innerHTML = '<p class="text-center text-red-500 py-6 font-medium">Erreur lors du chargement.</p>';
+          return;
         }
-        
-        conteneur.innerHTML = ''; 
-        
-        historique.forEach((item) => {
-            conteneur.innerHTML += `
+
+        if (!Array.isArray(reports) || reports.length === 0) {
+          conteneur.innerHTML = '<p class="text-center text-gray-400 py-6 font-medium">Aucun rapport pour le moment.</p>';
+          return;
+        }
+
+        conteneur.innerHTML = '';
+        reports.forEach((r) => {
+          const title = safeText(r.title) || 'Rapport agronomique';
+          const createdAt = r.createdAt ? formatDateFR(r.createdAt) : '';
+          const crop = safeText(r.crop);
+          const yld = safeText(r.yieldEstimate);
+          const status = safeText(r.status) || ((r.deliveriesCount || 0) > 0 ? 'Envoyé' : 'Non envoyé');
+          const expertName = r.lastSentExpert && r.lastSentExpert.nom ? r.lastSentExpert.nom : '';
+          const statusBadge = status === 'Envoyé'
+            ? '<span class="px-2 py-1 rounded-full text-[11px] font-bold bg-green-100 text-green-700 border border-green-200">Envoyé</span>'
+            : '<span class="px-2 py-1 rounded-full text-[11px] font-bold bg-gray-100 text-gray-700 border border-gray-200">Non envoyé</span>';
+          const sendLabel = status === 'Envoyé' ? 'Réenvoyer' : 'Envoyer à l\'expert';
+
+          conteneur.innerHTML += `
             <div class="flex flex-col md:flex-row md:items-center justify-between bg-white border border-gray-200 rounded-2xl p-4 hover:shadow-md transition-all gap-4 mb-4">
               <div class="flex items-center gap-4">
                 <div class="bg-green-100 text-green-700 w-12 h-12 rounded-xl flex items-center justify-center font-bold text-lg flex-shrink-0">
                   <i class="fas fa-leaf"></i>
                 </div>
-                <div>
-                  <h3 class="font-bold text-green-800 text-sm md:text-base">${item.titre}</h3>
-                  <p class="text-xs text-gray-500 mt-1 font-medium"><i class="far fa-calendar-alt"></i> ${item.date}</p>
+                <div class="min-w-0">
+                  <div class="flex items-center gap-2 flex-wrap">
+                    <h3 class="font-bold text-green-800 text-sm md:text-base break-words">${title}</h3>
+                    ${statusBadge}
+                  </div>
+                  <p class="text-xs text-gray-500 mt-1 font-medium"><i class="far fa-calendar-alt"></i> ${createdAt}</p>
+                  <div class="text-[11px] text-gray-600 mt-2 space-y-1">
+                    ${crop ? `<div><strong>Culture :</strong> ${crop}</div>` : ''}
+                    ${yld ? `<div><strong>Rendement :</strong> ${yld}</div>` : ''}
+                    ${expertName ? `<div><strong>Expert :</strong> ${expertName}</div>` : ''}
+                  </div>
                 </div>
               </div>
-              
-              <div class="flex items-center gap-2 w-full md:w-auto">
-                <button onclick="voirPDF('${item.id}')" class="flex-1 md:flex-none justify-center bg-blue-50 text-blue-700 hover:bg-blue-600 hover:text-white px-4 py-2.5 rounded-xl font-bold text-xs md:text-sm transition-all flex items-center gap-2 border border-blue-100 shadow-sm active:scale-95">
-                  <i class="fas fa-eye text-lg"></i> <span>Voir PDF</span>
-                </button>
-                <button onclick="envoyerPDF('${item.id}')" class="flex-1 md:flex-none justify-center bg-green-50 text-green-700 hover:bg-green-700 hover:text-white px-4 py-2.5 rounded-xl font-bold text-xs md:text-sm transition-all flex items-center gap-2 border border-green-100 shadow-sm active:scale-95">
-                  <i class="fas fa-paper-plane text-lg"></i> <span>Envoyer à l'expert</span>
-                </button>
-                <button onclick="supprimerHistorique('${item.id}')" class="flex-1 md:flex-none justify-center bg-red-50 text-red-700 hover:bg-red-600 hover:text-white px-4 py-2.5 rounded-xl font-bold text-xs md:text-sm transition-all flex items-center gap-2 border border-red-100 shadow-sm active:scale-95">
-  <i class="fas fa-trash-alt text-lg"></i> <span>Supprimer</span>
-</button>
 
+              <div class="flex items-center gap-2 w-full md:w-auto flex-wrap">
+                <button onclick="voirPDF('${r.id}')" class="flex-1 md:flex-none justify-center bg-blue-50 text-blue-700 hover:bg-blue-600 hover:text-white px-4 py-2.5 rounded-xl font-bold text-xs md:text-sm transition-all flex items-center gap-2 border border-blue-100 shadow-sm active:scale-95">
+                  <i class="fas fa-eye text-lg"></i> <span>Consulter</span>
+                </button>
+                <button onclick="telechargerRapport('${r.id}')" class="flex-1 md:flex-none justify-center bg-slate-50 text-slate-700 hover:bg-slate-700 hover:text-white px-4 py-2.5 rounded-xl font-bold text-xs md:text-sm transition-all flex items-center gap-2 border border-slate-100 shadow-sm active:scale-95">
+                  <i class="fas fa-download text-lg"></i> <span>Télécharger</span>
+                </button>
+                <button onclick="envoyerPDF('${r.id}')" class="flex-1 md:flex-none justify-center bg-green-50 text-green-700 hover:bg-green-700 hover:text-white px-4 py-2.5 rounded-xl font-bold text-xs md:text-sm transition-all flex items-center gap-2 border border-green-100 shadow-sm active:scale-95">
+                  <i class="fas fa-paper-plane text-lg"></i> <span>${sendLabel}</span>
+                </button>
+                <button onclick="supprimerHistorique('${r.id}')" class="flex-1 md:flex-none justify-center bg-red-50 text-red-700 hover:bg-red-600 hover:text-white px-4 py-2.5 rounded-xl font-bold text-xs md:text-sm transition-all flex items-center gap-2 border border-red-100 shadow-sm active:scale-95">
+                  <i class="fas fa-trash-alt text-lg"></i> <span>Supprimer</span>
+                </button>
               </div>
             </div>`;
         });
+      } catch (e) {
+        conteneur.innerHTML = '<p class="text-center text-red-500 py-6 font-medium">Erreur de connexion au serveur.</p>';
+      }
     }
 
+    async function voirPDF(reportId) {
+      try {
+        const token = localStorage.getItem('token');
+        if (!token) return alert("Erreur: Vous devez être connecté.");
 
-    function voirPDF(id) {
-        let historique = JSON.parse(localStorage.getItem('agro_historique') || '[]');
-        let item = historique.find(h => h.id === id);
-        if(item && item.pdfData) {
-            let win = window.open();
-            win.document.write('<iframe src="' + item.pdfData + '" frameborder="0" style="border:0; top:0px; left:0px; bottom:0px; right:0px; width:100%; height:100%;" allowfullscreen></iframe>');
-        } else {
-            alert("Erreur: Impossible de charger le PDF.");
+        const res = await fetch('/api/reports/' + reportId + '/download', { headers: { 'x-auth-token': token } });
+        if (!res.ok) {
+          const data = await res.json().catch(() => ({}));
+          return alert(data && data.message ? data.message : "Erreur: Impossible de charger le PDF.");
         }
+
+        const blob = await res.blob();
+        const url = URL.createObjectURL(blob);
+        const win = window.open();
+        if (!win) return alert("Veuillez autoriser les popups pour consulter le PDF.");
+        win.document.write('<iframe src="' + url + '" frameborder="0" style="border:0; top:0px; left:0px; bottom:0px; right:0px; width:100%; height:100%;" allowfullscreen></iframe>');
+      } catch (e) {
+        alert("Erreur de connexion au serveur.");
+      }
     }
 
-function supprimerHistorique(id) {
-    if(confirm("Êtes-vous sûr de vouloir supprimer ce rapport ?")) {
-        let historique = JSON.parse(localStorage.getItem('agro_historique') || '[]');
-        historique = historique.filter(item => item.id !== id);
-        localStorage.setItem('agro_historique', JSON.stringify(historique));
-        chargerHistorique();
+    async function telechargerRapport(reportId) {
+      try {
+        const token = localStorage.getItem('token');
+        if (!token) return alert("Erreur: Vous devez être connecté.");
+
+        const res = await fetch('/api/reports/' + reportId + '/download', { headers: { 'x-auth-token': token } });
+        if (!res.ok) {
+          const data = await res.json().catch(() => ({}));
+          return alert(data && data.message ? data.message : "Erreur: Impossible de télécharger le PDF.");
+        }
+
+        const blob = await res.blob();
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'rapport_agronomique.pdf';
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        URL.revokeObjectURL(url);
+      } catch (e) {
+        alert("Erreur de connexion au serveur.");
+      }
     }
-}
+
+    async function supprimerHistorique(reportId) {
+      if (!confirm("Êtes-vous sûr de vouloir supprimer ce rapport ?")) return;
+      try {
+        const token = localStorage.getItem('token');
+        if (!token) return alert("Erreur: Vous devez être connecté.");
+
+        const res = await fetch('/api/reports/' + reportId, { method: 'DELETE', headers: { 'x-auth-token': token } });
+        const data = await res.json().catch(() => ({}));
+        if (!res.ok) return alert(data && data.message ? data.message : "Erreur lors de la suppression.");
+        await chargerHistorique();
+      } catch (e) {
+        alert("Erreur de connexion au serveur.");
+      }
+    }
 
 
 
@@ -557,7 +604,7 @@ function supprimerHistorique(id) {
 
 
 
-    let pdfIdAEnvoyer = null; // Bach nchfaw 3la l'PDF l'm9ssoud
+    let pdfIdAEnvoyer = null;
 
     // 1. Tftè7 la fenêtre w tjib les amis experts mel Backend
     async function envoyerPDF(id) {
@@ -565,7 +612,7 @@ function supprimerHistorique(id) {
         const modal = document.getElementById('modal-experts');
         
         // Njibou la liste l'mdarha li f l'HTML bach nbedlouha
-        const containerListe = modal.querySelector('.space-y-3');
+        const containerListe = document.getElementById('experts-list-container');
         
         // Nft7ou la fenêtre b l'animation
         modal.style.display = 'flex';
@@ -584,17 +631,17 @@ function supprimerHistorique(id) {
                 return;
             }
             
-            // N3aytou lel Backend (API) bach njibou la liste des amis
             const res = await fetch('/api/user/friends', {
                 headers: { 'x-auth-token': token }
             });
-            const amis = await res.json();
-            
-            // Nfiltriw ghir les amis li "expert" (Kima tlbt)
-            const experts = amis.filter(ami => ami.role === 'expert');
+            const friends = await res.json();
+            const experts = (Array.isArray(friends) ? friends : []).filter(u => {
+                const r = String(u.role || '').toLowerCase();
+                return r === 'expert' || r === 'expertt';
+            });
             
             if(experts.length === 0) {
-                containerListe.innerHTML = '<div class="text-center py-6 text-gray-500"><i class="fas fa-user-slash text-4xl mb-3 opacity-50"></i><p class="text-sm font-medium">Vous n\'avez aucun expert dans votre liste d\'amis pour le moment.</p></div>';
+                containerListe.innerHTML = '<div class="text-center py-6 text-gray-500"><i class="fas fa-user-slash text-4xl mb-3 opacity-50"></i><p class="text-sm font-medium">Aucun expert disponible pour le moment.</p></div>';
                 return;
             }
             
@@ -635,7 +682,6 @@ function supprimerHistorique(id) {
         }, 200);
     }
 
-       // 3. Tconfirmi l'envoi w yb3at l'PDF lel Backend (Base de données ta3 Chat)
     async function confirmerEnvoi(expertId, nomExpert) {
         try {
             const token = localStorage.getItem('token');
@@ -643,44 +689,29 @@ function supprimerHistorique(id) {
                 alert("Erreur: Vous devez être connecté.");
                 return;
             }
-            
-            // 1. Njibou l'PDF men l'historique (LocalStorage)
-            let historique = JSON.parse(localStorage.getItem('agro_historique') || '[]');
-            let item = historique.find(h => h.id === pdfIdAEnvoyer);
-            
-            if(!item || !item.pdfData) {
-                alert("Erreur: Le PDF est introuvable.");
-                return;
+
+            if (!pdfIdAEnvoyer) {
+              alert("Erreur: Rapport introuvable.");
+              return;
             }
-            
-            // 2. Nwejdou le message HTML chbab li yban 3and l'expert f la discussion
-            const messageHTML = `
-                <div style="background: rgba(255,255,255,0.1); padding: 12px; border-radius: 12px; border-left: 4px solid #4ade80;">
-                    <p style="margin:0 0 8px 0; font-weight: bold;">📊 Nouveau Rapport Agronomique</p>
-                    <p style="margin:0 0 12px 0; font-size: 0.85em; opacity: 0.9;">${item.titre}</p>
-                    <a href="${item.pdfData}" download="Rapport_${item.titre}.pdf" style="display: inline-block; padding: 8px 14px; background: #fff; color: #15803d; border-radius: 8px; text-decoration: none; font-size: 0.85em; font-weight: bold; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
-                        <i class="fas fa-download"></i> Télécharger le PDF
-                    </a>
-                </div>
-            `;
-            
-            // 3. Nb3tou la requête l'API ta3 les messages (Backend)
-            const response = await fetch('/api/chat/send', {
+
+            const response = await fetch('/api/reports/' + pdfIdAEnvoyer + '/send', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                     'x-auth-token': token
                 },
                 body: JSON.stringify({
-                    receiverId: expertId,
-                    content: messageHTML
+                    expertId: expertId
                 })
             });
             
             if(response.ok) {
                 alert("✅ Le rapport PDF a été envoyé avec succès à l'expert : " + nomExpert + " !");
+                await chargerHistorique();
             } else {
-                alert("❌ Erreur lors de l'envoi au serveur.");
+                const data = await response.json().catch(() => ({}));
+                alert(data && data.message ? data.message : "❌ Erreur lors de l'envoi au serveur.");
             }
         } catch(err) {
             console.error(err);
@@ -697,7 +728,7 @@ function supprimerHistorique(id) {
        
 
 
-    document.addEventListener('DOMContentLoaded', chargerHistorique);
+    document.addEventListener('DOMContentLoaded', () => { chargerHistorique(); });
   </script>
 
 

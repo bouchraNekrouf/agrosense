@@ -13,6 +13,8 @@ import joblib
 import pandas as pd
 import numpy as np
 import os
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, confusion_matrix
 
 app = Flask(__name__)
 CORS(app)
@@ -30,6 +32,8 @@ fert_encoder      = None
 fert_scaler       = None
 soil_encoder      = None
 fert_features     = None
+
+_crop_metrics_cache = None
 
 
 def load_models():
@@ -154,6 +158,69 @@ def predict():
         import traceback
         print(f"❌ Error during /predict: {str(e)}")
         traceback.print_exc()
+        return jsonify({"success": False, "error": str(e)}), 500
+
+
+@app.route("/metrics", methods=["GET"])
+def metrics():
+    global _crop_metrics_cache
+    if _crop_metrics_cache is not None:
+        return jsonify(_crop_metrics_cache)
+
+    if crop_model is None or crop_encoder is None or crop_scaler is None or crop_features is None:
+        return jsonify({"success": False, "error": "Models not loaded. Run main.py first."}), 500
+
+    try:
+        df = pd.read_csv("Crop_recommendation.csv")
+        if "Temperature" not in df.columns and "Temparature" in df.columns:
+            df = df.rename(columns={"Temparature": "Temperature"})
+
+        X = df[list(crop_features)].values
+        y_raw = df["Crop Type"].values
+
+        X_scaled = crop_scaler.transform(X)
+        y = crop_encoder.transform(y_raw)
+
+        X_trainval, X_test, y_trainval, y_test = train_test_split(
+            X_scaled, y,
+            test_size=0.15,
+            random_state=42,
+            stratify=y
+        )
+
+        X_train, X_val, y_train, y_val = train_test_split(
+            X_trainval, y_trainval,
+            test_size=(5 / 85),
+            random_state=42,
+            stratify=y_trainval
+        )
+
+        y_pred = crop_model.predict(X_test)
+
+        accuracy = float(accuracy_score(y_test, y_pred))
+        precision = float(precision_score(y_test, y_pred, average="weighted", zero_division=0))
+        recall = float(recall_score(y_test, y_pred, average="weighted", zero_division=0))
+        f1 = float(f1_score(y_test, y_pred, average="weighted", zero_division=0))
+        cm = confusion_matrix(y_test, y_pred).tolist()
+        labels = [str(x) for x in list(crop_encoder.classes_)]
+
+        payload = {
+            "success": True,
+            "task": "crop_recommendation",
+            "algorithm": "RandomForestClassifier",
+            "split": {"train": 80, "validation": 5, "test": 15, "random_state": 42},
+            "metrics": {
+                "accuracy": accuracy,
+                "precision": precision,
+                "recall": recall,
+                "f1": f1
+            },
+            "confusion_matrix": cm,
+            "labels": labels
+        }
+        _crop_metrics_cache = payload
+        return jsonify(payload)
+    except Exception as e:
         return jsonify({"success": False, "error": str(e)}), 500
 
 

@@ -272,12 +272,14 @@ const updateBoutique = async (req, res) => {
 // Récupérer et mettre à jour les métriques du modèle
 const getModelMetrics = async (req, res) => {
     try {
-        let metrics = await ModelMetrics.findOne();
-        if (!metrics) {
-            metrics = new ModelMetrics();
-            await metrics.save();
+        const pythonBackendUrl = process.env.PYTHON_BACKEND_URL || 'http://127.0.0.1:5000';
+        const r = await fetch(`${pythonBackendUrl}/metrics`, { method: 'GET' });
+        if (!r.ok) {
+            const text = await r.text().catch(() => '');
+            return res.status(500).json({ message: 'Erreur lors du calcul des métriques IA', details: text });
         }
-        res.json(metrics);
+        const data = await r.json();
+        res.json(data);
     } catch (err) {
         console.error(err.message);
         res.status(500).send('Erreur serveur lors de la récupération des métriques');
@@ -286,7 +288,7 @@ const getModelMetrics = async (req, res) => {
 
 const updateModelMetrics = async (req, res) => {
     try {
-        const { algorithmName, trainProportion, validationProportion, testProportion, accuracy, sensitivity, specificity, tp, tn, fp, fn } = req.body;
+        const { algorithmName, trainProportion, validationProportion, testProportion, accuracy, precision, recall, f1, confusion_matrix, labels } = req.body;
         let metrics = await ModelMetrics.findOne();
         if (!metrics) {
             metrics = new ModelMetrics();
@@ -296,12 +298,11 @@ const updateModelMetrics = async (req, res) => {
         if (validationProportion !== undefined) metrics.validationProportion = validationProportion;
         if (testProportion !== undefined) metrics.testProportion = testProportion;
         if (accuracy !== undefined) metrics.accuracy = accuracy;
-        if (sensitivity !== undefined) metrics.sensitivity = sensitivity;
-        if (specificity !== undefined) metrics.specificity = specificity;
-        if (tp !== undefined) metrics.tp = tp;
-        if (tn !== undefined) metrics.tn = tn;
-        if (fp !== undefined) metrics.fp = fp;
-        if (fn !== undefined) metrics.fn = fn;
+        if (precision !== undefined) metrics.precision = precision;
+        if (recall !== undefined) metrics.recall = recall;
+        if (f1 !== undefined) metrics.f1 = f1;
+        if (confusion_matrix !== undefined) metrics.confusionMatrix = confusion_matrix;
+        if (labels !== undefined) metrics.labels = labels;
         metrics.updatedAt = new Date();
         
         await metrics.save();
@@ -310,15 +311,10 @@ const updateModelMetrics = async (req, res) => {
         console.log('✅ Métriques du modèle d\'IA mises à jour (API Post) !');
         console.log('======================================================');
         console.log(`Proportion de test (Test %) : ${metrics.testProportion}%`);
-        console.log(`Accuracy                    : ${metrics.accuracy}%`);
-        console.log(`Sensitivity                 : ${metrics.sensitivity}%`);
-        console.log(`Specificity                 : ${metrics.specificity}%`);
-        console.log('------------------------------------------------------');
-        console.log('Matrice de confusion :');
-        console.log(`  TP (True Positive)  : ${metrics.tp}`);
-        console.log(`  TN (True Negative)  : ${metrics.tn}`);
-        console.log(`  FP (False Positive) : ${metrics.fp}`);
-        console.log(`  FN (False Negative) : ${metrics.fn}`);
+        console.log(`Accuracy                    : ${metrics.accuracy}`);
+        console.log(`Precision                   : ${metrics.precision}`);
+        console.log(`Recall                      : ${metrics.recall}`);
+        console.log(`F1-Score                    : ${metrics.f1}`);
         console.log('======================================================\n');
 
         res.json({ message: 'Métriques mises à jour avec succès! 🚀', metrics });

@@ -487,6 +487,17 @@
         }
 
         async function openOrderForm() {
+            const token = localStorage.getItem('token');
+            if (!token) {
+                if (typeof showLoginRequiredAlert === 'function') {
+                    showLoginRequiredAlert();
+                } else if (typeof window.showLoginRequiredAlert === 'function') {
+                    window.showLoginRequiredAlert();
+                } else {
+                    alert("Vous devez être connecté pour passer une commande.");
+                }
+                return;
+            }
             let cart = JSON.parse(localStorage.getItem('agriCart')) || [];
             if (cart.length === 0) {
                 alert("Votre panier est vide. Veuillez ajouter des produits avant de commander.");
@@ -635,6 +646,16 @@
 
         async function openFarmerOrdersPanel() {
             const token = localStorage.getItem('token');
+            if (!token) {
+                if (typeof showLoginRequiredAlert === 'function') {
+                    showLoginRequiredAlert();
+                } else if (typeof window.showLoginRequiredAlert === 'function') {
+                    window.showLoginRequiredAlert();
+                } else {
+                    alert("Vous devez être connecté pour voir vos commandes.");
+                }
+                return;
+            }
             const list = document.getElementById('farmer-orders-list');
 
             // Show Skeleton Loader for Orders

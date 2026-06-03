@@ -1127,6 +1127,12 @@ href: '/apres-inscription/' + (ROLE === 'admin' ? 'admin' : (isExpert ? 'expertt
             label: 'Paramètres',
             desc: 'Modifier mes informations',
         },
+        {
+            href: '/apres-inscription/' + (isExpert ? 'expertt' : 'agriculteur') + '/profil/index.html#paiements',
+            icon: '💳',
+            label: 'Paiements',
+            desc: 'Historique des paiements',
+        },
         { divider: true },
         {
             href: '#',
@@ -1169,6 +1175,12 @@ desc: 'Prévision de récolte, engrais et rendement',            },
                 desc: 'Rechercher et contacter des experts',
                 sidePanel: { title: 'Tout les experts', type: 'expert' },
             },
+            {
+                href: '/apres-inscription/agriculteur/profil/index.html#paiements',
+                icon: '💳',
+                label: 'Paiements',
+                desc: 'Historique des paiements',
+            },
             { divider: true },
             {
                 href: '#',
@@ -1208,6 +1220,12 @@ desc: 'Prévision de récolte, engrais et rendement',            },
                 label: 'Tous les agriculteurs',
                 desc: 'Rechercher et contacter des agriculteurs',
                 sidePanel: { title: 'Tout les agriculteurs', type: 'agriculteur' },
+            },
+            {
+                href: '/apres-inscription/expertt/profil/index.html#paiements',
+                icon: '💳',
+                label: 'Paiements',
+                desc: 'Historique des paiements',
             },
             { divider: true },
             {
@@ -1330,7 +1348,7 @@ desc: 'Prévision de récolte, engrais et rendement',            },
     function setMessagesLink() {
         var msgLink = document.getElementById('nav-messages');
         if (msgLink) {
-            var chatUrl = (ROLE === 'expertt') ? '/apres-inscription/expertt/discussion/index.html' : '/apres-inscription/agriculteur/discussion/index.html';
+            var chatUrl = (ROLE === 'expert') ? '/apres-inscription/expertt/discussion/index.html' : '/apres-inscription/agriculteur/discussion/index.html';
             msgLink.href = chatUrl;
 
             // Afficher seulement si connecté

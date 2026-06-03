@@ -1026,6 +1026,215 @@
             color: #81f3ba !important;
             border-color: #81f3ba !important;
         }
+
+        .reports-section {
+            padding: 30px clamp(10px, 4vw, 50px) 50px;
+        }
+
+        .reports-card {
+            max-width: 1100px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.92);
+            border: 1px solid rgba(130, 233, 164, 0.25);
+            border-radius: 24px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.08);
+            overflow: hidden;
+        }
+
+        .reports-card-header {
+            padding: 18px 22px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid rgba(0,0,0,0.06);
+            background: linear-gradient(135deg, rgba(21, 128, 61, 0.08), rgba(255,255,255,0.92));
+        }
+
+        .reports-card-header h2 {
+            margin: 0;
+            font-size: 1.2rem;
+            font-weight: 800;
+            color: #0f172a;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .reports-body {
+            padding: 18px 22px 22px;
+        }
+
+        .report-item {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 16px;
+            padding: 16px;
+            border: 1px solid rgba(0,0,0,0.08);
+            border-radius: 16px;
+            background: rgba(255,255,255,0.8);
+        }
+
+        .report-item + .report-item {
+            margin-top: 12px;
+        }
+
+        .report-title {
+            font-weight: 800;
+            color: #0f172a;
+            font-size: 0.98rem;
+            margin-bottom: 6px;
+        }
+
+        .report-meta {
+            display: grid;
+            gap: 6px;
+            font-size: 0.86rem;
+            color: rgba(15, 23, 42, 0.75);
+        }
+
+        .report-actions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            justify-content: flex-end;
+        }
+
+        .report-btn {
+            border: 1px solid rgba(0,0,0,0.1);
+            background: #fff;
+            color: #0f172a;
+            padding: 10px 12px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 0.9rem;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .report-btn.primary {
+            background: #15803d;
+            border-color: rgba(21, 128, 61, 0.4);
+            color: #fff;
+        }
+
+        .report-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+        }
+
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.55);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            padding: 16px;
+        }
+
+        .modal-overlay.show {
+            display: flex;
+        }
+
+        .modal-card {
+            width: 100%;
+            max-width: 720px;
+            background: rgba(255, 255, 255, 0.96);
+            border: 1px solid rgba(130, 233, 164, 0.35);
+            border-radius: 18px;
+            overflow: hidden;
+            box-shadow: 0 25px 70px rgba(0,0,0,0.4);
+        }
+
+        .modal-head {
+            padding: 16px 18px;
+            background: linear-gradient(135deg, #0f172a, #052e16);
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+        }
+
+        .modal-head h3 {
+            margin: 0;
+            font-size: 1rem;
+            font-weight: 800;
+        }
+
+        .modal-body {
+            padding: 16px 18px 18px;
+        }
+
+        .modal-body label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: rgba(15, 23, 42, 0.8);
+            margin: 10px 0 6px;
+        }
+
+        .modal-body textarea {
+            width: 100%;
+            min-height: 120px;
+            resize: vertical;
+            padding: 12px;
+            border-radius: 12px;
+            border: 1px solid rgba(0,0,0,0.12);
+            font-family: inherit;
+            font-size: 0.95rem;
+            outline: none;
+        }
+
+        .modal-footer {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            padding: 14px 18px 18px;
+            border-top: 1px solid rgba(0,0,0,0.06);
+        }
+
+        body.dark-mode .reports-card {
+            background: rgba(15, 35, 25, 0.94);
+            border-color: rgba(129, 243, 186, 0.18);
+            box-shadow: 0 25px 70px rgba(0,0,0,0.6);
+        }
+
+        body.dark-mode .reports-card-header {
+            border-bottom-color: rgba(255,255,255,0.08);
+            background: linear-gradient(135deg, rgba(129, 243, 186, 0.08), rgba(15, 35, 25, 0.94));
+        }
+
+        body.dark-mode .reports-card-header h2,
+        body.dark-mode .report-title {
+            color: #ffffff;
+        }
+
+        body.dark-mode .report-item {
+            background: rgba(255,255,255,0.03);
+            border-color: rgba(255,255,255,0.1);
+        }
+
+        body.dark-mode .report-meta {
+            color: rgba(255,255,255,0.7);
+        }
+
+        body.dark-mode .report-btn {
+            background: rgba(255,255,255,0.05);
+            border-color: rgba(255,255,255,0.12);
+            color: #ffffff;
+        }
+
+        body.dark-mode .report-btn.primary {
+            background: #15803d;
+            border-color: rgba(129, 243, 186, 0.25);
+            color: #ffffff;
+        }
     </style>
 </head>
 
@@ -1058,6 +1267,37 @@
 
         </div>
     </section>
+
+    <section id="rapports-recus" class="reports-section">
+        <div class="reports-card">
+            <div class="reports-card-header">
+                <h2><span>📩</span><span>Rapports reçus</span></h2>
+                <button class="report-btn" id="refreshReceivedReportsBtn" type="button">Actualiser</button>
+            </div>
+            <div class="reports-body">
+                <div id="receivedReportsContainer"></div>
+            </div>
+        </div>
+    </section>
+
+    <div id="reportFeedbackModal" class="modal-overlay" role="dialog" aria-modal="true" aria-hidden="true">
+        <div class="modal-card">
+            <div class="modal-head">
+                <h3 id="feedbackTitle">Recommandations</h3>
+                <button class="report-btn" id="closeFeedbackModalBtn" type="button">Fermer</button>
+            </div>
+            <div class="modal-body">
+                <label for="feedbackComment">Recommandations / commentaires</label>
+                <textarea id="feedbackComment" placeholder="Ajoutez vos recommandations..."></textarea>
+                <label for="feedbackReply">Réponse à l’agriculteur</label>
+                <textarea id="feedbackReply" placeholder="Répondez à l’agriculteur..."></textarea>
+            </div>
+            <div class="modal-footer">
+                <button class="report-btn" id="cancelFeedbackBtn" type="button">Annuler</button>
+                <button class="report-btn primary" id="saveFeedbackBtn" type="button">Enregistrer</button>
+            </div>
+        </div>
+    </div>
 
 
     <!-- Network Management block deleted per user request (Now handled in side panel) -->
@@ -1224,6 +1464,188 @@
         // ================== INITIALIZATION ==================
         setInterval(updateExpertOrdersBadge, 2000);
         updateExpertOrdersBadge();
+    </script>
+    <script>
+        function safeText(v) { return String(v == null ? '' : v).trim(); }
+
+        function formatDateFR(d) {
+            try {
+                return new Date(d).toLocaleString('fr-FR', { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' });
+            } catch (e) {
+                return '';
+            }
+        }
+
+        function extractFarmerInfo(f) {
+            if (!f) return { nom: '', email: '', localisation: '' };
+            if (typeof f === 'object') return { nom: safeText(f.nom), email: safeText(f.email), localisation: safeText(f.localisation) };
+            return { nom: '', email: '', localisation: '' };
+        }
+
+        let activeReportId = null;
+
+        async function loadReceivedReports() {
+            const container = document.getElementById('receivedReportsContainer');
+            if (!container) return;
+
+            const token = localStorage.getItem('token');
+            if (!token) {
+                container.innerHTML = '<p style="opacity:0.8;">Veuillez vous connecter.</p>';
+                return;
+            }
+
+            container.innerHTML = '<div style="padding:14px 0; color:#15803d; font-weight:800;">Chargement...</div>';
+
+            try {
+                const res = await fetch('/api/reports/received', { headers: { 'x-auth-token': token } });
+                const data = await res.json();
+                if (!res.ok) {
+                    container.innerHTML = '<p style="color:#ef4444; font-weight:700;">Erreur lors du chargement.</p>';
+                    return;
+                }
+
+                if (!Array.isArray(data) || data.length === 0) {
+                    container.innerHTML = '<p style="opacity:0.8;">Aucun rapport reçu pour le moment.</p>';
+                    return;
+                }
+
+                container.innerHTML = '';
+                data.forEach(r => {
+                    const farmer = extractFarmerInfo(r.farmer);
+                    const title = safeText(r.title) || 'Rapport agronomique';
+                    const crop = safeText(r.crop);
+                    const yld = safeText(r.yieldEstimate);
+                    const sentAt = r.sentAt ? formatDateFR(r.sentAt) : '';
+                    const comment = safeText(r.comment);
+                    const reply = safeText(r.reply);
+
+                    const farmerLine = farmer.nom ? farmer.nom : 'Agriculteur';
+                    const farmerDetails = [farmer.email, farmer.localisation].filter(Boolean).join(' • ');
+
+                    const metaLines = [
+                        `<div><strong>Agriculteur :</strong> ${farmerLine}${farmerDetails ? ' — ' + farmerDetails : ''}</div>`,
+                        sentAt ? `<div><strong>Reçu :</strong> ${sentAt}</div>` : '',
+                        crop ? `<div><strong>Culture :</strong> ${crop}</div>` : '',
+                        yld ? `<div><strong>Rendement :</strong> ${yld}</div>` : '',
+                        (comment || reply) ? `<div><strong>Statut :</strong> Répondu</div>` : `<div><strong>Statut :</strong> En attente</div>`
+                    ].filter(Boolean).join('');
+
+                    const item = document.createElement('div');
+                    item.className = 'report-item';
+                    item.innerHTML = `
+                        <div style="flex:1; min-width:0;">
+                            <div class="report-title">${title}</div>
+                            <div class="report-meta">${metaLines}</div>
+                        </div>
+                        <div class="report-actions">
+                            <button class="report-btn" type="button" data-download="${r.id}">Télécharger</button>
+                            <button class="report-btn primary" type="button" data-feedback="${r.id}">Recommandations</button>
+                        </div>
+                    `;
+                    container.appendChild(item);
+
+                    const downloadBtn = item.querySelector('[data-download]');
+                    const feedbackBtn = item.querySelector('[data-feedback]');
+
+                    if (downloadBtn) downloadBtn.addEventListener('click', () => downloadReceivedReport(r.id));
+                    if (feedbackBtn) feedbackBtn.addEventListener('click', () => openFeedbackModal(r.id, comment, reply, farmerLine));
+                });
+            } catch (e) {
+                container.innerHTML = '<p style="color:#ef4444; font-weight:700;">Erreur de connexion au serveur.</p>';
+            }
+        }
+
+        async function downloadReceivedReport(reportId) {
+            try {
+                const token = localStorage.getItem('token');
+                if (!token) return;
+
+                const res = await fetch('/api/reports/' + reportId + '/download', { headers: { 'x-auth-token': token } });
+                if (!res.ok) return alert("Téléchargement impossible.");
+
+                const blob = await res.blob();
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'rapport_' + reportId + '.pdf';
+                document.body.appendChild(a);
+                a.click();
+                a.remove();
+                URL.revokeObjectURL(url);
+            } catch (e) {
+                alert("Erreur de connexion au serveur.");
+            }
+        }
+
+        function openFeedbackModal(reportId, comment, reply, farmerName) {
+            activeReportId = reportId;
+            const modal = document.getElementById('reportFeedbackModal');
+            const title = document.getElementById('feedbackTitle');
+            const commentEl = document.getElementById('feedbackComment');
+            const replyEl = document.getElementById('feedbackReply');
+
+            if (title) title.textContent = farmerName ? ('Recommandations — ' + farmerName) : 'Recommandations';
+            if (commentEl) commentEl.value = comment || '';
+            if (replyEl) replyEl.value = reply || '';
+
+            if (modal) {
+                modal.classList.add('show');
+                modal.setAttribute('aria-hidden', 'false');
+            }
+        }
+
+        function closeFeedbackModal() {
+            const modal = document.getElementById('reportFeedbackModal');
+            if (modal) {
+                modal.classList.remove('show');
+                modal.setAttribute('aria-hidden', 'true');
+            }
+            activeReportId = null;
+        }
+
+        async function saveFeedback() {
+            if (!activeReportId) return;
+            try {
+                const token = localStorage.getItem('token');
+                if (!token) return;
+
+                const comment = safeText(document.getElementById('feedbackComment')?.value);
+                const reply = safeText(document.getElementById('feedbackReply')?.value);
+
+                const res = await fetch('/api/reports/' + activeReportId + '/feedback', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'x-auth-token': token },
+                    body: JSON.stringify({ comment, reply })
+                });
+                const data = await res.json().catch(() => ({}));
+                if (!res.ok) {
+                    alert(data && data.message ? data.message : "Erreur lors de l'enregistrement.");
+                    return;
+                }
+
+                closeFeedbackModal();
+                await loadReceivedReports();
+            } catch (e) {
+                alert("Erreur de connexion au serveur.");
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const refreshBtn = document.getElementById('refreshReceivedReportsBtn');
+            if (refreshBtn) refreshBtn.addEventListener('click', loadReceivedReports);
+
+            const closeBtn = document.getElementById('closeFeedbackModalBtn');
+            const cancelBtn = document.getElementById('cancelFeedbackBtn');
+            const saveBtn = document.getElementById('saveFeedbackBtn');
+            const modal = document.getElementById('reportFeedbackModal');
+
+            if (closeBtn) closeBtn.addEventListener('click', closeFeedbackModal);
+            if (cancelBtn) cancelBtn.addEventListener('click', closeFeedbackModal);
+            if (saveBtn) saveBtn.addEventListener('click', saveFeedback);
+            if (modal) modal.addEventListener('click', (e) => { if (e.target === modal) closeFeedbackModal(); });
+
+            loadReceivedReports();
+        });
     </script>
     <!-- ===== NAVBAR LOADER ===== -->
     <script src="/components/navbar.js"></script>

@@ -246,7 +246,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     }
 
-    // Close Dropdown when clicking outside (now managed by navbar.js via closeNavMenu)
+    // Close Dropdown when clicking outside
     document.addEventListener('click', (e) => {
         const menuContainer = document.getElementById('userMenuContainer');
         const menu = document.getElementById('userDropdownMenu');
@@ -254,10 +254,194 @@ document.addEventListener('DOMContentLoaded', async () => {
             if (menu) menu.style.display = 'none';
         }
     });
+
+    // Toggle Dropdown when clicking the toggle button
+    const dropdownToggle = document.getElementById('userDropdownToggle');
+    const dropdownMenu = document.getElementById('userDropdownMenu');
+    if (dropdownToggle && dropdownMenu) {
+        dropdownToggle.addEventListener('click', (e) => {
+            e.stopPropagation();
+            if (dropdownMenu.style.display === 'none' || dropdownMenu.style.display === '') {
+                dropdownMenu.style.display = 'flex';
+            } else {
+                dropdownMenu.style.display = 'none';
+            }
+        });
+        
+        // Build items
+        if (typeof buildUserDropdown === 'function') {
+            buildUserDropdown(currentUserRole);
+        }
+    }
 });
 
-// buildUserDropdown, openSidePanel, renderSidePanelItems are now handled
-// exclusively by /components/navbar.js — do NOT re-define them here.
+// ===== NAVBAR COMPATIBILITY LOGIC FOR STATIC NAVBAR PAGES =====
+function buildUserDropdown(role) {
+    const menu = document.getElementById('userDropdownMenu');
+    if (!menu) return;
+    
+    let cleanRole = role;
+    if (role === 'agriculteur') cleanRole = 'agriculteur';
+    else if (role === 'expert' || role === 'expertt') cleanRole = 'expert';
+    else if (role === 'admin') cleanRole = 'admin';
+    
+    let html = '';
+    if (cleanRole === 'expert') {
+        html = `
+            <a href="/apres-inscription/expertt/discussion/index.html">💬 <span data-i18n="Mes clients">Mes clients</span></a>
+            <a href="/apres-inscription/expertt/boutique/index.html">🛍️ <span data-i18n="Ma boutique">Ma boutique</span></a>
+            <a href="/apres-inscription/expertt/les-commande/index.html">📦 <span data-i18n="Les commandes">Les commandes</span></a>
+            <a href="/apres-inscription/expertt/statistique/index.html">📊 <span data-i18n="Les statistiques">Les statistiques</span></a>
+            <a href="javascript:void(0)" onclick="if(typeof openSidePanel==='function'){openSidePanel('Tout les agriculteurs','agriculteur')}">🔍 <span data-i18n="Tous les agriculteurs">Tous les agriculteurs</span></a>
+            <hr style="border: 0; border-top: 1px solid rgba(130,233,164,0.15); margin: 8px 0;">
+            <a href="/apres-inscription/expertt/index.html">👤 <span data-i18n="Mon profil">Mon profil</span></a>
+            <a href="/apres-inscription/expertt/index.html?view=settings">⚙️ <span data-i18n="Paramètres">Paramètres</span></a>
+            <hr style="border: 0; border-top: 1px solid rgba(130,233,164,0.15); margin: 8px 0;">
+            <a href="javascript:void(0)" onclick="logoutUser()" style="color: #ef4444 !important;">🚪 <span data-i18n="Déconnexion">Déconnexion</span></a>
+        `;
+    } else if (cleanRole === 'admin') {
+        html = `
+            <a href="/apres-inscription/admin/index.html?view=dashboard">📊 <span data-i18n="Tableau de bord">Tableau de bord</span></a>
+            <hr style="border: 0; border-top: 1px solid rgba(130,233,164,0.15); margin: 8px 0;">
+            <a href="/apres-inscription/admin/utilisateurs.html">👥 <span data-i18n="Utilisateurs">Utilisateurs</span></a>
+            <a href="/apres-inscription/admin/boutiques.html">🏪 <span data-i18n="Boutiques">Boutiques</span></a>
+            <a href="/apres-inscription/admin/commandes.html">📦 <span data-i18n="Commandes">Commandes</span></a>
+            <hr style="border: 0; border-top: 1px solid rgba(130,233,164,0.15); margin: 8px 0;">
+            <a href="/apres-inscription/admin/index.html">👤 <span data-i18n="Mon profil">Mon profil</span></a>
+            <a href="/apres-inscription/admin/index.html?view=settings">⚙️ <span data-i18n="Paramètres">Paramètres</span></a>
+            <hr style="border: 0; border-top: 1px solid rgba(130,233,164,0.15); margin: 8px 0;">
+            <a href="javascript:void(0)" onclick="logoutUser()" style="color: #ef4444 !important;">🚪 <span data-i18n="Déconnexion">Déconnexion</span></a>
+        `;
+    } else {
+        html = `
+            <a href="/apres-inscription/agriculteur/discussion/index.html">💬 <span data-i18n="Mes experts">Mes experts</span></a>
+            <a href="/apres-inscription/agriculteur/boutique/index.html?open=orders">📦 <span data-i18n="Mes commandes">Mes commandes</span></a>
+            <a href="javascript:void(0)" onclick="if(typeof openSidePanel==='function'){openSidePanel('Tout les experts','expert')}">🔍 <span data-i18n="Tous les experts">Tous les experts</span></a>
+            <hr style="border: 0; border-top: 1px solid rgba(130,233,164,0.15); margin: 8px 0;">
+            <a href="/apres-inscription/agriculteur/index.html">👤 <span data-i18n="Mon profil">Mon profil</span></a>
+            <a href="/apres-inscription/agriculteur/index.html?view=settings">⚙️ <span data-i18n="Paramètres">Paramètres</span></a>
+            <hr style="border: 0; border-top: 1px solid rgba(130,233,164,0.15); margin: 8px 0;">
+            <a href="javascript:void(0)" onclick="logoutUser()" style="color: #ef4444 !important;">🚪 <span data-i18n="Déconnexion">Déconnexion</span></a>
+        `;
+    }
+    
+    menu.innerHTML = html;
+    
+    if (typeof window.translatePage === 'function') {
+        window.translatePage();
+    }
+}
+window.buildUserDropdown = buildUserDropdown;
+
+window.closeSidePanel = function() {
+    const panel = document.getElementById('sidePanelConfig');
+    if (panel) panel.style.right = '-400px';
+    const overlay = document.getElementById('sidePanelOverlay');
+    if (overlay) overlay.style.display = 'none';
+};
+
+window.openSidePanel = async function(title, type) {
+    const panel = document.getElementById('sidePanelConfig');
+    if (!panel) return;
+    
+    const titleEl = document.getElementById('sidePanelTitle');
+    if (titleEl) titleEl.textContent = title;
+    
+    const searchInput = document.getElementById('sidePanelSearch');
+    if (searchInput) searchInput.value = '';
+    
+    panel.style.right = '0';
+    
+    let overlay = document.getElementById('sidePanelOverlay');
+    if (!overlay) {
+        overlay = document.createElement('div');
+        overlay.id = 'sidePanelOverlay';
+        overlay.style.cssText = 'position:fixed; top:0; left:0; width:100%; height:100vh; background:rgba(0,0,0,0.4); z-index:1500; display:none;';
+        overlay.onclick = () => window.closeSidePanel();
+        document.body.appendChild(overlay);
+    }
+    overlay.style.display = 'block';
+    
+    const closeBtn = document.getElementById('closeSidePanel');
+    if (closeBtn) closeBtn.onclick = () => window.closeSidePanel();
+    
+    const listContainer = document.getElementById('sidePanelList');
+    if (listContainer) listContainer.innerHTML = '<p style="color:rgba(255,255,255,0.5);text-align:center;padding:20px;">Chargement...</p>';
+    
+    try {
+        const token = localStorage.getItem('token');
+        const res = await fetch(`/api/user/all/${type}`, {
+            headers: { 'x-auth-token': token }
+        });
+        if (res.ok) {
+            const data = await res.json();
+            window._sidePanelItems = data;
+            window._sidePanelType = type;
+            renderSidePanelItems(data);
+        } else {
+            if (listContainer) listContainer.innerHTML = '<p style="color:red;text-align:center;padding:20px;">Erreur de chargement</p>';
+        }
+    } catch (err) {
+        console.error("Error loading panel data:", err);
+        if (listContainer) listContainer.innerHTML = '<p style="color:red;text-align:center;padding:20px;">Erreur de connexion</p>';
+    }
+};
+
+function renderSidePanelItems(items) {
+    const listContainer = document.getElementById('sidePanelList');
+    if (!listContainer) return;
+    listContainer.innerHTML = '';
+    
+    if (items.length === 0) {
+        listContainer.innerHTML = '<p style="color:rgba(255,255,255,0.5);text-align:center;padding:20px;">Aucun résultat</p>';
+        return;
+    }
+    
+    listContainer.innerHTML = items.map(item => {
+        const isFriend = item.isFriend;
+        const invitationSent = item.invitationSent;
+        const invitationReceived = item.invitationReceived;
+        
+        let actionBtnHtml = '';
+        if (isFriend) {
+            actionBtnHtml = '<span style="color:#10b981; font-weight:600;">Ami ✓</span>';
+        } else if (invitationSent) {
+            actionBtnHtml = '<span style="color:#64748b; font-style:italic;">Invitation envoyée</span>';
+        } else if (invitationReceived) {
+            actionBtnHtml = `<button onclick="acceptInvite('${item._id}', this)" style="background:#10b981; color:white; border:none; padding:6px 12px; border-radius:6px; cursor:pointer; font-size:0.8rem;">Accepter</button>`;
+        } else {
+            actionBtnHtml = `<button onclick="sendInvite('${item._id}', this)" style="background:transparent; border:1px solid #10b981; color:#10b981; padding:6px 12px; border-radius:6px; cursor:pointer; font-size:0.8rem;">Ajouter</button>`;
+        }
+        
+        return `
+            <div style="background:rgba(255,255,255,0.05); padding:12px; border-radius:10px; display:flex; justify-content:space-between; align-items:center;">
+                <div>
+                    <div style="color:white; font-weight:600; font-size:0.95rem;">${item.nom}</div>
+                    <div style="color:rgba(255,255,255,0.5); font-size:0.8rem;">📍 ${item.localisation || 'Non spécifiée'}</div>
+                </div>
+                <div>
+                    ${actionBtnHtml}
+                </div>
+            </div>
+        `;
+    }).join('');
+}
+window.renderSidePanelItems = renderSidePanelItems;
+
+// Setup live search on key input
+document.addEventListener('DOMContentLoaded', () => {
+    const searchInput = document.getElementById('sidePanelSearch');
+    if (searchInput) {
+        searchInput.addEventListener('input', (e) => {
+            const q = e.target.value.toLowerCase();
+            const filtered = (window._sidePanelItems || []).filter(it => 
+                (it.nom && it.nom.toLowerCase().includes(q)) || 
+                (it.localisation && it.localisation.toLowerCase().includes(q))
+            );
+            renderSidePanelItems(filtered);
+        });
+    }
+});
 
 function logoutUser() {
     localStorage.removeItem('token');
@@ -365,6 +549,99 @@ function animateCounter(el) {
     }, 16);
 }
 
+// ===== CUSTOM LOGIN REQUIRED ALERT MODAL =====
+function showLoginRequiredAlert() {
+    let modal = document.getElementById('loginRequiredModal');
+    if (!modal) {
+        modal = document.createElement('div');
+        modal.id = 'loginRequiredModal';
+        modal.style.cssText = `
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(10px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10000;
+            font-family: 'Inter', sans-serif;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        `;
+        
+        const card = document.createElement('div');
+        card.className = 'glass-strong';
+        card.style.cssText = `
+            max-width: 420px;
+            width: 90%;
+            padding: 35px;
+            text-align: center;
+            transform: scale(0.9);
+            transition: transform 0.3s ease;
+        `;
+        
+        card.innerHTML = `
+            <div style="font-size: 3.5rem; margin-bottom: 20px; filter: drop-shadow(0 0 10px rgba(129, 243, 186, 0.5));">🔒</div>
+            <h3 style="color: #81f3ba; font-size: 1.6rem; font-weight: 700; margin-bottom: 12px;" data-i18n="Connexion Requise">Connexion Requise</h3>
+            <p style="color: rgba(255, 255, 255, 0.85); font-size: 0.95rem; line-height: 1.6; margin-bottom: 28px;" data-i18n="Vous devez vous connecter à votre compte pour accéder aux boutiques des experts et effectuer des achats.">
+                Vous devez vous connecter à votre compte pour accéder aux boutiques des experts et effectuer des achats.
+            </p>
+            <div style="display: flex; flex-direction: column; gap: 12px;">
+                <button id="loginRequiredBtn" class="login-required-btn" data-i18n="Se connecter">
+                    Se connecter
+                </button>
+                <button id="closeRequiredBtn" class="close-required-btn" data-i18n="Fermer">
+                    Fermer
+                </button>
+            </div>
+        `;
+        
+        modal.appendChild(card);
+        document.body.appendChild(modal);
+        
+        // Button actions
+        document.getElementById('closeRequiredBtn').onclick = () => {
+            modal.style.opacity = '0';
+            card.style.transform = 'scale(0.9)';
+            setTimeout(() => { modal.style.display = 'none'; }, 300);
+        };
+        
+        document.getElementById('loginRequiredBtn').onclick = () => {
+            modal.style.opacity = '0';
+            card.style.transform = 'scale(0.9)';
+            setTimeout(() => {
+                modal.style.display = 'none';
+                const authModal = document.getElementById('authModal');
+                if (authModal) {
+                    const loginView = document.getElementById('modalLoginView');
+                    const regView = document.getElementById('modalRegisterView');
+                    if (loginView) loginView.style.display = '';
+                    if (regView) regView.style.display = 'none';
+                    authModal.style.display = 'flex';
+                } else {
+                    window.location.href = 'logsigin/sign.html?redirect=' + encodeURIComponent(window.location.href);
+                }
+            }, 300);
+        };
+    }
+    
+    // Show modal with animation
+    modal.style.display = 'flex';
+    // Trigger reflow
+    modal.offsetHeight;
+    modal.style.opacity = '1';
+    modal.querySelector('.glass-strong').style.transform = 'scale(1)';
+    
+    // Support translation for dynamic contents if translation engine is available
+    if (typeof window.translatePage === 'function') {
+        window.translatePage();
+    }
+}
+window.showLoginRequiredAlert = showLoginRequiredAlert;
+
 // ===== EXPERT BOUTIQUES FETCH LOGIC =====
 document.addEventListener('DOMContentLoaded', async () => {
     const grid = document.getElementById('boutiqueGrid');
@@ -415,22 +692,19 @@ document.addEventListener('DOMContentLoaded', async () => {
             return;
         }
 
-        const isLoggedIn = !!localStorage.getItem('token');
         const role = localStorage.getItem('userRole') || 'agriculteur';
         const baseUrl = role === 'expert' ? 'apres-inscription/expertt/boutique/index.html' : 'apres-inscription/agriculteur/boutique/expert-boutique.html';
 
         grid.innerHTML = experts.map(expert => {
             const expertName = expert.nom || expert.name || 'Zahra';
-            const finalUrl = role === 'expert' ? baseUrl : `${baseUrl}?expert=${encodeURIComponent(expertName)}`;
+            const finalUrl = `${baseUrl}?expert=${encodeURIComponent(expertName)}`;
             return `
             <div class="boutique-card">
                 <div class="boutique-photo">👨‍🔬</div>
                 <div class="boutique-name">${expertName}</div>
                 <div class="boutique-location">📍 ${expert.localisation || 'Non spécifiée'}</div>
-                <a href="${isLoggedIn ? finalUrl : 'javascript:void(0)'}" 
-                   ${!isLoggedIn ? 'onclick="document.getElementById(\\\'authModal\\\').style.display=\\\'flex\\\'"' : ''}
-                   class="boutique-btn ${isLoggedIn ? 'btn-voir' : 'btn-acheter'}">
-                    ${isLoggedIn ? 'Voir plus' : 'Acheter'}
+                <a href="${finalUrl}" class="boutique-btn btn-voir">
+                    Voir plus
                 </a>
             </div>
         `}).join('');
@@ -551,15 +825,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             } catch (error) {
                 console.error("Login fetch error:", error);
-                localStorage.setItem('token', 'offline-token-fake');
-                localStorage.setItem('userName', data.email.split('@')[0] || 'Utilisateur');
-                localStorage.setItem('userRole', 'agriculteur');
-                
-                if (modalSuccessMsg) {
-                    modalSuccessMsg.textContent = "Mode Hors Ligne. Transfert...";
-                    modalSuccessMsg.style.display = 'block';
+                if (modalErrorMsg) {
+                    modalErrorMsg.textContent = "Erreur de connexion au serveur.";
+                    modalErrorMsg.style.display = 'block';
                 }
-                setTimeout(() => window.location.reload(), 1000);
             } finally {
                 if (modalSubmitBtn) modalSubmitBtn.style.opacity = '1';
             }
@@ -594,14 +863,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 const result = await response.json();
                 
                 if (response.ok) {
-                    if (modalRegSuccessMsg) modalRegSuccessMsg.style.display = 'block';
-                    localStorage.setItem('token', result.token || 'auto-login-token');
-                    localStorage.setItem('userName', data.nom || result.userName || data.email.split('@')[0]);
-                    localStorage.setItem('userRole', data.role || 'agriculteur');
-                    if (result.userId) {
-    localStorage.setItem('userId', result.userId);
-}
-                    setTimeout(() => window.location.reload(), 1500);
+                    if (modalRegSuccessMsg) {
+                        modalRegSuccessMsg.textContent = result.message || "Un email de vérification a été envoyé. Veuillez vérifier votre boîte mail.";
+                        modalRegSuccessMsg.style.display = 'block';
+                    }
+                    setTimeout(() => switchAuthView('login'), 1500);
                 } else {
                     if (modalRegErrorMsg) {
                         modalRegErrorMsg.textContent = result.message || "Erreur d'inscription";
@@ -610,15 +876,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             } catch (error) {
                 console.error("Register fetch error:", error);
-                localStorage.setItem('token', 'offline-token-fake');
-                localStorage.setItem('userName', data.nom || data.email.split('@')[0] || 'Utilisateur');
-                localStorage.setItem('userRole', data.role || 'agriculteur');
-                
-                if (modalRegSuccessMsg) {
-                    modalRegSuccessMsg.textContent = "Mode Hors Ligne. Création réussie...";
-                    modalRegSuccessMsg.style.display = 'block';
+                if (modalRegErrorMsg) {
+                    modalRegErrorMsg.textContent = "Erreur de connexion au serveur.";
+                    modalRegErrorMsg.style.display = 'block';
                 }
-                setTimeout(() => window.location.reload(), 1500);
             } finally {
                 if (modalRegSubmitBtn) modalRegSubmitBtn.style.opacity = '1';
             }
