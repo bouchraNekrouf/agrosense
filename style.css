@@ -7,6 +7,10 @@
     box-sizing: border-box;
 }
 
+html {
+    overflow-x: hidden;
+}
+
 body {
     font-family: 'Inter', 'Segoe UI', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
     background: #ffffff;
@@ -17,6 +21,18 @@ body {
     line-height: 1.6;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+}
+
+img,
+video,
+canvas,
+iframe {
+    max-width: 100%;
+}
+
+img,
+video {
+    height: auto;
 }
 
 /* COUleur  de back ground..........................................;*/
@@ -221,7 +237,7 @@ header.scrolled {
     top: 0;
     left: 0;
     z-index: 1000;
-    padding: 0 40px; /* المسافة من الأطراف */
+    padding: 0 clamp(10px, 4vw, 40px);
 }
 
 .nav-links {
@@ -684,12 +700,11 @@ header.scrolled {
     padding: 0 20px;
 }
 
-.hero-content {
+.showcase .hero-content {
     text-align: center;
     z-index: 10;
     width: 100%;
     max-width: 1400px;
-    /* Made maximum wide for the BIG slider */
     padding: 0 20px;
 }
 
@@ -1591,22 +1606,26 @@ body.dark-mode .hero-tagline .highlight {
         padding: 0 5px;
     }
     .hexagon {
-        width: 88px;
-        height: 116px;
+        width: clamp(120px, 40vw, 160px);
+        height: clamp(150px, 48vw, 190px);
         margin: 6px;
     }
     .hexagon-inner {
-        padding: 10px 3px;
+        padding: 18px 10px;
         border-radius: 10px;
     }
     .hexagon-icon {
-        font-size: 1.2rem;
-        margin-bottom: 4px;
+        font-size: 2rem;
+        margin-bottom: 8px;
     }
     .hexagon h4 {
-        font-size: 0.55rem;
-        margin-bottom: 0px;
+        font-size: 0.9rem;
+        margin-bottom: 4px;
         line-height: 1.2;
+    }
+    .hexagon p {
+        font-size: 0.8rem;
+        max-width: 100%;
     }
 
     /* Mobile Alternate Timeline */
@@ -1746,6 +1765,29 @@ body.dark-mode .hero-tagline .highlight {
     }
 }
 
+@media (max-width: 768px) {
+    .geometric-shapes,
+    .neural-lines {
+        display: none;
+    }
+
+    button,
+    input,
+    select,
+    textarea {
+        font-size: 16px;
+    }
+
+    button,
+    [type="button"],
+    [type="submit"],
+    [role="button"],
+    .btn,
+    .boutique-btn {
+        min-height: 44px;
+    }
+}
+
 /* Custom Login Required Alert Modal */
 #loginRequiredModal {
     transition: opacity 0.3s ease;
@@ -1795,4 +1837,4 @@ body.dark-mode .hero-tagline .highlight {
     background: rgba(255, 255, 255, 0.05) !important;
     border-color: rgba(255, 255, 255, 0.4) !important;
     color: white !important;
-}
+}

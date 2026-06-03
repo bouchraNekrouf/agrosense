@@ -38,6 +38,13 @@
      * Uses a data-navbar-injected attribute as a guard.
      */
     function injectDependencies() {
+        if (!document.querySelector('meta[name="viewport"]')) {
+            var viewport = document.createElement('meta');
+            viewport.name = 'viewport';
+            viewport.content = 'width=device-width, initial-scale=1.0';
+            document.head.appendChild(viewport);
+        }
+
         // ── Google Fonts (Inter) ──────────────────────────────────────
         if (!document.querySelector('link[data-navbar="fonts"]')) {
             var fonts = document.createElement('link');
